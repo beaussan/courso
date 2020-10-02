@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "course-manager-7021b",
+    "dev": "course-manager-7021b",
+    "prod": "course-manager-prod"
+  }
+}

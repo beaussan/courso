@@ -1,0 +1,36 @@
+type Mutation {
+  linkStudentToUser(linkId: uuid!): linkStudentToUserOutput
+}
+
+type Mutation {
+  sendStudentClaimMail(studentsIds: [uuid]!): SendStudentClaimMailOutput
+}
+
+type Mutation {
+  submitHandoff(
+    practiceToPromotionId: uuid!
+    yields: [YieldForHandoff!]!
+  ): SubmitHandoffOutput
+}
+
+input YieldForHandoff {
+  yieldId: uuid!
+  value: String!
+}
+
+type InsertStudentAnswerOutput {
+  id: uuid!
+  student_output: jsonb
+}
+
+type SendStudentClaimMailOutput {
+  nmbMailSent: Int!
+}
+
+type linkStudentToUserOutput {
+  ok: Boolean!
+}
+
+type SubmitHandoffOutput {
+  status: String!
+}

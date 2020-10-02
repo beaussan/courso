@@ -1,0 +1,38 @@
+actions:
+  - name: linkStudentToUser
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_MASTER_URL}}'
+      headers:
+        - name: token
+          value_from_env: ACTION_MASTER_TOKEN
+    permissions:
+      - role: student
+  - name: sendStudentClaimMail
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_MASTER_URL}}'
+      headers:
+        - name: token
+          value_from_env: ACTION_MASTER_TOKEN
+    permissions:
+      - role: teacher
+  - name: submitHandoff
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_MASTER_URL}}'
+      headers:
+        - name: TOKEN
+          value_from_env: ACTION_MASTER_TOKEN
+    permissions:
+      - role: student
+custom_types:
+  enums: []
+  input_objects:
+    - name: YieldForHandoff
+  objects:
+    - name: InsertStudentAnswerOutput
+    - name: SendStudentClaimMailOutput
+    - name: linkStudentToUserOutput
+    - name: SubmitHandoffOutput
+  scalars: []
