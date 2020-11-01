@@ -217,12 +217,9 @@
           - student_id
           - updated_at
         filter:
-          practice_to_promotion:
-            promotion:
-              student_to_promotions:
-                student:
-                  user_id:
-                    _eq: X-Hasura-User-Id
+          student:
+            user_id:
+              _eq: X-Hasura-User-Id
     - role: teacher
       permission:
         columns:
