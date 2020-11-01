@@ -49,10 +49,10 @@ export const generateHasuraUserFromFirebaseUser = async (uid: string) => {
       },
       { merge: true },
     );
-    console.log('Successfully save new user', data);
+    functions.logger.info('Successfully save new user', data);
     return 'Success';
   } catch (e) {
-    console.error('REFRESH ERROR', e);
+    functions.logger.error('REFRESH ERROR', e);
     throw new functions.https.HttpsError('internal', 'error calling db');
   }
 };
