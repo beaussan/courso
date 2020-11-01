@@ -138,6 +138,7 @@ workflows:
           name: front-deploy-dev
           site-id: 58b0fd46-fb1a-406a-af12-1c45c6ffa66f
           deploy-folder: dev
+          filters: *deploy-staging-filters
           requires:
             - deploy-firebase-dev
             - build-frontend-dev
@@ -145,38 +146,39 @@ workflows:
       - deploy-firebase:
           name: deploy-firebase-dev
           firebase-project: dev
+          filters: *deploy-staging-filters
           requires:
             - apply-hasura-migrations-and-metadata-dev
 
       - request_deploy_prod:
           type: approval
+          filters: *deploy-staging-filters
           requires:
             - deploy-firebase-dev
             - front-deploy-dev
             - apply-hasura-migrations-and-metadata-dev
-  build-and-deploy-prod:
-    jobs:
+
       - build-frontend:
           name: build-frontend-prod
           hasura-endpoint: HASURA_URL_PROD
           firebase-config: FIREBASE_APP_CONFIG_PROD
+          filters: *deploy-staging-filters
           bulild-dest: prod
-          #requires:
-          #  - request_deploy_prod
+          requires:
+            - request_deploy_prod
 
       - apply-hasura-migrations-and-metadata:
           name: apply-hasura-migrations-and-metadata-prod
           hasura-endpoint: HASURA_URL_PROD
           hasura-admin-secret: HASURA_ADMIN_SECRET_PROD
-          #requires:
-          #  - request_deploy_prod
-          filters: &deploy-staging-filters
-            branches:
-              only: main
+          filters: *deploy-staging-filters
+          requires:
+            - request_deploy_prod
       - front-deploy:
           name: front-deploy-prod
           site-id: 658651dd-7b25-4288-820c-073e405fe6d6
           deploy-folder: prod
+          filters: *deploy-staging-filters
           requires:
             - deploy-firebase-prod
             - build-frontend-prod
@@ -184,12 +186,13 @@ workflows:
       - deploy-firebase:
           name: deploy-firebase-prod
           firebase-project: prod
+          filters: *deploy-staging-filters
           requires:
             - apply-hasura-migrations-and-metadata-prod
-            #- request_deploy_prod
+            - request_deploy_prod
 #  build-and-deploy-to-production:
 #    jobs:
-#      - server-build-prod:
+#    - server-build-prod:
 #          filters: &deploy-production-filters
 #            tags:
 #              only: /^v.*/
