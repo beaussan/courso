@@ -8,7 +8,7 @@ import {
 } from './generated/graphql';
 
 export const onClaimChange = func.firestore
-  .document('/claims/{userId}')
+  .document('/hasura/{userId}')
   .onWrite((change, context) => {
     return updateClaims(context.params.userId);
   });
