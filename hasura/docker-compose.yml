@@ -4,7 +4,7 @@ services:
     image: postgres:12
     restart: always
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
@@ -24,5 +24,7 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: somerandompassword
-volumes:
-  db_data:
+      WEBHOOK_MASTER_URL: https://example.net/hasuraWebsocket
+      WEBHOOK_MASTER_TOKEN: toremplace
+      ACTION_MASTER_TOKEN: toremplace
+      ACTION_MASTER_URL: https://example.net/hasuraActions
