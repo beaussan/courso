@@ -11,6 +11,10 @@ import { CardBox } from '../../components/CardBox';
 import { Loader } from '../../components/Loader';
 import { NewTpToPromo } from './NewTpToPromo';
 import { Wip } from '../../components/Wip';
+import { Table } from '../../components/Table';
+import { Chip } from '../../components/Chip';
+import { format, formatDistanceToNowStrict } from 'date-fns';
+import { enGB } from 'date-fns/locale';
 
 gql`
   subscription getPracticeDetail($id: uuid!) {
@@ -36,6 +40,20 @@ gql`
             name
             years
             id
+            student_to_promotions {
+              student {
+                full_name
+                email
+                practice_to_students(
+                  where: {
+                    practice_to_promotion: { practice_id: { _eq: $id } }
+                  }
+                ) {
+                  created_at
+                  grade
+                }
+              }
+            }
           }
           can_student_see_feedback
           can_student_see_grade
@@ -61,6 +79,39 @@ gql`
     }
   }
 `;
+
+const FormatSingleDate: React.FC<{ date: Date; prefix: string }> = ({
+  date,
+  prefix,
+}) => {
+  return (
+    <div>
+      {`${prefix} `}
+      <span className="font-semibold">
+        {formatDistanceToNowStrict(date, {
+          addSuffix: true,
+          locale: enGB,
+        })}
+      </span>
+      <span>{' at '}</span>
+      <span className="font-semibold">
+        {format(date, 'Pp', { locale: enGB })}
+      </span>
+    </div>
+  );
+};
+
+const FormatDates: React.FC<{ open: Date; close: Date }> = ({
+  open,
+  close,
+}) => {
+  return (
+    <div className="flex justify-between">
+      <FormatSingleDate date={open} prefix="Open" />
+      <FormatSingleDate date={close} prefix="Closes" />
+    </div>
+  );
+};
 
 export const TpId = () => {
   const { id } = useParams();
@@ -123,20 +174,61 @@ export const TpId = () => {
           <NewTpToPromo tpId={id} promotions={promotionAvailable} />
         </div>
 
-        <pre>
-          {JSON.stringify(
-            data?.practice_by_pk?.practice_to_promotions_aggregate?.nodes,
-            null,
-            2,
-          )}{' '}
-        </pre>
+        {data?.practice_by_pk?.practice_to_promotions_aggregate?.nodes.map(
+          (promo) => {
+            const amountLeft = promo.promotion.student_to_promotions
+              .filter((data) => data.student?.practice_to_students.length === 0)
+              .reduce((a) => a + 1, 0);
+            return (
+              <CardBox>
+                <div className="leading-loose">
+                  <span className="font-bold">{promo.promotion.name}</span>
+                  <span>{` - ${promo.promotion.years}`}</span>
+                </div>
+                <div>
+                  <FormatDates
+                    open={new Date(promo.open_date)}
+                    close={new Date(promo.close_date)}
+                  />
+                </div>
+                <pre>{promo.can_student_see_feedback}</pre>
+                <div>
+                  Missing {amountLeft} handouts of{' '}
+                  {promo.promotion.student_to_promotions.length}
+                </div>
+                <Table>
+                  <Table.TableHead items={['Name', 'Email', 'Has handout']} />
+                  <Table.TBody items={promo.promotion.student_to_promotions}>
+                    {({ student }) => {
+                      const hasStudentHandout =
+                        student.practice_to_students.length > 0;
+                      return (
+                        <>
+                          <Table.Td isMainInfo>{student?.full_name}</Table.Td>
+                          <Table.Td>{student?.email}</Table.Td>
+                          <Table.Td>
+                            <Chip
+                              variant={hasStudentHandout ? 'success' : 'error'}
+                            >
+                              {hasStudentHandout ? 'Yes' : 'No'}
+                            </Chip>
+                          </Table.Td>
+                        </>
+                      );
+                    }}
+                  </Table.TBody>
+                </Table>
+              </CardBox>
+            );
+          },
+        )}
       </Loader>
       <Wip
         todo={[
-          'Pretty list of practice to promotion',
           'Able to edit if the student can see feedback',
           'Able to edit if the student can see grade',
           'Able to edit the notation tools for the tp',
+          'Able to edit the handout for practice to tp',
           'Able to edit the name of the tp',
           'Able to edit the yeilds',
           'Able to delete the practice',

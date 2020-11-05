@@ -43,13 +43,17 @@ export const Button: React.FC<ButtonProps> = ({
     variants[variant],
     {
       'opacity-50 pointer-events-none': disabled,
-      'flex-1': isFull,
+      'flex-1 w-full': isFull,
     },
     className,
   );
 
+  const divCLasses = clsx('inline-flex items-center justify-center', {
+    'flex-1 w-full': isFull,
+  });
+
   return (
-    <div className="inline-flex items-center justify-center">
+    <div className={divCLasses}>
       <button className={classes} disabled={disabled} {...rest}>
         {Icon && (
           <Icon

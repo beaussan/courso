@@ -38,7 +38,7 @@ const ModalTitle: React.FC = ({ children }) => (
 
 const ModalButtonWrapper: React.FC = ({ children }) => {
   return (
-    <span className="flex w-full rounded-md shadow-sm sm:w-auto">
+    <span className="flex sm:flex-1  w-full rounded-md shadow-sm sm:w-auto">
       {children}
     </span>
   );

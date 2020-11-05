@@ -1,6 +1,13 @@
 import { auth, db, fn } from './firebase';
 import { combineLatest, Observable, of, from } from 'rxjs';
-import { switchMap, pluck, shareReplay, map, startWith } from 'rxjs/operators';
+import {
+  switchMap,
+  pluck,
+  shareReplay,
+  map,
+  startWith,
+  catchError,
+} from 'rxjs/operators';
 import { User } from 'firebase';
 import { user, authState } from 'rxfire/auth';
 import { docData } from 'rxfire/firestore';
@@ -24,6 +31,7 @@ const getUserWithClaims = (user: User): Observable<User> =>
             log('refreshed claims'),
             switchMap(() => from(user.getIdToken(true))),
             switchMap(() => of(user)),
+            catchError(() => of(user)),
           ),
     ),
   );
@@ -66,7 +74,7 @@ export const authState$: Observable<AuthState> = combineLatest([
     }
     return 'out';
   }),
-  log('result'),
+  catchError(() => of<AuthState>('out')),
   shareReplay({
     bufferSize: 1,
     refCount: true,

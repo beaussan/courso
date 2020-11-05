@@ -2759,6 +2759,7 @@ export type Student_Pk_Columns_Input = {
 export type Student_Practice_Yield = {
   __typename?: 'student_practice_yield';
   created_at: Scalars['timestamptz'];
+  gitea_org_and_repo?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   /** An object relationship */
   practice_to_student: Practice_To_Student;
@@ -2810,6 +2811,7 @@ export type Student_Practice_Yield_Bool_Exp = {
   _not?: Maybe<Student_Practice_Yield_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Student_Practice_Yield_Bool_Exp>>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  gitea_org_and_repo?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   practice_to_student?: Maybe<Practice_To_Student_Bool_Exp>;
   practice_to_student_id?: Maybe<Uuid_Comparison_Exp>;
@@ -2830,6 +2832,7 @@ export enum Student_Practice_Yield_Constraint {
 /** input type for inserting data into table "student_practice_yield" */
 export type Student_Practice_Yield_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  gitea_org_and_repo?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_student?: Maybe<Practice_To_Student_Obj_Rel_Insert_Input>;
   practice_to_student_id?: Maybe<Scalars['uuid']>;
@@ -2843,6 +2846,7 @@ export type Student_Practice_Yield_Insert_Input = {
 export type Student_Practice_Yield_Max_Fields = {
   __typename?: 'student_practice_yield_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  gitea_org_and_repo?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_student_id?: Maybe<Scalars['uuid']>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
@@ -2853,6 +2857,7 @@ export type Student_Practice_Yield_Max_Fields = {
 /** order by max() on columns of table "student_practice_yield" */
 export type Student_Practice_Yield_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  gitea_org_and_repo?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   practice_to_student_id?: Maybe<Order_By>;
   practice_yield_id?: Maybe<Order_By>;
@@ -2864,6 +2869,7 @@ export type Student_Practice_Yield_Max_Order_By = {
 export type Student_Practice_Yield_Min_Fields = {
   __typename?: 'student_practice_yield_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  gitea_org_and_repo?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_student_id?: Maybe<Scalars['uuid']>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
@@ -2874,6 +2880,7 @@ export type Student_Practice_Yield_Min_Fields = {
 /** order by min() on columns of table "student_practice_yield" */
 export type Student_Practice_Yield_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  gitea_org_and_repo?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   practice_to_student_id?: Maybe<Order_By>;
   practice_yield_id?: Maybe<Order_By>;
@@ -2906,6 +2913,7 @@ export type Student_Practice_Yield_On_Conflict = {
 /** ordering options when selecting data from "student_practice_yield" */
 export type Student_Practice_Yield_Order_By = {
   created_at?: Maybe<Order_By>;
+  gitea_org_and_repo?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   practice_to_student?: Maybe<Practice_To_Student_Order_By>;
   practice_to_student_id?: Maybe<Order_By>;
@@ -2925,6 +2933,8 @@ export enum Student_Practice_Yield_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  GiteaOrgAndRepo = 'gitea_org_and_repo',
+  /** column name */
   Id = 'id',
   /** column name */
   PracticeToStudentId = 'practice_to_student_id',
@@ -2939,6 +2949,7 @@ export enum Student_Practice_Yield_Select_Column {
 /** input type for updating data in table "student_practice_yield" */
 export type Student_Practice_Yield_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  gitea_org_and_repo?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_student_id?: Maybe<Scalars['uuid']>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
@@ -2950,6 +2961,8 @@ export type Student_Practice_Yield_Set_Input = {
 export enum Student_Practice_Yield_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  GiteaOrgAndRepo = 'gitea_org_and_repo',
   /** column name */
   Id = 'id',
   /** column name */
@@ -3509,7 +3522,7 @@ export type Timestamptz_Comparison_Exp = {
 export type User = {
   __typename?: 'user';
   createdAt: Scalars['timestamptz'];
-  displayName: Scalars['String'];
+  displayName?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   firebaseId?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
@@ -3986,7 +3999,23 @@ export type GetPracticeDetailSubscription = {
                 promotion: { __typename?: 'promotion' } & Pick<
                   Promotion,
                   'name' | 'years' | 'id'
-                >;
+                > & {
+                    student_to_promotions: Array<
+                      { __typename?: 'student_to_promotion' } & {
+                        student: { __typename?: 'student' } & Pick<
+                          Student,
+                          'full_name' | 'email'
+                        > & {
+                            practice_to_students: Array<
+                              { __typename?: 'practice_to_student' } & Pick<
+                                Practice_To_Student,
+                                'created_at' | 'grade'
+                              >
+                            >;
+                          };
+                      }
+                    >;
+                  };
               }
           >;
         };
@@ -4750,6 +4779,20 @@ export const GetPracticeDetailDocument = gql`
             name
             years
             id
+            student_to_promotions {
+              student {
+                full_name
+                email
+                practice_to_students(
+                  where: {
+                    practice_to_promotion: { practice_id: { _eq: $id } }
+                  }
+                ) {
+                  created_at
+                  grade
+                }
+              }
+            }
           }
           can_student_see_feedback
           can_student_see_grade
