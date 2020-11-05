@@ -200,13 +200,13 @@
       using:
         foreign_key_constraint_on: student_id
   array_relationships:
-    - name: student_practice_yields
+    - name: practice_to_student_yields
       using:
         foreign_key_constraint_on:
           column: practice_to_student_id
           table:
             schema: public
-            name: student_practice_yield
+            name: practice_to_student_yield
   select_permissions:
     - role: student
       permission:
@@ -244,6 +244,58 @@
         check: null
 - table:
     schema: public
+    name: practice_to_student_yield
+  object_relationships:
+    - name: practice_to_student
+      using:
+        foreign_key_constraint_on: practice_to_student_id
+    - name: practice_yield
+      using:
+        foreign_key_constraint_on: practice_yield_id
+  select_permissions:
+    - role: student
+      permission:
+        columns:
+          - created_at
+          - id
+          - practice_to_student_id
+          - practice_yield_id
+          - updated_at
+        filter:
+          practice_to_student:
+            student:
+              user_id:
+                _eq: X-Hasura-User-Id
+        allow_aggregations: true
+  event_triggers:
+    - name: onStudentYieldCreated
+      definition:
+        enable_manual: false
+        insert:
+          columns: '*'
+      retry_conf:
+        num_retries: 3
+        interval_sec: 20
+        timeout_sec: 60
+      webhook_from_env: WEBHOOK_MASTER_URL
+      headers:
+        - name: token
+          value_from_env: WEBHOOK_MASTER_TOKEN
+    - name: onStudentYieldDeleted
+      definition:
+        enable_manual: false
+        delete:
+          columns: '*'
+      retry_conf:
+        num_retries: 3
+        interval_sec: 10
+        timeout_sec: 60
+      webhook_from_env: WEBHOOK_MASTER_URL
+      headers:
+        - name: token
+          value_from_env: WEBHOOK_MASTER_TOKEN
+- table:
+    schema: public
     name: practice_yield
   object_relationships:
     - name: practice
@@ -253,13 +305,13 @@
       using:
         foreign_key_constraint_on: method
   array_relationships:
-    - name: student_practice_yields
+    - name: practice_to_student_yields
       using:
         foreign_key_constraint_on:
           column: practice_yield_id
           table:
             schema: public
-            name: student_practice_yield
+            name: practice_to_student_yield
   insert_permissions:
     - role: teacher
       permission:
@@ -485,58 +537,6 @@
     - role: teacher
       permission:
         filter: {}
-- table:
-    schema: public
-    name: student_practice_yield
-  object_relationships:
-    - name: practice_to_student
-      using:
-        foreign_key_constraint_on: practice_to_student_id
-    - name: practice_yield
-      using:
-        foreign_key_constraint_on: practice_yield_id
-  select_permissions:
-    - role: student
-      permission:
-        columns:
-          - created_at
-          - id
-          - practice_to_student_id
-          - practice_yield_id
-          - updated_at
-        filter:
-          practice_to_student:
-            student:
-              user_id:
-                _eq: X-Hasura-User-Id
-        allow_aggregations: true
-  event_triggers:
-    - name: onStudentYieldCreated
-      definition:
-        enable_manual: false
-        insert:
-          columns: '*'
-      retry_conf:
-        num_retries: 3
-        interval_sec: 20
-        timeout_sec: 60
-      webhook_from_env: WEBHOOK_MASTER_URL
-      headers:
-        - name: token
-          value_from_env: WEBHOOK_MASTER_TOKEN
-    - name: onStudentYieldDeleted
-      definition:
-        enable_manual: false
-        delete:
-          columns: '*'
-      retry_conf:
-        num_retries: 3
-        interval_sec: 10
-        timeout_sec: 60
-      webhook_from_env: WEBHOOK_MASTER_URL
-      headers:
-        - name: token
-          value_from_env: WEBHOOK_MASTER_TOKEN
 - table:
     schema: public
     name: student_to_promotion

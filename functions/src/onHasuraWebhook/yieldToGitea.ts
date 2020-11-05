@@ -18,7 +18,7 @@ interface StudentPracticeYieldInput {
 
 const ON_STUDENT_YIELD_CREATED_QUERY = gql`
   query onStudentYieldCreatedData($id: uuid!) {
-    student_practice_yield_by_pk(id: $id) {
+    practice_to_student_yield_by_pk(id: $id) {
       practice_to_student {
         student {
           full_name
@@ -38,7 +38,7 @@ const ON_STUDENT_YIELD_CREATED_QUERY = gql`
 
 const ON_STUDENT_YIELD_MUTATION = gql`
   mutation onStudentYieldMutation($id: uuid!, $gitea_org_and_repo: String!) {
-    update_student_practice_yield_by_pk(
+    update_practice_to_student_yield_by_pk(
       pk_columns: { id: $id }
       _set: { gitea_org_and_repo: $gitea_org_and_repo }
     ) {
@@ -55,30 +55,30 @@ const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
     throw new functions.https.HttpsError('internal', 'No after found');
   }
 
-  const { student_practice_yield_by_pk } = await gqlClient.request<
+  const { practice_to_student_yield_by_pk } = await gqlClient.request<
     OnStudentYieldCreatedDataQuery,
     OnStudentYieldCreatedDataQueryVariables
   >(ON_STUDENT_YIELD_CREATED_QUERY, {
     id: after.id,
   });
 
-  if (student_practice_yield_by_pk?.practice_yield?.method !== 'GIT_REPO') {
+  if (practice_to_student_yield_by_pk?.practice_yield?.method !== 'GIT_REPO') {
     return 'ok';
   }
 
   if (
-    !student_practice_yield_by_pk.practice_to_student.practice_to_promotion
+    !practice_to_student_yield_by_pk.practice_to_student.practice_to_promotion
       .gitea_org_name
   ) {
     throw new functions.https.HttpsError('internal', 'gita org not found');
   }
 
   const slugedName = slug(
-    `${student_practice_yield_by_pk.practice_to_student.student.full_name} ${student_practice_yield_by_pk.practice_yield.name}`,
+    `${practice_to_student_yield_by_pk.practice_to_student.student.full_name} ${practice_to_student_yield_by_pk.practice_yield.name}`,
     { lower: false },
   );
   const repoOwner =
-    student_practice_yield_by_pk.practice_to_student.practice_to_promotion
+    practice_to_student_yield_by_pk.practice_to_student.practice_to_promotion
       .gitea_org_name;
 
   const { ok, originalError, data } = await giteaClient.post('/repos/migrate', {

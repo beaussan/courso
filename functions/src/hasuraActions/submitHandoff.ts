@@ -39,14 +39,14 @@ const DATA_FOR_SUBMIT_HANDOFF = gql`
 
 const MUTATION_SUBMIT_HANDOFF = gql`
   mutation mutationSubmitHandoff(
-    $studentYields: [student_practice_yield_insert_input!]!
+    $studentYields: [practice_to_student_yield_insert_input!]!
     $student_id: uuid!
     $promotion_practice_id: uuid!
   ) {
     insert_practice_to_student(
       objects: {
         submited: true
-        student_practice_yields: { data: $studentYields }
+        practice_to_student_yields: { data: $studentYields }
         student_id: $student_id
         promotion_practice_id: $promotion_practice_id
       }
