@@ -16,6 +16,39 @@ import { Chip } from '../../components/Chip';
 import { format, formatDistanceToNowStrict } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 
+const fragments = {
+  PracticeToPromoDetails: gql`
+    fragment PracticeToPromoDetails on practice_to_promotion {
+      promotion {
+        name
+        years
+        id
+        student_to_promotions {
+          student {
+            full_name
+            email
+            practice_to_students(
+              where: { practice_to_promotion: { practice_id: { _eq: $id } } }
+            ) {
+              created_at
+              grade
+            }
+          }
+        }
+      }
+      can_student_see_feedback
+      can_student_see_grade
+      close_date
+      created_at
+      gitea_org_name
+      is_open
+      id
+      open_date
+      updated_at
+    }
+  `,
+};
+
 gql`
   subscription getPracticeDetail($id: uuid!) {
     practice_by_pk(id: $id) {
@@ -36,38 +69,12 @@ gql`
           count
         }
         nodes {
-          promotion {
-            name
-            years
-            id
-            student_to_promotions {
-              student {
-                full_name
-                email
-                practice_to_students(
-                  where: {
-                    practice_to_promotion: { practice_id: { _eq: $id } }
-                  }
-                ) {
-                  created_at
-                  grade
-                }
-              }
-            }
-          }
-          can_student_see_feedback
-          can_student_see_grade
-          close_date
-          created_at
-          gitea_org_name
-          is_open
-          id
-          open_date
-          updated_at
+          ...PracticeToPromoDetails
         }
       }
     }
   }
+  ${fragments.PracticeToPromoDetails}
 `;
 
 gql`
@@ -118,6 +125,10 @@ export const TpId = () => {
   const navigate = useNavigate();
   const { data, error, loading } = useGetPracticeDetailSubscription({
     variables: { id },
+  });
+
+  console.log('TP ID : ', {
+    data: data?.practice_by_pk?.practice_to_promotions_aggregate?.nodes,
   });
   const { data: promotions } = useGetPromotionForTpAddQuery();
   if (!loading && (!data?.practice_by_pk || error)) {
@@ -187,8 +198,8 @@ export const TpId = () => {
                 </div>
                 <div>
                   <FormatDates
-                    open={new Date(promo.open_date)}
-                    close={new Date(promo.close_date)}
+                    open={promo.open_date}
+                    close={promo.close_date}
                   />
                 </div>
                 <pre>{promo.can_student_see_feedback}</pre>

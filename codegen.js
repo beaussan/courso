@@ -11,7 +11,7 @@ module.exports = {
   documents: ['./src/**/*.tsx', './src/**/*.ts'],
   overwrite: true,
   generates: {
-    './src/generated/graphql.tsx': {
+    './src/generated/graphql.ts': {
       plugins: [
         'typescript',
         'typescript-operations',
@@ -24,8 +24,17 @@ module.exports = {
         withComponent: false,
       },
     },
+    './src/generated/apolloHelpers.ts': {
+      plugins: ['typescript-apollo-client-helpers'],
+      config: {
+        requireKeyFields: true,
+      },
+    },
     './graphql.schema.json': {
       plugins: ['introspection'],
+    },
+    './graphql.schema.graphql': {
+      plugins: ['schema-ast'],
     },
   },
 };

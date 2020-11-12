@@ -32,5 +32,7 @@ hasura/docker-compose.prod.yml
 .netlify
 graphql.schema.json
 graphql.schema.json.graphql
+graphql.schema.graphql
+
 
 functions/lib/

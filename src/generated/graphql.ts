@@ -135,6 +135,16 @@ export type Mutation_Root = {
   delete_practice?: Maybe<Practice_Mutation_Response>;
   /** delete single row from the table: "practice" */
   delete_practice_by_pk?: Maybe<Practice>;
+  /** delete data from the table: "practice_grade_metric" */
+  delete_practice_grade_metric?: Maybe<Practice_Grade_Metric_Mutation_Response>;
+  /** delete single row from the table: "practice_grade_metric" */
+  delete_practice_grade_metric_by_pk?: Maybe<Practice_Grade_Metric>;
+  /** delete data from the table: "practice_grade_metric_type" */
+  delete_practice_grade_metric_type?: Maybe<
+    Practice_Grade_Metric_Type_Mutation_Response
+  >;
+  /** delete single row from the table: "practice_grade_metric_type" */
+  delete_practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
   /** delete data from the table: "practice_to_promotion" */
   delete_practice_to_promotion?: Maybe<Practice_To_Promotion_Mutation_Response>;
   /** delete single row from the table: "practice_to_promotion" */
@@ -143,6 +153,14 @@ export type Mutation_Root = {
   delete_practice_to_student?: Maybe<Practice_To_Student_Mutation_Response>;
   /** delete single row from the table: "practice_to_student" */
   delete_practice_to_student_by_pk?: Maybe<Practice_To_Student>;
+  /** delete data from the table: "practice_to_student_grade_metric" */
+  delete_practice_to_student_grade_metric?: Maybe<
+    Practice_To_Student_Grade_Metric_Mutation_Response
+  >;
+  /** delete single row from the table: "practice_to_student_grade_metric" */
+  delete_practice_to_student_grade_metric_by_pk?: Maybe<
+    Practice_To_Student_Grade_Metric
+  >;
   /** delete data from the table: "practice_to_student_yield" */
   delete_practice_to_student_yield?: Maybe<
     Practice_To_Student_Yield_Mutation_Response
@@ -175,6 +193,16 @@ export type Mutation_Root = {
   insertUserOne?: Maybe<User>;
   /** insert data into the table: "practice" */
   insert_practice?: Maybe<Practice_Mutation_Response>;
+  /** insert data into the table: "practice_grade_metric" */
+  insert_practice_grade_metric?: Maybe<Practice_Grade_Metric_Mutation_Response>;
+  /** insert a single row into the table: "practice_grade_metric" */
+  insert_practice_grade_metric_one?: Maybe<Practice_Grade_Metric>;
+  /** insert data into the table: "practice_grade_metric_type" */
+  insert_practice_grade_metric_type?: Maybe<
+    Practice_Grade_Metric_Type_Mutation_Response
+  >;
+  /** insert a single row into the table: "practice_grade_metric_type" */
+  insert_practice_grade_metric_type_one?: Maybe<Practice_Grade_Metric_Type>;
   /** insert a single row into the table: "practice" */
   insert_practice_one?: Maybe<Practice>;
   /** insert data into the table: "practice_to_promotion" */
@@ -183,6 +211,14 @@ export type Mutation_Root = {
   insert_practice_to_promotion_one?: Maybe<Practice_To_Promotion>;
   /** insert data into the table: "practice_to_student" */
   insert_practice_to_student?: Maybe<Practice_To_Student_Mutation_Response>;
+  /** insert data into the table: "practice_to_student_grade_metric" */
+  insert_practice_to_student_grade_metric?: Maybe<
+    Practice_To_Student_Grade_Metric_Mutation_Response
+  >;
+  /** insert a single row into the table: "practice_to_student_grade_metric" */
+  insert_practice_to_student_grade_metric_one?: Maybe<
+    Practice_To_Student_Grade_Metric
+  >;
   /** insert a single row into the table: "practice_to_student" */
   insert_practice_to_student_one?: Maybe<Practice_To_Student>;
   /** insert data into the table: "practice_to_student_yield" */
@@ -225,6 +261,16 @@ export type Mutation_Root = {
   update_practice?: Maybe<Practice_Mutation_Response>;
   /** update single row of the table: "practice" */
   update_practice_by_pk?: Maybe<Practice>;
+  /** update data of the table: "practice_grade_metric" */
+  update_practice_grade_metric?: Maybe<Practice_Grade_Metric_Mutation_Response>;
+  /** update single row of the table: "practice_grade_metric" */
+  update_practice_grade_metric_by_pk?: Maybe<Practice_Grade_Metric>;
+  /** update data of the table: "practice_grade_metric_type" */
+  update_practice_grade_metric_type?: Maybe<
+    Practice_Grade_Metric_Type_Mutation_Response
+  >;
+  /** update single row of the table: "practice_grade_metric_type" */
+  update_practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
   /** update data of the table: "practice_to_promotion" */
   update_practice_to_promotion?: Maybe<Practice_To_Promotion_Mutation_Response>;
   /** update single row of the table: "practice_to_promotion" */
@@ -233,6 +279,14 @@ export type Mutation_Root = {
   update_practice_to_student?: Maybe<Practice_To_Student_Mutation_Response>;
   /** update single row of the table: "practice_to_student" */
   update_practice_to_student_by_pk?: Maybe<Practice_To_Student>;
+  /** update data of the table: "practice_to_student_grade_metric" */
+  update_practice_to_student_grade_metric?: Maybe<
+    Practice_To_Student_Grade_Metric_Mutation_Response
+  >;
+  /** update single row of the table: "practice_to_student_grade_metric" */
+  update_practice_to_student_grade_metric_by_pk?: Maybe<
+    Practice_To_Student_Grade_Metric
+  >;
   /** update data of the table: "practice_to_student_yield" */
   update_practice_to_student_yield?: Maybe<
     Practice_To_Student_Yield_Mutation_Response
@@ -282,6 +336,26 @@ export type Mutation_RootDelete_Practice_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootDelete_Practice_Grade_MetricArgs = {
+  where: Practice_Grade_Metric_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Practice_Grade_Metric_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Practice_Grade_Metric_TypeArgs = {
+  where: Practice_Grade_Metric_Type_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Practice_Grade_Metric_Type_By_PkArgs = {
+  name: Scalars['String'];
+};
+
+/** mutation root */
 export type Mutation_RootDelete_Practice_To_PromotionArgs = {
   where: Practice_To_Promotion_Bool_Exp;
 };
@@ -298,6 +372,16 @@ export type Mutation_RootDelete_Practice_To_StudentArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Practice_To_Student_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Practice_To_Student_Grade_MetricArgs = {
+  where: Practice_To_Student_Grade_Metric_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Practice_To_Student_Grade_Metric_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -381,6 +465,30 @@ export type Mutation_RootInsert_PracticeArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootInsert_Practice_Grade_MetricArgs = {
+  objects: Array<Practice_Grade_Metric_Insert_Input>;
+  on_conflict?: Maybe<Practice_Grade_Metric_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Practice_Grade_Metric_OneArgs = {
+  object: Practice_Grade_Metric_Insert_Input;
+  on_conflict?: Maybe<Practice_Grade_Metric_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Practice_Grade_Metric_TypeArgs = {
+  objects: Array<Practice_Grade_Metric_Type_Insert_Input>;
+  on_conflict?: Maybe<Practice_Grade_Metric_Type_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Practice_Grade_Metric_Type_OneArgs = {
+  object: Practice_Grade_Metric_Type_Insert_Input;
+  on_conflict?: Maybe<Practice_Grade_Metric_Type_On_Conflict>;
+};
+
+/** mutation root */
 export type Mutation_RootInsert_Practice_OneArgs = {
   object: Practice_Insert_Input;
   on_conflict?: Maybe<Practice_On_Conflict>;
@@ -402,6 +510,18 @@ export type Mutation_RootInsert_Practice_To_Promotion_OneArgs = {
 export type Mutation_RootInsert_Practice_To_StudentArgs = {
   objects: Array<Practice_To_Student_Insert_Input>;
   on_conflict?: Maybe<Practice_To_Student_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Practice_To_Student_Grade_MetricArgs = {
+  objects: Array<Practice_To_Student_Grade_Metric_Insert_Input>;
+  on_conflict?: Maybe<Practice_To_Student_Grade_Metric_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Practice_To_Student_Grade_Metric_OneArgs = {
+  object: Practice_To_Student_Grade_Metric_Insert_Input;
+  on_conflict?: Maybe<Practice_To_Student_Grade_Metric_On_Conflict>;
 };
 
 /** mutation root */
@@ -523,6 +643,42 @@ export type Mutation_RootUpdate_Practice_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Practice_Grade_MetricArgs = {
+  _append?: Maybe<Practice_Grade_Metric_Append_Input>;
+  _delete_at_path?: Maybe<Practice_Grade_Metric_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Practice_Grade_Metric_Delete_Elem_Input>;
+  _delete_key?: Maybe<Practice_Grade_Metric_Delete_Key_Input>;
+  _inc?: Maybe<Practice_Grade_Metric_Inc_Input>;
+  _prepend?: Maybe<Practice_Grade_Metric_Prepend_Input>;
+  _set?: Maybe<Practice_Grade_Metric_Set_Input>;
+  where: Practice_Grade_Metric_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Practice_Grade_Metric_By_PkArgs = {
+  _append?: Maybe<Practice_Grade_Metric_Append_Input>;
+  _delete_at_path?: Maybe<Practice_Grade_Metric_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Practice_Grade_Metric_Delete_Elem_Input>;
+  _delete_key?: Maybe<Practice_Grade_Metric_Delete_Key_Input>;
+  _inc?: Maybe<Practice_Grade_Metric_Inc_Input>;
+  _prepend?: Maybe<Practice_Grade_Metric_Prepend_Input>;
+  _set?: Maybe<Practice_Grade_Metric_Set_Input>;
+  pk_columns: Practice_Grade_Metric_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Practice_Grade_Metric_TypeArgs = {
+  _set?: Maybe<Practice_Grade_Metric_Type_Set_Input>;
+  where: Practice_Grade_Metric_Type_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Practice_Grade_Metric_Type_By_PkArgs = {
+  _set?: Maybe<Practice_Grade_Metric_Type_Set_Input>;
+  pk_columns: Practice_Grade_Metric_Type_Pk_Columns_Input;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_Practice_To_PromotionArgs = {
   _set?: Maybe<Practice_To_Promotion_Set_Input>;
   where: Practice_To_Promotion_Bool_Exp;
@@ -546,6 +702,34 @@ export type Mutation_RootUpdate_Practice_To_Student_By_PkArgs = {
   _inc?: Maybe<Practice_To_Student_Inc_Input>;
   _set?: Maybe<Practice_To_Student_Set_Input>;
   pk_columns: Practice_To_Student_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Practice_To_Student_Grade_MetricArgs = {
+  _append?: Maybe<Practice_To_Student_Grade_Metric_Append_Input>;
+  _delete_at_path?: Maybe<
+    Practice_To_Student_Grade_Metric_Delete_At_Path_Input
+  >;
+  _delete_elem?: Maybe<Practice_To_Student_Grade_Metric_Delete_Elem_Input>;
+  _delete_key?: Maybe<Practice_To_Student_Grade_Metric_Delete_Key_Input>;
+  _inc?: Maybe<Practice_To_Student_Grade_Metric_Inc_Input>;
+  _prepend?: Maybe<Practice_To_Student_Grade_Metric_Prepend_Input>;
+  _set?: Maybe<Practice_To_Student_Grade_Metric_Set_Input>;
+  where: Practice_To_Student_Grade_Metric_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Practice_To_Student_Grade_Metric_By_PkArgs = {
+  _append?: Maybe<Practice_To_Student_Grade_Metric_Append_Input>;
+  _delete_at_path?: Maybe<
+    Practice_To_Student_Grade_Metric_Delete_At_Path_Input
+  >;
+  _delete_elem?: Maybe<Practice_To_Student_Grade_Metric_Delete_Elem_Input>;
+  _delete_key?: Maybe<Practice_To_Student_Grade_Metric_Delete_Key_Input>;
+  _inc?: Maybe<Practice_To_Student_Grade_Metric_Inc_Input>;
+  _prepend?: Maybe<Practice_To_Student_Grade_Metric_Prepend_Input>;
+  _set?: Maybe<Practice_To_Student_Grade_Metric_Set_Input>;
+  pk_columns: Practice_To_Student_Grade_Metric_Pk_Columns_Input;
 };
 
 /** mutation root */
@@ -653,6 +837,10 @@ export type Practice = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   /** An array relationship */
+  practice_grade_metrics: Array<Practice_Grade_Metric>;
+  /** An aggregated array relationship */
+  practice_grade_metrics_aggregate: Practice_Grade_Metric_Aggregate;
+  /** An array relationship */
   practice_to_promotions: Array<Practice_To_Promotion>;
   /** An aggregated array relationship */
   practice_to_promotions_aggregate: Practice_To_Promotion_Aggregate;
@@ -662,6 +850,24 @@ export type Practice = {
   practice_yields_aggregate: Practice_Yield_Aggregate;
   title: Scalars['String'];
   updated_at: Scalars['timestamptz'];
+};
+
+/** columns and relationships of "practice" */
+export type PracticePractice_Grade_MetricsArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** columns and relationships of "practice" */
+export type PracticePractice_Grade_Metrics_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
 };
 
 /** columns and relationships of "practice" */
@@ -742,6 +948,7 @@ export type Practice_Bool_Exp = {
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  practice_grade_metrics?: Maybe<Practice_Grade_Metric_Bool_Exp>;
   practice_to_promotions?: Maybe<Practice_To_Promotion_Bool_Exp>;
   practice_yields?: Maybe<Practice_Yield_Bool_Exp>;
   title?: Maybe<String_Comparison_Exp>;
@@ -756,11 +963,615 @@ export enum Practice_Constraint {
   PracticeTitleKey = 'practice_title_key',
 }
 
+/** columns and relationships of "practice_grade_metric" */
+export type Practice_Grade_Metric = {
+  __typename?: 'practice_grade_metric';
+  created_at: Scalars['timestamptz'];
+  feedbacks: Scalars['jsonb'];
+  id: Scalars['uuid'];
+  meta: Scalars['jsonb'];
+  method: Practice_Grade_Metric_Type_Enum;
+  name: Scalars['String'];
+  points: Scalars['Int'];
+  /** An object relationship */
+  practice: Practice;
+  /** An object relationship */
+  practice_grade_metric_type: Practice_Grade_Metric_Type;
+  practice_id: Scalars['uuid'];
+  /** An array relationship */
+  practice_to_student_grade_metrics: Array<Practice_To_Student_Grade_Metric>;
+  /** An aggregated array relationship */
+  practice_to_student_grade_metrics_aggregate: Practice_To_Student_Grade_Metric_Aggregate;
+  /** An object relationship */
+  practice_yield: Practice_Yield;
+  updated_at: Scalars['timestamptz'];
+  yield_id: Scalars['uuid'];
+};
+
+/** columns and relationships of "practice_grade_metric" */
+export type Practice_Grade_MetricFeedbacksArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** columns and relationships of "practice_grade_metric" */
+export type Practice_Grade_MetricMetaArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** columns and relationships of "practice_grade_metric" */
+export type Practice_Grade_MetricPractice_To_Student_Grade_MetricsArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** columns and relationships of "practice_grade_metric" */
+export type Practice_Grade_MetricPractice_To_Student_Grade_Metrics_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** aggregated selection of "practice_grade_metric" */
+export type Practice_Grade_Metric_Aggregate = {
+  __typename?: 'practice_grade_metric_aggregate';
+  aggregate?: Maybe<Practice_Grade_Metric_Aggregate_Fields>;
+  nodes: Array<Practice_Grade_Metric>;
+};
+
+/** aggregate fields of "practice_grade_metric" */
+export type Practice_Grade_Metric_Aggregate_Fields = {
+  __typename?: 'practice_grade_metric_aggregate_fields';
+  avg?: Maybe<Practice_Grade_Metric_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Practice_Grade_Metric_Max_Fields>;
+  min?: Maybe<Practice_Grade_Metric_Min_Fields>;
+  stddev?: Maybe<Practice_Grade_Metric_Stddev_Fields>;
+  stddev_pop?: Maybe<Practice_Grade_Metric_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Practice_Grade_Metric_Stddev_Samp_Fields>;
+  sum?: Maybe<Practice_Grade_Metric_Sum_Fields>;
+  var_pop?: Maybe<Practice_Grade_Metric_Var_Pop_Fields>;
+  var_samp?: Maybe<Practice_Grade_Metric_Var_Samp_Fields>;
+  variance?: Maybe<Practice_Grade_Metric_Variance_Fields>;
+};
+
+/** aggregate fields of "practice_grade_metric" */
+export type Practice_Grade_Metric_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Aggregate_Order_By = {
+  avg?: Maybe<Practice_Grade_Metric_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Practice_Grade_Metric_Max_Order_By>;
+  min?: Maybe<Practice_Grade_Metric_Min_Order_By>;
+  stddev?: Maybe<Practice_Grade_Metric_Stddev_Order_By>;
+  stddev_pop?: Maybe<Practice_Grade_Metric_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Practice_Grade_Metric_Stddev_Samp_Order_By>;
+  sum?: Maybe<Practice_Grade_Metric_Sum_Order_By>;
+  var_pop?: Maybe<Practice_Grade_Metric_Var_Pop_Order_By>;
+  var_samp?: Maybe<Practice_Grade_Metric_Var_Samp_Order_By>;
+  variance?: Maybe<Practice_Grade_Metric_Variance_Order_By>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Practice_Grade_Metric_Append_Input = {
+  feedbacks?: Maybe<Scalars['jsonb']>;
+  meta?: Maybe<Scalars['jsonb']>;
+};
+
+/** input type for inserting array relation for remote table "practice_grade_metric" */
+export type Practice_Grade_Metric_Arr_Rel_Insert_Input = {
+  data: Array<Practice_Grade_Metric_Insert_Input>;
+  on_conflict?: Maybe<Practice_Grade_Metric_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Practice_Grade_Metric_Avg_Fields = {
+  __typename?: 'practice_grade_metric_avg_fields';
+  points?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Avg_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "practice_grade_metric". All fields are combined with a logical 'AND'. */
+export type Practice_Grade_Metric_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Practice_Grade_Metric_Bool_Exp>>>;
+  _not?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Practice_Grade_Metric_Bool_Exp>>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  feedbacks?: Maybe<Jsonb_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  meta?: Maybe<Jsonb_Comparison_Exp>;
+  method?: Maybe<Practice_Grade_Metric_Type_Enum_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  points?: Maybe<Int_Comparison_Exp>;
+  practice?: Maybe<Practice_Bool_Exp>;
+  practice_grade_metric_type?: Maybe<Practice_Grade_Metric_Type_Bool_Exp>;
+  practice_id?: Maybe<Uuid_Comparison_Exp>;
+  practice_to_student_grade_metrics?: Maybe<
+    Practice_To_Student_Grade_Metric_Bool_Exp
+  >;
+  practice_yield?: Maybe<Practice_Yield_Bool_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  yield_id?: Maybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "practice_grade_metric" */
+export enum Practice_Grade_Metric_Constraint {
+  /** unique or primary key constraint */
+  PracticeGradeMetricPkey = 'practice_grade_metric_pkey',
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Practice_Grade_Metric_Delete_At_Path_Input = {
+  feedbacks?: Maybe<Array<Maybe<Scalars['String']>>>;
+  meta?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Practice_Grade_Metric_Delete_Elem_Input = {
+  feedbacks?: Maybe<Scalars['Int']>;
+  meta?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Practice_Grade_Metric_Delete_Key_Input = {
+  feedbacks?: Maybe<Scalars['String']>;
+  meta?: Maybe<Scalars['String']>;
+};
+
+/** input type for incrementing integer column in table "practice_grade_metric" */
+export type Practice_Grade_Metric_Inc_Input = {
+  points?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "practice_grade_metric" */
+export type Practice_Grade_Metric_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  feedbacks?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['uuid']>;
+  meta?: Maybe<Scalars['jsonb']>;
+  method?: Maybe<Practice_Grade_Metric_Type_Enum>;
+  name?: Maybe<Scalars['String']>;
+  points?: Maybe<Scalars['Int']>;
+  practice?: Maybe<Practice_Obj_Rel_Insert_Input>;
+  practice_grade_metric_type?: Maybe<
+    Practice_Grade_Metric_Type_Obj_Rel_Insert_Input
+  >;
+  practice_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_grade_metrics?: Maybe<
+    Practice_To_Student_Grade_Metric_Arr_Rel_Insert_Input
+  >;
+  practice_yield?: Maybe<Practice_Yield_Obj_Rel_Insert_Input>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  yield_id?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type Practice_Grade_Metric_Max_Fields = {
+  __typename?: 'practice_grade_metric_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  points?: Maybe<Scalars['Int']>;
+  practice_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  yield_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  points?: Maybe<Order_By>;
+  practice_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  yield_id?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Practice_Grade_Metric_Min_Fields = {
+  __typename?: 'practice_grade_metric_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  points?: Maybe<Scalars['Int']>;
+  practice_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  yield_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  points?: Maybe<Order_By>;
+  practice_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  yield_id?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "practice_grade_metric" */
+export type Practice_Grade_Metric_Mutation_Response = {
+  __typename?: 'practice_grade_metric_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Practice_Grade_Metric>;
+};
+
+/** input type for inserting object relation for remote table "practice_grade_metric" */
+export type Practice_Grade_Metric_Obj_Rel_Insert_Input = {
+  data: Practice_Grade_Metric_Insert_Input;
+  on_conflict?: Maybe<Practice_Grade_Metric_On_Conflict>;
+};
+
+/** on conflict condition type for table "practice_grade_metric" */
+export type Practice_Grade_Metric_On_Conflict = {
+  constraint: Practice_Grade_Metric_Constraint;
+  update_columns: Array<Practice_Grade_Metric_Update_Column>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "practice_grade_metric" */
+export type Practice_Grade_Metric_Order_By = {
+  created_at?: Maybe<Order_By>;
+  feedbacks?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  meta?: Maybe<Order_By>;
+  method?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  points?: Maybe<Order_By>;
+  practice?: Maybe<Practice_Order_By>;
+  practice_grade_metric_type?: Maybe<Practice_Grade_Metric_Type_Order_By>;
+  practice_id?: Maybe<Order_By>;
+  practice_to_student_grade_metrics_aggregate?: Maybe<
+    Practice_To_Student_Grade_Metric_Aggregate_Order_By
+  >;
+  practice_yield?: Maybe<Practice_Yield_Order_By>;
+  updated_at?: Maybe<Order_By>;
+  yield_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "practice_grade_metric" */
+export type Practice_Grade_Metric_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Practice_Grade_Metric_Prepend_Input = {
+  feedbacks?: Maybe<Scalars['jsonb']>;
+  meta?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "practice_grade_metric" */
+export enum Practice_Grade_Metric_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Feedbacks = 'feedbacks',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Meta = 'meta',
+  /** column name */
+  Method = 'method',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Points = 'points',
+  /** column name */
+  PracticeId = 'practice_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  YieldId = 'yield_id',
+}
+
+/** input type for updating data in table "practice_grade_metric" */
+export type Practice_Grade_Metric_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  feedbacks?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['uuid']>;
+  meta?: Maybe<Scalars['jsonb']>;
+  method?: Maybe<Practice_Grade_Metric_Type_Enum>;
+  name?: Maybe<Scalars['String']>;
+  points?: Maybe<Scalars['Int']>;
+  practice_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  yield_id?: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate stddev on columns */
+export type Practice_Grade_Metric_Stddev_Fields = {
+  __typename?: 'practice_grade_metric_stddev_fields';
+  points?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Stddev_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Practice_Grade_Metric_Stddev_Pop_Fields = {
+  __typename?: 'practice_grade_metric_stddev_pop_fields';
+  points?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Stddev_Pop_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Practice_Grade_Metric_Stddev_Samp_Fields = {
+  __typename?: 'practice_grade_metric_stddev_samp_fields';
+  points?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Stddev_Samp_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Practice_Grade_Metric_Sum_Fields = {
+  __typename?: 'practice_grade_metric_sum_fields';
+  points?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Sum_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
+/** columns and relationships of "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type = {
+  __typename?: 'practice_grade_metric_type';
+  name: Scalars['String'];
+  /** An array relationship */
+  practice_grade_metrics: Array<Practice_Grade_Metric>;
+  /** An aggregated array relationship */
+  practice_grade_metrics_aggregate: Practice_Grade_Metric_Aggregate;
+};
+
+/** columns and relationships of "practice_grade_metric_type" */
+export type Practice_Grade_Metric_TypePractice_Grade_MetricsArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** columns and relationships of "practice_grade_metric_type" */
+export type Practice_Grade_Metric_TypePractice_Grade_Metrics_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** aggregated selection of "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Aggregate = {
+  __typename?: 'practice_grade_metric_type_aggregate';
+  aggregate?: Maybe<Practice_Grade_Metric_Type_Aggregate_Fields>;
+  nodes: Array<Practice_Grade_Metric_Type>;
+};
+
+/** aggregate fields of "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Aggregate_Fields = {
+  __typename?: 'practice_grade_metric_type_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Practice_Grade_Metric_Type_Max_Fields>;
+  min?: Maybe<Practice_Grade_Metric_Type_Min_Fields>;
+};
+
+/** aggregate fields of "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Practice_Grade_Metric_Type_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Practice_Grade_Metric_Type_Max_Order_By>;
+  min?: Maybe<Practice_Grade_Metric_Type_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Arr_Rel_Insert_Input = {
+  data: Array<Practice_Grade_Metric_Type_Insert_Input>;
+  on_conflict?: Maybe<Practice_Grade_Metric_Type_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "practice_grade_metric_type". All fields are combined with a logical 'AND'. */
+export type Practice_Grade_Metric_Type_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Practice_Grade_Metric_Type_Bool_Exp>>>;
+  _not?: Maybe<Practice_Grade_Metric_Type_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Practice_Grade_Metric_Type_Bool_Exp>>>;
+  name?: Maybe<String_Comparison_Exp>;
+  practice_grade_metrics?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "practice_grade_metric_type" */
+export enum Practice_Grade_Metric_Type_Constraint {
+  /** unique or primary key constraint */
+  PracticeGradeMetricTypePkey = 'practice_grade_metric_type_pkey',
+}
+
+export enum Practice_Grade_Metric_Type_Enum {
+  CompareCodeFile = 'COMPARE_CODE_FILE',
+  CompareGitFile = 'COMPARE_GIT_FILE',
+}
+
+/** expression to compare columns of type practice_grade_metric_type_enum. All fields are combined with logical 'AND'. */
+export type Practice_Grade_Metric_Type_Enum_Comparison_Exp = {
+  _eq?: Maybe<Practice_Grade_Metric_Type_Enum>;
+  _in?: Maybe<Array<Practice_Grade_Metric_Type_Enum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<Practice_Grade_Metric_Type_Enum>;
+  _nin?: Maybe<Array<Practice_Grade_Metric_Type_Enum>>;
+};
+
+/** input type for inserting data into table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Insert_Input = {
+  name?: Maybe<Scalars['String']>;
+  practice_grade_metrics?: Maybe<Practice_Grade_Metric_Arr_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Practice_Grade_Metric_Type_Max_Fields = {
+  __typename?: 'practice_grade_metric_type_max_fields';
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Max_Order_By = {
+  name?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Practice_Grade_Metric_Type_Min_Fields = {
+  __typename?: 'practice_grade_metric_type_min_fields';
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Min_Order_By = {
+  name?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Mutation_Response = {
+  __typename?: 'practice_grade_metric_type_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Practice_Grade_Metric_Type>;
+};
+
+/** input type for inserting object relation for remote table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Obj_Rel_Insert_Input = {
+  data: Practice_Grade_Metric_Type_Insert_Input;
+  on_conflict?: Maybe<Practice_Grade_Metric_Type_On_Conflict>;
+};
+
+/** on conflict condition type for table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_On_Conflict = {
+  constraint: Practice_Grade_Metric_Type_Constraint;
+  update_columns: Array<Practice_Grade_Metric_Type_Update_Column>;
+  where?: Maybe<Practice_Grade_Metric_Type_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Order_By = {
+  name?: Maybe<Order_By>;
+  practice_grade_metrics_aggregate?: Maybe<
+    Practice_Grade_Metric_Aggregate_Order_By
+  >;
+};
+
+/** primary key columns input for table: "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Pk_Columns_Input = {
+  name: Scalars['String'];
+};
+
+/** select columns of table "practice_grade_metric_type" */
+export enum Practice_Grade_Metric_Type_Select_Column {
+  /** column name */
+  Name = 'name',
+}
+
+/** input type for updating data in table "practice_grade_metric_type" */
+export type Practice_Grade_Metric_Type_Set_Input = {
+  name?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "practice_grade_metric_type" */
+export enum Practice_Grade_Metric_Type_Update_Column {
+  /** column name */
+  Name = 'name',
+}
+
+/** update columns of table "practice_grade_metric" */
+export enum Practice_Grade_Metric_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Feedbacks = 'feedbacks',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Meta = 'meta',
+  /** column name */
+  Method = 'method',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Points = 'points',
+  /** column name */
+  PracticeId = 'practice_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  YieldId = 'yield_id',
+}
+
+/** aggregate var_pop on columns */
+export type Practice_Grade_Metric_Var_Pop_Fields = {
+  __typename?: 'practice_grade_metric_var_pop_fields';
+  points?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Var_Pop_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Practice_Grade_Metric_Var_Samp_Fields = {
+  __typename?: 'practice_grade_metric_var_samp_fields';
+  points?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Var_Samp_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Practice_Grade_Metric_Variance_Fields = {
+  __typename?: 'practice_grade_metric_variance_fields';
+  points?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "practice_grade_metric" */
+export type Practice_Grade_Metric_Variance_Order_By = {
+  points?: Maybe<Order_By>;
+};
+
 /** input type for inserting data into table "practice" */
 export type Practice_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  practice_grade_metrics?: Maybe<Practice_Grade_Metric_Arr_Rel_Insert_Input>;
   practice_to_promotions?: Maybe<Practice_To_Promotion_Arr_Rel_Insert_Input>;
   practice_yields?: Maybe<Practice_Yield_Arr_Rel_Insert_Input>;
   title?: Maybe<Scalars['String']>;
@@ -832,6 +1643,9 @@ export type Practice_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  practice_grade_metrics_aggregate?: Maybe<
+    Practice_Grade_Metric_Aggregate_Order_By
+  >;
   practice_to_promotions_aggregate?: Maybe<
     Practice_To_Promotion_Aggregate_Order_By
   >;
@@ -1159,6 +1973,10 @@ export type Practice_To_Student = {
   /** An object relationship */
   practice_to_promotion: Practice_To_Promotion;
   /** An array relationship */
+  practice_to_student_grade_metrics: Array<Practice_To_Student_Grade_Metric>;
+  /** An aggregated array relationship */
+  practice_to_student_grade_metrics_aggregate: Practice_To_Student_Grade_Metric_Aggregate;
+  /** An array relationship */
   practice_to_student_yields: Array<Practice_To_Student_Yield>;
   /** An aggregated array relationship */
   practice_to_student_yields_aggregate: Practice_To_Student_Yield_Aggregate;
@@ -1168,6 +1986,24 @@ export type Practice_To_Student = {
   student_id: Scalars['uuid'];
   submited: Scalars['Boolean'];
   updated_at: Scalars['timestamptz'];
+};
+
+/** columns and relationships of "practice_to_student" */
+export type Practice_To_StudentPractice_To_Student_Grade_MetricsArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** columns and relationships of "practice_to_student" */
+export type Practice_To_StudentPractice_To_Student_Grade_Metrics_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
 };
 
 /** columns and relationships of "practice_to_student" */
@@ -1260,6 +2096,9 @@ export type Practice_To_Student_Bool_Exp = {
   graded?: Maybe<Boolean_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   practice_to_promotion?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  practice_to_student_grade_metrics?: Maybe<
+    Practice_To_Student_Grade_Metric_Bool_Exp
+  >;
   practice_to_student_yields?: Maybe<Practice_To_Student_Yield_Bool_Exp>;
   promotion_practice_id?: Maybe<Uuid_Comparison_Exp>;
   student?: Maybe<Student_Bool_Exp>;
@@ -1276,6 +2115,359 @@ export enum Practice_To_Student_Constraint {
   PracticeToStudentStudentIdPromotionPracticeIdKey = 'practice_to_student_student_id_promotion_practice_id_key',
 }
 
+/** columns and relationships of "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric = {
+  __typename?: 'practice_to_student_grade_metric';
+  created_at: Scalars['timestamptz'];
+  feedback: Scalars['jsonb'];
+  id: Scalars['uuid'];
+  percent_grade: Scalars['Int'];
+  /** An object relationship */
+  practice_grade_metric: Practice_Grade_Metric;
+  practice_grade_metric_id: Scalars['uuid'];
+  /** An object relationship */
+  practice_to_student: Practice_To_Student;
+  practice_to_student_id: Scalars['uuid'];
+  updated_at: Scalars['timestamptz'];
+};
+
+/** columns and relationships of "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_MetricFeedbackArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Aggregate = {
+  __typename?: 'practice_to_student_grade_metric_aggregate';
+  aggregate?: Maybe<Practice_To_Student_Grade_Metric_Aggregate_Fields>;
+  nodes: Array<Practice_To_Student_Grade_Metric>;
+};
+
+/** aggregate fields of "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Aggregate_Fields = {
+  __typename?: 'practice_to_student_grade_metric_aggregate_fields';
+  avg?: Maybe<Practice_To_Student_Grade_Metric_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Practice_To_Student_Grade_Metric_Max_Fields>;
+  min?: Maybe<Practice_To_Student_Grade_Metric_Min_Fields>;
+  stddev?: Maybe<Practice_To_Student_Grade_Metric_Stddev_Fields>;
+  stddev_pop?: Maybe<Practice_To_Student_Grade_Metric_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Practice_To_Student_Grade_Metric_Stddev_Samp_Fields>;
+  sum?: Maybe<Practice_To_Student_Grade_Metric_Sum_Fields>;
+  var_pop?: Maybe<Practice_To_Student_Grade_Metric_Var_Pop_Fields>;
+  var_samp?: Maybe<Practice_To_Student_Grade_Metric_Var_Samp_Fields>;
+  variance?: Maybe<Practice_To_Student_Grade_Metric_Variance_Fields>;
+};
+
+/** aggregate fields of "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Aggregate_Order_By = {
+  avg?: Maybe<Practice_To_Student_Grade_Metric_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Practice_To_Student_Grade_Metric_Max_Order_By>;
+  min?: Maybe<Practice_To_Student_Grade_Metric_Min_Order_By>;
+  stddev?: Maybe<Practice_To_Student_Grade_Metric_Stddev_Order_By>;
+  stddev_pop?: Maybe<Practice_To_Student_Grade_Metric_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Practice_To_Student_Grade_Metric_Stddev_Samp_Order_By>;
+  sum?: Maybe<Practice_To_Student_Grade_Metric_Sum_Order_By>;
+  var_pop?: Maybe<Practice_To_Student_Grade_Metric_Var_Pop_Order_By>;
+  var_samp?: Maybe<Practice_To_Student_Grade_Metric_Var_Samp_Order_By>;
+  variance?: Maybe<Practice_To_Student_Grade_Metric_Variance_Order_By>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Practice_To_Student_Grade_Metric_Append_Input = {
+  feedback?: Maybe<Scalars['jsonb']>;
+};
+
+/** input type for inserting array relation for remote table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Arr_Rel_Insert_Input = {
+  data: Array<Practice_To_Student_Grade_Metric_Insert_Input>;
+  on_conflict?: Maybe<Practice_To_Student_Grade_Metric_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Practice_To_Student_Grade_Metric_Avg_Fields = {
+  __typename?: 'practice_to_student_grade_metric_avg_fields';
+  percent_grade?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Avg_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "practice_to_student_grade_metric". All fields are combined with a logical 'AND'. */
+export type Practice_To_Student_Grade_Metric_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>>>;
+  _not?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  feedback?: Maybe<Jsonb_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  percent_grade?: Maybe<Int_Comparison_Exp>;
+  practice_grade_metric?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+  practice_grade_metric_id?: Maybe<Uuid_Comparison_Exp>;
+  practice_to_student?: Maybe<Practice_To_Student_Bool_Exp>;
+  practice_to_student_id?: Maybe<Uuid_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "practice_to_student_grade_metric" */
+export enum Practice_To_Student_Grade_Metric_Constraint {
+  /** unique or primary key constraint */
+  PracticeToStudentGradeMetricPkey = 'practice_to_student_grade_metric_pkey',
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Practice_To_Student_Grade_Metric_Delete_At_Path_Input = {
+  feedback?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Practice_To_Student_Grade_Metric_Delete_Elem_Input = {
+  feedback?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Practice_To_Student_Grade_Metric_Delete_Key_Input = {
+  feedback?: Maybe<Scalars['String']>;
+};
+
+/** input type for incrementing integer column in table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Inc_Input = {
+  percent_grade?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  feedback?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['uuid']>;
+  percent_grade?: Maybe<Scalars['Int']>;
+  practice_grade_metric?: Maybe<Practice_Grade_Metric_Obj_Rel_Insert_Input>;
+  practice_grade_metric_id?: Maybe<Scalars['uuid']>;
+  practice_to_student?: Maybe<Practice_To_Student_Obj_Rel_Insert_Input>;
+  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Practice_To_Student_Grade_Metric_Max_Fields = {
+  __typename?: 'practice_to_student_grade_metric_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  percent_grade?: Maybe<Scalars['Int']>;
+  practice_grade_metric_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  percent_grade?: Maybe<Order_By>;
+  practice_grade_metric_id?: Maybe<Order_By>;
+  practice_to_student_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Practice_To_Student_Grade_Metric_Min_Fields = {
+  __typename?: 'practice_to_student_grade_metric_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  percent_grade?: Maybe<Scalars['Int']>;
+  practice_grade_metric_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  percent_grade?: Maybe<Order_By>;
+  practice_grade_metric_id?: Maybe<Order_By>;
+  practice_to_student_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Mutation_Response = {
+  __typename?: 'practice_to_student_grade_metric_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Practice_To_Student_Grade_Metric>;
+};
+
+/** input type for inserting object relation for remote table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Obj_Rel_Insert_Input = {
+  data: Practice_To_Student_Grade_Metric_Insert_Input;
+  on_conflict?: Maybe<Practice_To_Student_Grade_Metric_On_Conflict>;
+};
+
+/** on conflict condition type for table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_On_Conflict = {
+  constraint: Practice_To_Student_Grade_Metric_Constraint;
+  update_columns: Array<Practice_To_Student_Grade_Metric_Update_Column>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Order_By = {
+  created_at?: Maybe<Order_By>;
+  feedback?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  percent_grade?: Maybe<Order_By>;
+  practice_grade_metric?: Maybe<Practice_Grade_Metric_Order_By>;
+  practice_grade_metric_id?: Maybe<Order_By>;
+  practice_to_student?: Maybe<Practice_To_Student_Order_By>;
+  practice_to_student_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Practice_To_Student_Grade_Metric_Prepend_Input = {
+  feedback?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "practice_to_student_grade_metric" */
+export enum Practice_To_Student_Grade_Metric_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Feedback = 'feedback',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PercentGrade = 'percent_grade',
+  /** column name */
+  PracticeGradeMetricId = 'practice_grade_metric_id',
+  /** column name */
+  PracticeToStudentId = 'practice_to_student_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+}
+
+/** input type for updating data in table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  feedback?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['uuid']>;
+  percent_grade?: Maybe<Scalars['Int']>;
+  practice_grade_metric_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Practice_To_Student_Grade_Metric_Stddev_Fields = {
+  __typename?: 'practice_to_student_grade_metric_stddev_fields';
+  percent_grade?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Stddev_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Practice_To_Student_Grade_Metric_Stddev_Pop_Fields = {
+  __typename?: 'practice_to_student_grade_metric_stddev_pop_fields';
+  percent_grade?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Stddev_Pop_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Practice_To_Student_Grade_Metric_Stddev_Samp_Fields = {
+  __typename?: 'practice_to_student_grade_metric_stddev_samp_fields';
+  percent_grade?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Stddev_Samp_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Practice_To_Student_Grade_Metric_Sum_Fields = {
+  __typename?: 'practice_to_student_grade_metric_sum_fields';
+  percent_grade?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Sum_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
+/** update columns of table "practice_to_student_grade_metric" */
+export enum Practice_To_Student_Grade_Metric_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Feedback = 'feedback',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PercentGrade = 'percent_grade',
+  /** column name */
+  PracticeGradeMetricId = 'practice_grade_metric_id',
+  /** column name */
+  PracticeToStudentId = 'practice_to_student_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+}
+
+/** aggregate var_pop on columns */
+export type Practice_To_Student_Grade_Metric_Var_Pop_Fields = {
+  __typename?: 'practice_to_student_grade_metric_var_pop_fields';
+  percent_grade?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Var_Pop_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Practice_To_Student_Grade_Metric_Var_Samp_Fields = {
+  __typename?: 'practice_to_student_grade_metric_var_samp_fields';
+  percent_grade?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Var_Samp_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Practice_To_Student_Grade_Metric_Variance_Fields = {
+  __typename?: 'practice_to_student_grade_metric_variance_fields';
+  percent_grade?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "practice_to_student_grade_metric" */
+export type Practice_To_Student_Grade_Metric_Variance_Order_By = {
+  percent_grade?: Maybe<Order_By>;
+};
+
 /** input type for incrementing integer column in table "practice_to_student" */
 export type Practice_To_Student_Inc_Input = {
   grade?: Maybe<Scalars['Int']>;
@@ -1289,6 +2481,9 @@ export type Practice_To_Student_Insert_Input = {
   graded?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_promotion?: Maybe<Practice_To_Promotion_Obj_Rel_Insert_Input>;
+  practice_to_student_grade_metrics?: Maybe<
+    Practice_To_Student_Grade_Metric_Arr_Rel_Insert_Input
+  >;
   practice_to_student_yields?: Maybe<
     Practice_To_Student_Yield_Arr_Rel_Insert_Input
   >;
@@ -1375,6 +2570,9 @@ export type Practice_To_Student_Order_By = {
   graded?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   practice_to_promotion?: Maybe<Practice_To_Promotion_Order_By>;
+  practice_to_student_grade_metrics_aggregate?: Maybe<
+    Practice_To_Student_Grade_Metric_Aggregate_Order_By
+  >;
   practice_to_student_yields_aggregate?: Maybe<
     Practice_To_Student_Yield_Aggregate_Order_By
   >;
@@ -1769,6 +2967,10 @@ export type Practice_Yield = {
   name: Scalars['String'];
   /** An object relationship */
   practice: Practice;
+  /** An array relationship */
+  practice_grade_metrics: Array<Practice_Grade_Metric>;
+  /** An aggregated array relationship */
+  practice_grade_metrics_aggregate: Practice_Grade_Metric_Aggregate;
   practice_id: Scalars['uuid'];
   /** An array relationship */
   practice_to_student_yields: Array<Practice_To_Student_Yield>;
@@ -1782,6 +2984,24 @@ export type Practice_Yield = {
 /** columns and relationships of "practice_yield" */
 export type Practice_YieldMetaArgs = {
   path?: Maybe<Scalars['String']>;
+};
+
+/** columns and relationships of "practice_yield" */
+export type Practice_YieldPractice_Grade_MetricsArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** columns and relationships of "practice_yield" */
+export type Practice_YieldPractice_Grade_Metrics_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
 };
 
 /** columns and relationships of "practice_yield" */
@@ -1853,6 +3073,7 @@ export type Practice_Yield_Bool_Exp = {
   method?: Maybe<Practice_Yield_Type_Enum_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   practice?: Maybe<Practice_Bool_Exp>;
+  practice_grade_metrics?: Maybe<Practice_Grade_Metric_Bool_Exp>;
   practice_id?: Maybe<Uuid_Comparison_Exp>;
   practice_to_student_yields?: Maybe<Practice_To_Student_Yield_Bool_Exp>;
   practice_yield_type?: Maybe<Practice_Yield_Type_Bool_Exp>;
@@ -1889,6 +3110,7 @@ export type Practice_Yield_Insert_Input = {
   method?: Maybe<Practice_Yield_Type_Enum>;
   name?: Maybe<Scalars['String']>;
   practice?: Maybe<Practice_Obj_Rel_Insert_Input>;
+  practice_grade_metrics?: Maybe<Practice_Grade_Metric_Arr_Rel_Insert_Input>;
   practice_id?: Maybe<Scalars['uuid']>;
   practice_to_student_yields?: Maybe<
     Practice_To_Student_Yield_Arr_Rel_Insert_Input
@@ -1970,6 +3192,9 @@ export type Practice_Yield_Order_By = {
   method?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   practice?: Maybe<Practice_Order_By>;
+  practice_grade_metrics_aggregate?: Maybe<
+    Practice_Grade_Metric_Aggregate_Order_By
+  >;
   practice_id?: Maybe<Order_By>;
   practice_to_student_yields_aggregate?: Maybe<
     Practice_To_Student_Yield_Aggregate_Order_By
@@ -2458,6 +3683,18 @@ export type Query_Root = {
   practice_aggregate: Practice_Aggregate;
   /** fetch data from the table: "practice" using primary key columns */
   practice_by_pk?: Maybe<Practice>;
+  /** fetch data from the table: "practice_grade_metric" */
+  practice_grade_metric: Array<Practice_Grade_Metric>;
+  /** fetch aggregated fields from the table: "practice_grade_metric" */
+  practice_grade_metric_aggregate: Practice_Grade_Metric_Aggregate;
+  /** fetch data from the table: "practice_grade_metric" using primary key columns */
+  practice_grade_metric_by_pk?: Maybe<Practice_Grade_Metric>;
+  /** fetch data from the table: "practice_grade_metric_type" */
+  practice_grade_metric_type: Array<Practice_Grade_Metric_Type>;
+  /** fetch aggregated fields from the table: "practice_grade_metric_type" */
+  practice_grade_metric_type_aggregate: Practice_Grade_Metric_Type_Aggregate;
+  /** fetch data from the table: "practice_grade_metric_type" using primary key columns */
+  practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
   /** fetch data from the table: "practice_to_promotion" */
   practice_to_promotion: Array<Practice_To_Promotion>;
   /** fetch aggregated fields from the table: "practice_to_promotion" */
@@ -2470,6 +3707,14 @@ export type Query_Root = {
   practice_to_student_aggregate: Practice_To_Student_Aggregate;
   /** fetch data from the table: "practice_to_student" using primary key columns */
   practice_to_student_by_pk?: Maybe<Practice_To_Student>;
+  /** fetch data from the table: "practice_to_student_grade_metric" */
+  practice_to_student_grade_metric: Array<Practice_To_Student_Grade_Metric>;
+  /** fetch aggregated fields from the table: "practice_to_student_grade_metric" */
+  practice_to_student_grade_metric_aggregate: Practice_To_Student_Grade_Metric_Aggregate;
+  /** fetch data from the table: "practice_to_student_grade_metric" using primary key columns */
+  practice_to_student_grade_metric_by_pk?: Maybe<
+    Practice_To_Student_Grade_Metric
+  >;
   /** fetch data from the table: "practice_to_student_yield" */
   practice_to_student_yield: Array<Practice_To_Student_Yield>;
   /** fetch aggregated fields from the table: "practice_to_student_yield" */
@@ -2538,6 +3783,52 @@ export type Query_RootPractice_By_PkArgs = {
 };
 
 /** query root */
+export type Query_RootPractice_Grade_MetricArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootPractice_Grade_Metric_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootPractice_Grade_Metric_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** query root */
+export type Query_RootPractice_Grade_Metric_TypeArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Type_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Type_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootPractice_Grade_Metric_Type_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Type_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Type_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootPractice_Grade_Metric_Type_By_PkArgs = {
+  name: Scalars['String'];
+};
+
+/** query root */
 export type Query_RootPractice_To_PromotionArgs = {
   distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2580,6 +3871,29 @@ export type Query_RootPractice_To_Student_AggregateArgs = {
 
 /** query root */
 export type Query_RootPractice_To_Student_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** query root */
+export type Query_RootPractice_To_Student_Grade_MetricArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootPractice_To_Student_Grade_Metric_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootPractice_To_Student_Grade_Metric_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -3224,6 +4538,18 @@ export type Subscription_Root = {
   practice_aggregate: Practice_Aggregate;
   /** fetch data from the table: "practice" using primary key columns */
   practice_by_pk?: Maybe<Practice>;
+  /** fetch data from the table: "practice_grade_metric" */
+  practice_grade_metric: Array<Practice_Grade_Metric>;
+  /** fetch aggregated fields from the table: "practice_grade_metric" */
+  practice_grade_metric_aggregate: Practice_Grade_Metric_Aggregate;
+  /** fetch data from the table: "practice_grade_metric" using primary key columns */
+  practice_grade_metric_by_pk?: Maybe<Practice_Grade_Metric>;
+  /** fetch data from the table: "practice_grade_metric_type" */
+  practice_grade_metric_type: Array<Practice_Grade_Metric_Type>;
+  /** fetch aggregated fields from the table: "practice_grade_metric_type" */
+  practice_grade_metric_type_aggregate: Practice_Grade_Metric_Type_Aggregate;
+  /** fetch data from the table: "practice_grade_metric_type" using primary key columns */
+  practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
   /** fetch data from the table: "practice_to_promotion" */
   practice_to_promotion: Array<Practice_To_Promotion>;
   /** fetch aggregated fields from the table: "practice_to_promotion" */
@@ -3236,6 +4562,14 @@ export type Subscription_Root = {
   practice_to_student_aggregate: Practice_To_Student_Aggregate;
   /** fetch data from the table: "practice_to_student" using primary key columns */
   practice_to_student_by_pk?: Maybe<Practice_To_Student>;
+  /** fetch data from the table: "practice_to_student_grade_metric" */
+  practice_to_student_grade_metric: Array<Practice_To_Student_Grade_Metric>;
+  /** fetch aggregated fields from the table: "practice_to_student_grade_metric" */
+  practice_to_student_grade_metric_aggregate: Practice_To_Student_Grade_Metric_Aggregate;
+  /** fetch data from the table: "practice_to_student_grade_metric" using primary key columns */
+  practice_to_student_grade_metric_by_pk?: Maybe<
+    Practice_To_Student_Grade_Metric
+  >;
   /** fetch data from the table: "practice_to_student_yield" */
   practice_to_student_yield: Array<Practice_To_Student_Yield>;
   /** fetch aggregated fields from the table: "practice_to_student_yield" */
@@ -3304,6 +4638,52 @@ export type Subscription_RootPractice_By_PkArgs = {
 };
 
 /** subscription root */
+export type Subscription_RootPractice_Grade_MetricArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootPractice_Grade_Metric_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootPractice_Grade_Metric_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** subscription root */
+export type Subscription_RootPractice_Grade_Metric_TypeArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Type_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Type_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootPractice_Grade_Metric_Type_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_Grade_Metric_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_Grade_Metric_Type_Order_By>>;
+  where?: Maybe<Practice_Grade_Metric_Type_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootPractice_Grade_Metric_Type_By_PkArgs = {
+  name: Scalars['String'];
+};
+
+/** subscription root */
 export type Subscription_RootPractice_To_PromotionArgs = {
   distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3346,6 +4726,29 @@ export type Subscription_RootPractice_To_Student_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootPractice_To_Student_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** subscription root */
+export type Subscription_RootPractice_To_Student_Grade_MetricArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootPractice_To_Student_Grade_Metric_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootPractice_To_Student_Grade_Metric_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -3955,6 +5358,42 @@ export type InsertNewPracticeToPromotionMutation = {
   >;
 };
 
+export type PracticeToPromoDetailsFragment = {
+  __typename?: 'practice_to_promotion';
+} & Pick<
+  Practice_To_Promotion,
+  | 'can_student_see_feedback'
+  | 'can_student_see_grade'
+  | 'close_date'
+  | 'created_at'
+  | 'gitea_org_name'
+  | 'is_open'
+  | 'id'
+  | 'open_date'
+  | 'updated_at'
+> & {
+    promotion: { __typename?: 'promotion' } & Pick<
+      Promotion,
+      'name' | 'years' | 'id'
+    > & {
+        student_to_promotions: Array<
+          { __typename?: 'student_to_promotion' } & {
+            student: { __typename?: 'student' } & Pick<
+              Student,
+              'full_name' | 'email'
+            > & {
+                practice_to_students: Array<
+                  { __typename?: 'practice_to_student' } & Pick<
+                    Practice_To_Student,
+                    'created_at' | 'grade'
+                  >
+                >;
+              };
+          }
+        >;
+      };
+  };
+
 export type GetPracticeDetailSubscriptionVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -3990,39 +5429,9 @@ export type GetPracticeDetailSubscription = {
             >
           >;
           nodes: Array<
-            { __typename?: 'practice_to_promotion' } & Pick<
-              Practice_To_Promotion,
-              | 'can_student_see_feedback'
-              | 'can_student_see_grade'
-              | 'close_date'
-              | 'created_at'
-              | 'gitea_org_name'
-              | 'is_open'
-              | 'id'
-              | 'open_date'
-              | 'updated_at'
-            > & {
-                promotion: { __typename?: 'promotion' } & Pick<
-                  Promotion,
-                  'name' | 'years' | 'id'
-                > & {
-                    student_to_promotions: Array<
-                      { __typename?: 'student_to_promotion' } & {
-                        student: { __typename?: 'student' } & Pick<
-                          Student,
-                          'full_name' | 'email'
-                        > & {
-                            practice_to_students: Array<
-                              { __typename?: 'practice_to_student' } & Pick<
-                                Practice_To_Student,
-                                'created_at' | 'grade'
-                              >
-                            >;
-                          };
-                      }
-                    >;
-                  };
-              }
+            {
+              __typename?: 'practice_to_promotion';
+            } & PracticeToPromoDetailsFragment
           >;
         };
       }
@@ -4051,7 +5460,10 @@ export type ListPracticeQuery = { __typename?: 'query_root' } & {
             | 'can_student_see_feedback'
             | 'can_student_see_grade'
             | 'close_date'
+            | 'created_at'
+            | 'is_open'
             | 'open_date'
+            | 'updated_at'
           > & {
               promotion: { __typename?: 'promotion' } & Pick<
                 Promotion,
@@ -4078,6 +5490,36 @@ export type CreateNewPracticeMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
+export const PracticeToPromoDetailsFragmentDoc = gql`
+  fragment PracticeToPromoDetails on practice_to_promotion {
+    promotion {
+      name
+      years
+      id
+      student_to_promotions {
+        student {
+          full_name
+          email
+          practice_to_students(
+            where: { practice_to_promotion: { practice_id: { _eq: $id } } }
+          ) {
+            created_at
+            grade
+          }
+        }
+      }
+    }
+    can_student_see_feedback
+    can_student_see_grade
+    close_date
+    created_at
+    gitea_org_name
+    is_open
+    id
+    open_date
+    updated_at
+  }
+`;
 export const CurrentUserDocument = gql`
   query currentUser($firebaseId: String!) {
     user(where: { firebaseId: { _eq: $firebaseId } }) {
@@ -4781,38 +6223,12 @@ export const GetPracticeDetailDocument = gql`
           count
         }
         nodes {
-          promotion {
-            name
-            years
-            id
-            student_to_promotions {
-              student {
-                full_name
-                email
-                practice_to_students(
-                  where: {
-                    practice_to_promotion: { practice_id: { _eq: $id } }
-                  }
-                ) {
-                  created_at
-                  grade
-                }
-              }
-            }
-          }
-          can_student_see_feedback
-          can_student_see_grade
-          close_date
-          created_at
-          gitea_org_name
-          is_open
-          id
-          open_date
-          updated_at
+          ...PracticeToPromoDetails
         }
       }
     }
   }
+  ${PracticeToPromoDetailsFragmentDoc}
 `;
 
 /**
@@ -4915,7 +6331,10 @@ export const ListPracticeDocument = gql`
         can_student_see_feedback
         can_student_see_grade
         close_date
+        created_at
+        is_open
         open_date
+        updated_at
         promotion {
           name
           years
