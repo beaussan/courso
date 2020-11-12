@@ -2,6 +2,13 @@
     schema: public
     name: practice
   array_relationships:
+    - name: practice_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: practice_id
+          table:
+            schema: public
+            name: practice_grade_metric
     - name: practice_to_promotions
       using:
         foreign_key_constraint_on:
@@ -68,6 +75,39 @@
     - role: teacher
       permission:
         filter: {}
+- table:
+    schema: public
+    name: practice_grade_metric
+  object_relationships:
+    - name: practice
+      using:
+        foreign_key_constraint_on: practice_id
+    - name: practice_grade_metric_type
+      using:
+        foreign_key_constraint_on: method
+    - name: practice_yield
+      using:
+        foreign_key_constraint_on: yield_id
+  array_relationships:
+    - name: practice_to_student_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: practice_grade_metric_id
+          table:
+            schema: public
+            name: practice_to_student_grade_metric
+- table:
+    schema: public
+    name: practice_grade_metric_type
+  is_enum: true
+  array_relationships:
+    - name: practice_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: method
+          table:
+            schema: public
+            name: practice_grade_metric
 - table:
     schema: public
     name: practice_to_promotion
@@ -200,6 +240,13 @@
       using:
         foreign_key_constraint_on: student_id
   array_relationships:
+    - name: practice_to_student_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: practice_to_student_id
+          table:
+            schema: public
+            name: practice_to_student_grade_metric
     - name: practice_to_student_yields
       using:
         foreign_key_constraint_on:
@@ -244,6 +291,16 @@
         check: null
 - table:
     schema: public
+    name: practice_to_student_grade_metric
+  object_relationships:
+    - name: practice_grade_metric
+      using:
+        foreign_key_constraint_on: practice_grade_metric_id
+    - name: practice_to_student
+      using:
+        foreign_key_constraint_on: practice_to_student_id
+- table:
+    schema: public
     name: practice_to_student_yield
   object_relationships:
     - name: practice_to_student
@@ -273,6 +330,9 @@
         enable_manual: false
         insert:
           columns: '*'
+        update:
+          columns:
+            - value
       retry_conf:
         num_retries: 3
         interval_sec: 20
@@ -305,6 +365,13 @@
       using:
         foreign_key_constraint_on: method
   array_relationships:
+    - name: practice_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: yield_id
+          table:
+            schema: public
+            name: practice_grade_metric
     - name: practice_to_student_yields
       using:
         foreign_key_constraint_on:
