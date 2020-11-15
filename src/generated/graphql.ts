@@ -1,9 +1,10 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import gql from 'graphql-tag';
+import * as Urql from 'urql';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -5377,32 +5378,33 @@ export type PracticeToPromoDetailsFragment = {
       'name' | 'years' | 'id'
     > & {
         student_to_promotions: Array<
-          { __typename?: 'student_to_promotion' } & {
-            student: { __typename?: 'student' } & Pick<
-              Student,
-              'full_name' | 'email'
-            > & {
-                practice_to_students: Array<
-                  { __typename?: 'practice_to_student' } & Pick<
-                    Practice_To_Student,
-                    'created_at' | 'grade'
-                  >
-                >;
-              };
-          }
+          { __typename?: 'student_to_promotion' } & Pick<
+            Student_To_Promotion,
+            'promotion_id' | 'student_id'
+          > & {
+              student: { __typename?: 'student' } & Pick<
+                Student,
+                'id' | 'full_name' | 'email'
+              > & {
+                  practice_to_students: Array<
+                    { __typename?: 'practice_to_student' } & Pick<
+                      Practice_To_Student,
+                      'created_at' | 'grade'
+                    >
+                  >;
+                };
+            }
         >;
       };
   };
 
-export type GetPracticeDetailSubscriptionVariables = Exact<{
+export type GetPracticeDetailQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
-export type GetPracticeDetailSubscription = {
-  __typename?: 'subscription_root';
-} & {
+export type GetPracticeDetailQuery = { __typename?: 'query_root' } & {
   practice_by_pk?: Maybe<
-    { __typename?: 'practice' } & Pick<Practice, 'title'> & {
+    { __typename?: 'practice' } & Pick<Practice, 'id' | 'title'> & {
         practice_yields_aggregate: {
           __typename?: 'practice_yield_aggregate';
         } & {
@@ -5460,10 +5462,7 @@ export type ListPracticeQuery = { __typename?: 'query_root' } & {
             | 'can_student_see_feedback'
             | 'can_student_see_grade'
             | 'close_date'
-            | 'created_at'
-            | 'is_open'
             | 'open_date'
-            | 'updated_at'
           > & {
               promotion: { __typename?: 'promotion' } & Pick<
                 Promotion,
@@ -5497,7 +5496,10 @@ export const PracticeToPromoDetailsFragmentDoc = gql`
       years
       id
       student_to_promotions {
+        promotion_id
+        student_id
         student {
+          id
           full_name
           email
           practice_to_students(
@@ -5534,52 +5536,14 @@ export const CurrentUserDocument = gql`
   }
 `;
 
-/**
- * __useCurrentUserQuery__
- *
- * To run a query within a React component, call `useCurrentUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useCurrentUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCurrentUserQuery({
- *   variables: {
- *      firebaseId: // value for 'firebaseId'
- *   },
- * });
- */
 export function useCurrentUserQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    CurrentUserQuery,
-    CurrentUserQueryVariables
-  >,
+  options: Omit<Urql.UseQueryArgs<CurrentUserQueryVariables>, 'query'> = {},
 ) {
-  return Apollo.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(
-    CurrentUserDocument,
-    baseOptions,
-  );
+  return Urql.useQuery<CurrentUserQuery>({
+    query: CurrentUserDocument,
+    ...options,
+  });
 }
-export function useCurrentUserLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CurrentUserQuery,
-    CurrentUserQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<CurrentUserQuery, CurrentUserQueryVariables>(
-    CurrentUserDocument,
-    baseOptions,
-  );
-}
-export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
-export type CurrentUserLazyQueryHookResult = ReturnType<
-  typeof useCurrentUserLazyQuery
->;
-export type CurrentUserQueryResult = Apollo.QueryResult<
-  CurrentUserQuery,
-  CurrentUserQueryVariables
->;
 export const ListTpYieldTypesDocument = gql`
   query listTpYieldTypes {
     practice_yield_type {
@@ -5588,53 +5552,17 @@ export const ListTpYieldTypesDocument = gql`
   }
 `;
 
-/**
- * __useListTpYieldTypesQuery__
- *
- * To run a query within a React component, call `useListTpYieldTypesQuery` and pass it any options that fit your needs.
- * When your component renders, `useListTpYieldTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useListTpYieldTypesQuery({
- *   variables: {
- *   },
- * });
- */
 export function useListTpYieldTypesQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    ListTpYieldTypesQuery,
-    ListTpYieldTypesQueryVariables
-  >,
+  options: Omit<
+    Urql.UseQueryArgs<ListTpYieldTypesQueryVariables>,
+    'query'
+  > = {},
 ) {
-  return Apollo.useQuery<ListTpYieldTypesQuery, ListTpYieldTypesQueryVariables>(
-    ListTpYieldTypesDocument,
-    baseOptions,
-  );
+  return Urql.useQuery<ListTpYieldTypesQuery>({
+    query: ListTpYieldTypesDocument,
+    ...options,
+  });
 }
-export function useListTpYieldTypesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    ListTpYieldTypesQuery,
-    ListTpYieldTypesQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<
-    ListTpYieldTypesQuery,
-    ListTpYieldTypesQueryVariables
-  >(ListTpYieldTypesDocument, baseOptions);
-}
-export type ListTpYieldTypesQueryHookResult = ReturnType<
-  typeof useListTpYieldTypesQuery
->;
-export type ListTpYieldTypesLazyQueryHookResult = ReturnType<
-  typeof useListTpYieldTypesLazyQuery
->;
-export type ListTpYieldTypesQueryResult = Apollo.QueryResult<
-  ListTpYieldTypesQuery,
-  ListTpYieldTypesQueryVariables
->;
 export const HandOffByIdDocument = gql`
   query HandOffById($id: uuid!) {
     practice_to_promotion_by_pk(id: $id) {
@@ -5665,52 +5593,14 @@ export const HandOffByIdDocument = gql`
   }
 `;
 
-/**
- * __useHandOffByIdQuery__
- *
- * To run a query within a React component, call `useHandOffByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useHandOffByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useHandOffByIdQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
 export function useHandOffByIdQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    HandOffByIdQuery,
-    HandOffByIdQueryVariables
-  >,
+  options: Omit<Urql.UseQueryArgs<HandOffByIdQueryVariables>, 'query'> = {},
 ) {
-  return Apollo.useQuery<HandOffByIdQuery, HandOffByIdQueryVariables>(
-    HandOffByIdDocument,
-    baseOptions,
-  );
+  return Urql.useQuery<HandOffByIdQuery>({
+    query: HandOffByIdDocument,
+    ...options,
+  });
 }
-export function useHandOffByIdLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    HandOffByIdQuery,
-    HandOffByIdQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<HandOffByIdQuery, HandOffByIdQueryVariables>(
-    HandOffByIdDocument,
-    baseOptions,
-  );
-}
-export type HandOffByIdQueryHookResult = ReturnType<typeof useHandOffByIdQuery>;
-export type HandOffByIdLazyQueryHookResult = ReturnType<
-  typeof useHandOffByIdLazyQuery
->;
-export type HandOffByIdQueryResult = Apollo.QueryResult<
-  HandOffByIdQuery,
-  HandOffByIdQueryVariables
->;
 export const SubmitHandoffDocument = gql`
   mutation submitHandoff(
     $practiceToPromotionId: uuid!
@@ -5724,50 +5614,13 @@ export const SubmitHandoffDocument = gql`
     }
   }
 `;
-export type SubmitHandoffMutationFn = Apollo.MutationFunction<
-  SubmitHandoffMutation,
-  SubmitHandoffMutationVariables
->;
 
-/**
- * __useSubmitHandoffMutation__
- *
- * To run a mutation, you first call `useSubmitHandoffMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSubmitHandoffMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [submitHandoffMutation, { data, loading, error }] = useSubmitHandoffMutation({
- *   variables: {
- *      practiceToPromotionId: // value for 'practiceToPromotionId'
- *      yields: // value for 'yields'
- *   },
- * });
- */
-export function useSubmitHandoffMutation(
-  baseOptions?: Apollo.MutationHookOptions<
+export function useSubmitHandoffMutation() {
+  return Urql.useMutation<
     SubmitHandoffMutation,
     SubmitHandoffMutationVariables
-  >,
-) {
-  return Apollo.useMutation<
-    SubmitHandoffMutation,
-    SubmitHandoffMutationVariables
-  >(SubmitHandoffDocument, baseOptions);
+  >(SubmitHandoffDocument);
 }
-export type SubmitHandoffMutationHookResult = ReturnType<
-  typeof useSubmitHandoffMutation
->;
-export type SubmitHandoffMutationResult = Apollo.MutationResult<
-  SubmitHandoffMutation
->;
-export type SubmitHandoffMutationOptions = Apollo.BaseMutationOptions<
-  SubmitHandoffMutation,
-  SubmitHandoffMutationVariables
->;
 export const HandoffListDocument = gql`
   query handoffList {
     practice_to_promotion(order_by: { close_date: desc }) {
@@ -5794,51 +5647,14 @@ export const HandoffListDocument = gql`
   }
 `;
 
-/**
- * __useHandoffListQuery__
- *
- * To run a query within a React component, call `useHandoffListQuery` and pass it any options that fit your needs.
- * When your component renders, `useHandoffListQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useHandoffListQuery({
- *   variables: {
- *   },
- * });
- */
 export function useHandoffListQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    HandoffListQuery,
-    HandoffListQueryVariables
-  >,
+  options: Omit<Urql.UseQueryArgs<HandoffListQueryVariables>, 'query'> = {},
 ) {
-  return Apollo.useQuery<HandoffListQuery, HandoffListQueryVariables>(
-    HandoffListDocument,
-    baseOptions,
-  );
+  return Urql.useQuery<HandoffListQuery>({
+    query: HandoffListDocument,
+    ...options,
+  });
 }
-export function useHandoffListLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    HandoffListQuery,
-    HandoffListQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<HandoffListQuery, HandoffListQueryVariables>(
-    HandoffListDocument,
-    baseOptions,
-  );
-}
-export type HandoffListQueryHookResult = ReturnType<typeof useHandoffListQuery>;
-export type HandoffListLazyQueryHookResult = ReturnType<
-  typeof useHandoffListLazyQuery
->;
-export type HandoffListQueryResult = Apollo.QueryResult<
-  HandoffListQuery,
-  HandoffListQueryVariables
->;
 export const LinkStudentToUserDocument = gql`
   mutation linkStudentToUser($linkId: uuid!) {
     linkStudentToUser(linkId: $linkId) {
@@ -5846,49 +5662,13 @@ export const LinkStudentToUserDocument = gql`
     }
   }
 `;
-export type LinkStudentToUserMutationFn = Apollo.MutationFunction<
-  LinkStudentToUserMutation,
-  LinkStudentToUserMutationVariables
->;
 
-/**
- * __useLinkStudentToUserMutation__
- *
- * To run a mutation, you first call `useLinkStudentToUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLinkStudentToUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [linkStudentToUserMutation, { data, loading, error }] = useLinkStudentToUserMutation({
- *   variables: {
- *      linkId: // value for 'linkId'
- *   },
- * });
- */
-export function useLinkStudentToUserMutation(
-  baseOptions?: Apollo.MutationHookOptions<
+export function useLinkStudentToUserMutation() {
+  return Urql.useMutation<
     LinkStudentToUserMutation,
     LinkStudentToUserMutationVariables
-  >,
-) {
-  return Apollo.useMutation<
-    LinkStudentToUserMutation,
-    LinkStudentToUserMutationVariables
-  >(LinkStudentToUserDocument, baseOptions);
+  >(LinkStudentToUserDocument);
 }
-export type LinkStudentToUserMutationHookResult = ReturnType<
-  typeof useLinkStudentToUserMutation
->;
-export type LinkStudentToUserMutationResult = Apollo.MutationResult<
-  LinkStudentToUserMutation
->;
-export type LinkStudentToUserMutationOptions = Apollo.BaseMutationOptions<
-  LinkStudentToUserMutation,
-  LinkStudentToUserMutationVariables
->;
 export const PromotionDetailsDocument = gql`
   query promotionDetails($id: uuid!) {
     promotion_by_pk(id: $id) {
@@ -5911,54 +5691,17 @@ export const PromotionDetailsDocument = gql`
   }
 `;
 
-/**
- * __usePromotionDetailsQuery__
- *
- * To run a query within a React component, call `usePromotionDetailsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePromotionDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePromotionDetailsQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
 export function usePromotionDetailsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    PromotionDetailsQuery,
-    PromotionDetailsQueryVariables
-  >,
+  options: Omit<
+    Urql.UseQueryArgs<PromotionDetailsQueryVariables>,
+    'query'
+  > = {},
 ) {
-  return Apollo.useQuery<PromotionDetailsQuery, PromotionDetailsQueryVariables>(
-    PromotionDetailsDocument,
-    baseOptions,
-  );
+  return Urql.useQuery<PromotionDetailsQuery>({
+    query: PromotionDetailsDocument,
+    ...options,
+  });
 }
-export function usePromotionDetailsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    PromotionDetailsQuery,
-    PromotionDetailsQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<
-    PromotionDetailsQuery,
-    PromotionDetailsQueryVariables
-  >(PromotionDetailsDocument, baseOptions);
-}
-export type PromotionDetailsQueryHookResult = ReturnType<
-  typeof usePromotionDetailsQuery
->;
-export type PromotionDetailsLazyQueryHookResult = ReturnType<
-  typeof usePromotionDetailsLazyQuery
->;
-export type PromotionDetailsQueryResult = Apollo.QueryResult<
-  PromotionDetailsQuery,
-  PromotionDetailsQueryVariables
->;
 export const SendStudentClaimMailDocument = gql`
   mutation sendStudentClaimMail($studentsIds: [uuid]!) {
     sendStudentClaimMail(studentsIds: $studentsIds) {
@@ -5966,49 +5709,13 @@ export const SendStudentClaimMailDocument = gql`
     }
   }
 `;
-export type SendStudentClaimMailMutationFn = Apollo.MutationFunction<
-  SendStudentClaimMailMutation,
-  SendStudentClaimMailMutationVariables
->;
 
-/**
- * __useSendStudentClaimMailMutation__
- *
- * To run a mutation, you first call `useSendStudentClaimMailMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSendStudentClaimMailMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [sendStudentClaimMailMutation, { data, loading, error }] = useSendStudentClaimMailMutation({
- *   variables: {
- *      studentsIds: // value for 'studentsIds'
- *   },
- * });
- */
-export function useSendStudentClaimMailMutation(
-  baseOptions?: Apollo.MutationHookOptions<
+export function useSendStudentClaimMailMutation() {
+  return Urql.useMutation<
     SendStudentClaimMailMutation,
     SendStudentClaimMailMutationVariables
-  >,
-) {
-  return Apollo.useMutation<
-    SendStudentClaimMailMutation,
-    SendStudentClaimMailMutationVariables
-  >(SendStudentClaimMailDocument, baseOptions);
+  >(SendStudentClaimMailDocument);
 }
-export type SendStudentClaimMailMutationHookResult = ReturnType<
-  typeof useSendStudentClaimMailMutation
->;
-export type SendStudentClaimMailMutationResult = Apollo.MutationResult<
-  SendStudentClaimMailMutation
->;
-export type SendStudentClaimMailMutationOptions = Apollo.BaseMutationOptions<
-  SendStudentClaimMailMutation,
-  SendStudentClaimMailMutationVariables
->;
 export const ListPromotionsDocument = gql`
   query ListPromotions {
     promotion {
@@ -6024,53 +5731,14 @@ export const ListPromotionsDocument = gql`
   }
 `;
 
-/**
- * __useListPromotionsQuery__
- *
- * To run a query within a React component, call `useListPromotionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useListPromotionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useListPromotionsQuery({
- *   variables: {
- *   },
- * });
- */
 export function useListPromotionsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    ListPromotionsQuery,
-    ListPromotionsQueryVariables
-  >,
+  options: Omit<Urql.UseQueryArgs<ListPromotionsQueryVariables>, 'query'> = {},
 ) {
-  return Apollo.useQuery<ListPromotionsQuery, ListPromotionsQueryVariables>(
-    ListPromotionsDocument,
-    baseOptions,
-  );
+  return Urql.useQuery<ListPromotionsQuery>({
+    query: ListPromotionsDocument,
+    ...options,
+  });
 }
-export function useListPromotionsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    ListPromotionsQuery,
-    ListPromotionsQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<ListPromotionsQuery, ListPromotionsQueryVariables>(
-    ListPromotionsDocument,
-    baseOptions,
-  );
-}
-export type ListPromotionsQueryHookResult = ReturnType<
-  typeof useListPromotionsQuery
->;
-export type ListPromotionsLazyQueryHookResult = ReturnType<
-  typeof useListPromotionsLazyQuery
->;
-export type ListPromotionsQueryResult = Apollo.QueryResult<
-  ListPromotionsQuery,
-  ListPromotionsQueryVariables
->;
 export const CreatePromotionDocument = gql`
   mutation CreatePromotion(
     $name: String!
@@ -6089,51 +5757,13 @@ export const CreatePromotionDocument = gql`
     }
   }
 `;
-export type CreatePromotionMutationFn = Apollo.MutationFunction<
-  CreatePromotionMutation,
-  CreatePromotionMutationVariables
->;
 
-/**
- * __useCreatePromotionMutation__
- *
- * To run a mutation, you first call `useCreatePromotionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePromotionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createPromotionMutation, { data, loading, error }] = useCreatePromotionMutation({
- *   variables: {
- *      name: // value for 'name'
- *      years: // value for 'years'
- *      students: // value for 'students'
- *   },
- * });
- */
-export function useCreatePromotionMutation(
-  baseOptions?: Apollo.MutationHookOptions<
+export function useCreatePromotionMutation() {
+  return Urql.useMutation<
     CreatePromotionMutation,
     CreatePromotionMutationVariables
-  >,
-) {
-  return Apollo.useMutation<
-    CreatePromotionMutation,
-    CreatePromotionMutationVariables
-  >(CreatePromotionDocument, baseOptions);
+  >(CreatePromotionDocument);
 }
-export type CreatePromotionMutationHookResult = ReturnType<
-  typeof useCreatePromotionMutation
->;
-export type CreatePromotionMutationResult = Apollo.MutationResult<
-  CreatePromotionMutation
->;
-export type CreatePromotionMutationOptions = Apollo.BaseMutationOptions<
-  CreatePromotionMutation,
-  CreatePromotionMutationVariables
->;
 export const InsertNewPracticeToPromotionDocument = gql`
   mutation insertNewPracticeToPromotion(
     $close_date: timestamptz!
@@ -6157,55 +5787,17 @@ export const InsertNewPracticeToPromotionDocument = gql`
     }
   }
 `;
-export type InsertNewPracticeToPromotionMutationFn = Apollo.MutationFunction<
-  InsertNewPracticeToPromotionMutation,
-  InsertNewPracticeToPromotionMutationVariables
->;
 
-/**
- * __useInsertNewPracticeToPromotionMutation__
- *
- * To run a mutation, you first call `useInsertNewPracticeToPromotionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertNewPracticeToPromotionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertNewPracticeToPromotionMutation, { data, loading, error }] = useInsertNewPracticeToPromotionMutation({
- *   variables: {
- *      close_date: // value for 'close_date'
- *      open_date: // value for 'open_date'
- *      practice_id: // value for 'practice_id'
- *      promotion_id: // value for 'promotion_id'
- *   },
- * });
- */
-export function useInsertNewPracticeToPromotionMutation(
-  baseOptions?: Apollo.MutationHookOptions<
+export function useInsertNewPracticeToPromotionMutation() {
+  return Urql.useMutation<
     InsertNewPracticeToPromotionMutation,
     InsertNewPracticeToPromotionMutationVariables
-  >,
-) {
-  return Apollo.useMutation<
-    InsertNewPracticeToPromotionMutation,
-    InsertNewPracticeToPromotionMutationVariables
-  >(InsertNewPracticeToPromotionDocument, baseOptions);
+  >(InsertNewPracticeToPromotionDocument);
 }
-export type InsertNewPracticeToPromotionMutationHookResult = ReturnType<
-  typeof useInsertNewPracticeToPromotionMutation
->;
-export type InsertNewPracticeToPromotionMutationResult = Apollo.MutationResult<
-  InsertNewPracticeToPromotionMutation
->;
-export type InsertNewPracticeToPromotionMutationOptions = Apollo.BaseMutationOptions<
-  InsertNewPracticeToPromotionMutation,
-  InsertNewPracticeToPromotionMutationVariables
->;
 export const GetPracticeDetailDocument = gql`
-  subscription getPracticeDetail($id: uuid!) {
+  query getPracticeDetail($id: uuid!) {
     practice_by_pk(id: $id) {
+      id
       title
       practice_yields_aggregate(order_by: { created_at: asc }) {
         aggregate {
@@ -6231,39 +5823,17 @@ export const GetPracticeDetailDocument = gql`
   ${PracticeToPromoDetailsFragmentDoc}
 `;
 
-/**
- * __useGetPracticeDetailSubscription__
- *
- * To run a query within a React component, call `useGetPracticeDetailSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGetPracticeDetailSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPracticeDetailSubscription({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetPracticeDetailSubscription(
-  baseOptions?: Apollo.SubscriptionHookOptions<
-    GetPracticeDetailSubscription,
-    GetPracticeDetailSubscriptionVariables
-  >,
+export function useGetPracticeDetailQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetPracticeDetailQueryVariables>,
+    'query'
+  > = {},
 ) {
-  return Apollo.useSubscription<
-    GetPracticeDetailSubscription,
-    GetPracticeDetailSubscriptionVariables
-  >(GetPracticeDetailDocument, baseOptions);
+  return Urql.useQuery<GetPracticeDetailQuery>({
+    query: GetPracticeDetailDocument,
+    ...options,
+  });
 }
-export type GetPracticeDetailSubscriptionHookResult = ReturnType<
-  typeof useGetPracticeDetailSubscription
->;
-export type GetPracticeDetailSubscriptionResult = Apollo.SubscriptionResult<
-  GetPracticeDetailSubscription
->;
 export const GetPromotionForTpAddDocument = gql`
   query getPromotionForTpAdd {
     promotion(order_by: { updated_at: asc }) {
@@ -6274,53 +5844,17 @@ export const GetPromotionForTpAddDocument = gql`
   }
 `;
 
-/**
- * __useGetPromotionForTpAddQuery__
- *
- * To run a query within a React component, call `useGetPromotionForTpAddQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPromotionForTpAddQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPromotionForTpAddQuery({
- *   variables: {
- *   },
- * });
- */
 export function useGetPromotionForTpAddQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetPromotionForTpAddQuery,
-    GetPromotionForTpAddQueryVariables
-  >,
+  options: Omit<
+    Urql.UseQueryArgs<GetPromotionForTpAddQueryVariables>,
+    'query'
+  > = {},
 ) {
-  return Apollo.useQuery<
-    GetPromotionForTpAddQuery,
-    GetPromotionForTpAddQueryVariables
-  >(GetPromotionForTpAddDocument, baseOptions);
+  return Urql.useQuery<GetPromotionForTpAddQuery>({
+    query: GetPromotionForTpAddDocument,
+    ...options,
+  });
 }
-export function useGetPromotionForTpAddLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetPromotionForTpAddQuery,
-    GetPromotionForTpAddQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<
-    GetPromotionForTpAddQuery,
-    GetPromotionForTpAddQueryVariables
-  >(GetPromotionForTpAddDocument, baseOptions);
-}
-export type GetPromotionForTpAddQueryHookResult = ReturnType<
-  typeof useGetPromotionForTpAddQuery
->;
-export type GetPromotionForTpAddLazyQueryHookResult = ReturnType<
-  typeof useGetPromotionForTpAddLazyQuery
->;
-export type GetPromotionForTpAddQueryResult = Apollo.QueryResult<
-  GetPromotionForTpAddQuery,
-  GetPromotionForTpAddQueryVariables
->;
 export const ListPracticeDocument = gql`
   query ListPractice {
     practice {
@@ -6331,10 +5865,7 @@ export const ListPracticeDocument = gql`
         can_student_see_feedback
         can_student_see_grade
         close_date
-        created_at
-        is_open
         open_date
-        updated_at
         promotion {
           name
           years
@@ -6344,53 +5875,14 @@ export const ListPracticeDocument = gql`
   }
 `;
 
-/**
- * __useListPracticeQuery__
- *
- * To run a query within a React component, call `useListPracticeQuery` and pass it any options that fit your needs.
- * When your component renders, `useListPracticeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useListPracticeQuery({
- *   variables: {
- *   },
- * });
- */
 export function useListPracticeQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    ListPracticeQuery,
-    ListPracticeQueryVariables
-  >,
+  options: Omit<Urql.UseQueryArgs<ListPracticeQueryVariables>, 'query'> = {},
 ) {
-  return Apollo.useQuery<ListPracticeQuery, ListPracticeQueryVariables>(
-    ListPracticeDocument,
-    baseOptions,
-  );
+  return Urql.useQuery<ListPracticeQuery>({
+    query: ListPracticeDocument,
+    ...options,
+  });
 }
-export function useListPracticeLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    ListPracticeQuery,
-    ListPracticeQueryVariables
-  >,
-) {
-  return Apollo.useLazyQuery<ListPracticeQuery, ListPracticeQueryVariables>(
-    ListPracticeDocument,
-    baseOptions,
-  );
-}
-export type ListPracticeQueryHookResult = ReturnType<
-  typeof useListPracticeQuery
->;
-export type ListPracticeLazyQueryHookResult = ReturnType<
-  typeof useListPracticeLazyQuery
->;
-export type ListPracticeQueryResult = Apollo.QueryResult<
-  ListPracticeQuery,
-  ListPracticeQueryVariables
->;
 export const CreateNewPracticeDocument = gql`
   mutation createNewPractice(
     $title: String!
@@ -6411,48 +5903,10 @@ export const CreateNewPracticeDocument = gql`
     }
   }
 `;
-export type CreateNewPracticeMutationFn = Apollo.MutationFunction<
-  CreateNewPracticeMutation,
-  CreateNewPracticeMutationVariables
->;
 
-/**
- * __useCreateNewPracticeMutation__
- *
- * To run a mutation, you first call `useCreateNewPracticeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateNewPracticeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createNewPracticeMutation, { data, loading, error }] = useCreateNewPracticeMutation({
- *   variables: {
- *      title: // value for 'title'
- *      description: // value for 'description'
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useCreateNewPracticeMutation(
-  baseOptions?: Apollo.MutationHookOptions<
+export function useCreateNewPracticeMutation() {
+  return Urql.useMutation<
     CreateNewPracticeMutation,
     CreateNewPracticeMutationVariables
-  >,
-) {
-  return Apollo.useMutation<
-    CreateNewPracticeMutation,
-    CreateNewPracticeMutationVariables
-  >(CreateNewPracticeDocument, baseOptions);
+  >(CreateNewPracticeDocument);
 }
-export type CreateNewPracticeMutationHookResult = ReturnType<
-  typeof useCreateNewPracticeMutation
->;
-export type CreateNewPracticeMutationResult = Apollo.MutationResult<
-  CreateNewPracticeMutation
->;
-export type CreateNewPracticeMutationOptions = Apollo.BaseMutationOptions<
-  CreateNewPracticeMutation,
-  CreateNewPracticeMutationVariables
->;

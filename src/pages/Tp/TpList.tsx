@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { PageHead } from '../../components/PageHead';
 import { Button } from '../../components/Button';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import { useListPracticeQuery } from '../../generated/graphql';
 import { Wip } from '../../components/Wip';
 import { Loader } from '../../components/Loader';
@@ -30,7 +30,7 @@ gql`
 
 export const TpList = () => {
   const navigate = useNavigate();
-  const { loading, data } = useListPracticeQuery();
+  const [{ data }] = useListPracticeQuery();
 
   return (
     <>
@@ -40,7 +40,7 @@ export const TpList = () => {
           <Button onClick={() => navigate('./new')}>Add new TP</Button>
         </div>
       </PageHead>
-      <Loader visible={loading}>
+      <Loader visible={false}>
         <div className="flex flex-col space-y-4">
           {data &&
             data.practice.map((data) => (

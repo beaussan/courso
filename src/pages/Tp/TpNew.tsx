@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import {
   Practice_Yield_Insert_Input,
   useCreateNewPracticeMutation,
@@ -51,7 +51,7 @@ interface NewTp {
 
 export const TpNew = () => {
   const { data: yieldTypes, loading } = useFetchYieldTypes();
-  const [createTp] = useCreateNewPracticeMutation();
+  const [{}, createTp] = useCreateNewPracticeMutation();
   const onSubmit = useFormikMutationSubmit({
     mutation: createTp,
     successMessage: 'TP added successfully',

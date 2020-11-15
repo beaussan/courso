@@ -3,12 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import React from 'react';
 import { LoginComponent } from '../../components/LoginComponent';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import { useLinkStudentToUserMutation } from '../../generated/graphql';
 import { Loader } from '../../components/Loader';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { auth } from '../../services/firebase';
 import { useToasts } from 'react-toast-notifications';
+import { Logo } from '../../components/Logo';
 
 gql`
   mutation linkStudentToUser($linkId: uuid!) {
@@ -30,11 +31,9 @@ const LinkPage = () => {
   const navigate = useNavigate();
   const { addToast } = useToasts();
   const [
+    { fetching, data, error },
     linkStudentToUser,
-    { loading, data, error },
-  ] = useLinkStudentToUserMutation({
-    errorPolicy: 'all',
-  });
+  ] = useLinkStudentToUserMutation();
 
   const logout = async () => {
     await auth.signOut();
@@ -54,17 +53,18 @@ const LinkPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 flex flex-col justify-center items-center">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <Logo className="mx-auto h-16 w-auto" />
+        </div>
+        <div className="mt-8 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 flex flex-col justify-center items-center">
           <div className="flex justify-center items-center font-bold text-xl mb-8 ">
             Almost there ! Link your account
           </div>
-          <Loader visible={loading}>
+          <Loader visible={fetching}>
             <Button
               onClick={() =>
                 linkStudentToUser({
-                  variables: {
-                    linkId,
-                  },
+                  linkId,
                 })
               }
             >

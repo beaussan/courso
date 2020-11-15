@@ -96,6 +96,50 @@
           table:
             schema: public
             name: practice_to_student_grade_metric
+  insert_permissions:
+    - role: teacher
+      permission:
+        check: {}
+        columns:
+          - expected
+          - feedbacks
+          - meta
+          - method
+          - name
+          - points
+          - practice_id
+          - yield_id
+        backend_only: false
+  select_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - created_at
+          - expected
+          - feedbacks
+          - id
+          - meta
+          - method
+          - name
+          - points
+          - practice_id
+          - updated_at
+          - yield_id
+        filter: {}
+  update_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - expected
+          - feedbacks
+          - meta
+          - method
+          - name
+          - points
+          - practice_id
+          - yield_id
+        filter: {}
+        check: null
 - table:
     schema: public
     name: practice_grade_metric_type
@@ -108,6 +152,12 @@
           table:
             schema: public
             name: practice_grade_metric
+  select_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - name
+        filter: {}
 - table:
     schema: public
     name: practice_to_promotion

@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageHead } from '../../components/PageHead';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import { Maybe, useHandoffListQuery } from '../../generated/graphql';
 import { CardBox } from '../../components/CardBox';
 import { Loader } from '../../components/Loader';
@@ -131,59 +131,57 @@ const FormatTimeLeft: React.FC<{ open: Date; close: Date }> = ({
 export const HandOffIndex: React.FC = () => {
   const currDate = new Date();
   const navigate = useNavigate();
-  const { loading, data, error } = useHandoffListQuery();
-  console.log({ loading, data, error });
+  const [{ data, error }] = useHandoffListQuery();
+  console.log({ data, error });
   const sortedData = sortToIsOpenFirst(data?.practice_to_promotion ?? []);
   return (
     <>
       <PageHead>Handoff</PageHead>
-      <Loader visible={loading}>
-        <div className="space-y-8 mt-4">
-          {sortedData.map((value) => {
-            const close = new Date(value.close_date);
-            const open = new Date(value.open_date);
-            const isStarted =
-              isAfter(currDate, open) && isBefore(currDate, close);
-            const isSubmited = value.practice_to_students.length > 0;
-            return (
-              <CardBox
-                onClick={
-                  isStarted && !isSubmited
-                    ? () => {
-                        navigate(`./${value.id}`);
-                      }
-                    : undefined
-                }
-              >
-                <div className="flex justify-between">
-                  <div className="text-xl mb-4">
-                    <span className="font-bold">{value.practice.title}</span>{' '}
-                    <span>{value.promotion.name}</span>{' '}
-                    <span>{value.promotion.years}</span>
-                  </div>
-                  <div>
-                    <Chip variant={isSubmited ? 'success' : 'error'}>
-                      {isSubmited ? 'Submited' : 'Not submited'}
-                    </Chip>
-                  </div>
+      <div className="space-y-8 mt-4">
+        {sortedData.map((value) => {
+          const close = new Date(value.close_date);
+          const open = new Date(value.open_date);
+          const isStarted =
+            isAfter(currDate, open) && isBefore(currDate, close);
+          const isSubmited = value.practice_to_students.length > 0;
+          return (
+            <CardBox
+              onClick={
+                isStarted && !isSubmited
+                  ? () => {
+                      navigate(`./${value.id}`);
+                    }
+                  : undefined
+              }
+            >
+              <div className="flex justify-between">
+                <div className="text-xl mb-4">
+                  <span className="font-bold">{value.practice.title}</span>{' '}
+                  <span>{value.promotion.name}</span>{' '}
+                  <span>{value.promotion.years}</span>
                 </div>
                 <div>
-                  <FormatDates close={close} open={open} />
+                  <Chip variant={isSubmited ? 'success' : 'error'}>
+                    {isSubmited ? 'Submited' : 'Not submited'}
+                  </Chip>
                 </div>
-                {!isSubmited && (
-                  <div className="flex justify-between mt-4">
-                    <FormatTimeLeft close={close} open={open} />
+              </div>
+              <div>
+                <FormatDates close={close} open={open} />
+              </div>
+              {!isSubmited && (
+                <div className="flex justify-between mt-4">
+                  <FormatTimeLeft close={close} open={open} />
 
-                    <Chip variant={isStarted ? 'success' : 'error'}>
-                      {isStarted ? 'Open' : 'Closed'}
-                    </Chip>
-                  </div>
-                )}
-              </CardBox>
-            );
-          })}
-        </div>
-      </Loader>
+                  <Chip variant={isStarted ? 'success' : 'error'}>
+                    {isStarted ? 'Open' : 'Closed'}
+                  </Chip>
+                </div>
+              )}
+            </CardBox>
+          );
+        })}
+      </div>
     </>
   );
 };

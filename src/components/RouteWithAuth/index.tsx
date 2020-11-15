@@ -8,13 +8,14 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 export const RouteWithRule: React.FC<RouteProps> = ({ ...rest }) => {
   const authState = useAuthState();
   const navigate = useNavigate();
-  const { user, loading: userLoading } = useCurrentUser();
+  const { user, loading: userLoading, error } = useCurrentUser();
 
   useEffect(() => {
     if (authState === 'out') {
       navigate('/login');
     }
   }, [authState, navigate]);
+  console.log('RouteWithRule', { user, userLoading, authState, error });
 
   if (authState === 'loading' || userLoading) {
     return <LoadingFullScreen />;

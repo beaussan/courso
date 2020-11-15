@@ -2,7 +2,6 @@ import { HttpLink, InMemoryCache, split, ApolloClient } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { setContext } from '@apollo/client/link/context';
-import { TypedTypePolicies } from '../generated/apolloHelpers';
 
 if (!process.env.REACT_APP_HASURA_ENDPOINT) {
   throw new Error('Config not found');
@@ -13,21 +12,6 @@ const BASE_URL = process.env.REACT_APP_HASURA_ENDPOINT;
 const WS_BASE_URL = `wss://${BASE_URL}`;
 const HTTP_BASE_URL = `https://${BASE_URL}`;
 const ENDPOINT = '/v1/graphql';
-
-const typePolicies: TypedTypePolicies = {
-  practice_to_promotion: {
-    keyFields: ['id'],
-  },
-  practice: {
-    keyFields: ['id'],
-  },
-  practice_grade_metric: {
-    keyFields: ['id'],
-  },
-  practice_grade_metric_type: {
-    keyFields: ['name'],
-  },
-};
 
 export const createApolloClient = (token: string | undefined) => {
   const authLink = setContext((_, { headers }) => {
@@ -75,7 +59,7 @@ export const createApolloClient = (token: string | undefined) => {
   return new ApolloClient({
     link,
     cache: new InMemoryCache({
-      typePolicies,
+      // typePolicies,
     }),
     defaultOptions: {
       watchQuery: {

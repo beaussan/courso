@@ -2,7 +2,7 @@ import React from 'react';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
 import { useNavigate, useParams } from 'react-router-dom';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import {
   usePromotionDetailsQuery,
   useSendStudentClaimMailMutation,
@@ -13,6 +13,7 @@ import { ButtonWithConfirm } from '../../components/ButtonWithConfirm';
 import { Table } from '../../components/Table';
 import { Chip } from '../../components/Chip';
 import { useToasts } from 'react-toast-notifications';
+import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
 
 gql`
   query promotionDetails($id: uuid!) {
@@ -50,11 +51,11 @@ export const PromotionId = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToast } = useToasts();
-  const { data, error, loading } = usePromotionDetailsQuery({
+  const [{ data, error }] = usePromotionDetailsQuery({
     variables: { id: id },
   });
-  const [sendStudentMail] = useSendStudentClaimMailMutation();
-  if (!loading && (!data?.promotion_by_pk || error)) {
+  const [{}, sendStudentMail] = useSendStudentClaimMailMutation();
+  if (!data?.promotion_by_pk || error) {
     navigate('../');
   }
 
@@ -66,9 +67,12 @@ export const PromotionId = () => {
       const studentsIds = data.promotion_by_pk.student_to_promotions_aggregate.nodes.map(
         ({ student }) => student.id,
       );
-      const { data: dataMutation } = await sendStudentMail({
-        variables: { studentsIds },
+      const { data: dataMutation, error } = await sendStudentMail({
+        studentsIds,
       });
+      if (error) {
+        throw error;
+      }
       addToast(
         `${dataMutation?.sendStudentClaimMail?.nmbMailSent} mail sent !`,
         {
@@ -93,38 +97,35 @@ export const PromotionId = () => {
           {data?.promotion_by_pk?.years}
         </div>
       </PageHead>
-      <Loader visible={loading}>
-        <div className="bg-white mt-4 p-4 rounded-lg shadow-md">
-          <div className="flex justify-between mb-2">
-            <div className="text-xl font-medium pb-4">Students</div>
-            <ButtonWithConfirm
-              onClick={onSendStudent}
-              variant="confirm"
-              actionLabel="send mail to link students"
-              buttonLabel="Send connectin link"
-            />
-          </div>
-          <Table>
-            <Table.TableHead items={['Name', 'Email', 'Is linked']} />
-            <Table.TBody
-              items={
-                data?.promotion_by_pk?.student_to_promotions_aggregate.nodes ??
-                []
-              }
-            >
-              {({ student }) => (
-                <>
-                  <Table.Td isMainInfo>{student?.full_name}</Table.Td>
-                  <Table.Td>{student?.email}</Table.Td>
-                  <Table.Td>
-                    <LinkIndicator isLinked={!!student.user_id} />
-                  </Table.Td>
-                </>
-              )}
-            </Table.TBody>
-          </Table>
+      <div className="bg-white mt-4 p-4 rounded-lg shadow-md">
+        <div className="flex justify-between mb-2">
+          <div className="text-xl font-medium pb-4">Students</div>
+          <ButtonWithConfirm
+            onClick={onSendStudent}
+            variant="confirm"
+            actionLabel="send mail to link students"
+            buttonLabel="Send connectin link"
+          />
         </div>
-      </Loader>
+        <Table>
+          <Table.TableHead items={['Name', 'Email', 'Is linked']} />
+          <Table.TBody
+            items={
+              data?.promotion_by_pk?.student_to_promotions_aggregate.nodes ?? []
+            }
+          >
+            {({ student }) => (
+              <>
+                <Table.Td isMainInfo>{student?.full_name}</Table.Td>
+                <Table.Td>{student?.email}</Table.Td>
+                <Table.Td>
+                  <LinkIndicator isLinked={!!student.user_id} />
+                </Table.Td>
+              </>
+            )}
+          </Table.TBody>
+        </Table>
+      </div>
 
       <Wip
         todo={[

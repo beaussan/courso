@@ -3,6 +3,7 @@ import { useToasts } from 'react-toast-notifications';
 import { FetchResult } from '@apollo/client/link/core';
 import { MutationFunctionOptions } from '@apollo/client/react/types/types';
 import { FormikHelpers } from 'formik';
+import { OperationContext, OperationResult } from '@urql/core';
 
 export function useFormikMutationSubmit<TFormData, TData, TVariables>({
   mutation,
@@ -12,12 +13,10 @@ export function useFormikMutationSubmit<TFormData, TData, TVariables>({
   successMessage,
 }: {
   mutation: (
-    options?: MutationFunctionOptions<TData, TVariables>,
-  ) => Promise<FetchResult<TData>>;
-  extraParamsMutation?: Omit<
-    MutationFunctionOptions<TData, TVariables>,
-    'variables'
-  >;
+    variables?: TVariables,
+    context?: Partial<OperationContext>,
+  ) => Promise<OperationResult<TData, TVariables>>;
+  extraParamsMutation?: Partial<OperationContext>;
   mapFormData: (values: TFormData) => Promise<TVariables> | TVariables;
   navigateDestination?: string;
   successMessage: string;
@@ -29,10 +28,7 @@ export function useFormikMutationSubmit<TFormData, TData, TVariables>({
     try {
       formikHelpers.setSubmitting(true);
       const dataForMutation = await mapFormData(values);
-      await mutation({
-        ...extraParamsMutation,
-        variables: dataForMutation,
-      });
+      await mutation(dataForMutation, extraParamsMutation);
       addToast(successMessage, {
         appearance: 'success',
       });

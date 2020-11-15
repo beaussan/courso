@@ -2,7 +2,7 @@ const { db } = require('./initFirebase');
 
 const map = {
   link: {
-    subject: 'Create your account on the course manager !',
+    subject: 'Create your account on Courso !',
     html: `Hi {{full_name}}, a account has been pre created on the course manager app.<br />
 This app is made by Nicolas Beaussart (@beaussan), if you have any question, please contact him.<br />
 You can finish creating your account at this link : {{claimLink}}.

@@ -35,10 +35,14 @@ const links = [
 export const AppShel = () => {
   const userRole = useCurrentUserRole();
   const finalRoles = links.filter((item) => item.roles.includes(userRole));
-
+  /*
+</Suspense>
+      <Suspense fallback={<Loader visible={true} />}>
+ */
+  console.log('Here ?');
   return (
     <Nav links={finalRoles}>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader visible={true} />}>
         <Routes>
           <Navigate to="dash" />
           <Route path="dash" element={<Dash />} />

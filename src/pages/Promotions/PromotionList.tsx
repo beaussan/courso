@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { PageHead } from '../../components/PageHead';
 import { Button } from '../../components/Button';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import {
   Maybe,
   Promotion,
@@ -58,7 +58,7 @@ const PromoCard: React.FC<{ data: CardType }> = ({ data }) => {
 
 export const PromotionIndex = () => {
   const navigate = useNavigate();
-  const { loading, data } = useListPromotionsQuery();
+  const [{ data }] = useListPromotionsQuery();
 
   return (
     <>
@@ -69,13 +69,11 @@ export const PromotionIndex = () => {
         </div>
       </PageHead>
 
-      <Loader visible={loading}>
-        <div className="space-y-4">
-          {data?.promotion.map((data) => (
-            <PromoCard key={data.id} data={data} />
-          ))}
-        </div>
-      </Loader>
+      <div className="space-y-4">
+        {data?.promotion.map((data) => (
+          <PromoCard key={data.id} data={data} />
+        ))}
+      </div>
     </>
   );
 };

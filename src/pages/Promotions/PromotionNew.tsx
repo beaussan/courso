@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import { useCreatePromotionMutation } from '../../generated/graphql';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { mapToSave, parseCsv, studentValidator } from './validation';
 import { CardBox } from '../../components/CardBox';
+import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
 
 gql`
   mutation CreatePromotion(
@@ -62,38 +63,24 @@ const validateData = async (values: Partial<NewPromo>) => {
 };
 
 export const PromotionNew = () => {
-  const [createPromo] = useCreatePromotionMutation();
+  const [{}, createPromo] = useCreatePromotionMutation();
   const navigate = useNavigate();
   const { addToast } = useToasts();
+  const onSubmit = useFormikMutationSubmit({
+    mapFormData: (values: NewPromo) => {
+      return {
+        name: values.name,
+        years: values.year,
+        students: mapToSave(parseCsv(values.csv)),
+      };
+    },
+    successMessage: 'Promotion added successfully',
+    mutation: createPromo,
+  });
   const initialData: NewPromo = {
     csv: '',
     year: '',
     name: '',
-  };
-
-  const onSubmit = async (
-    values: NewPromo,
-    formikHelpers: FormikHelpers<NewPromo>,
-  ) => {
-    try {
-      formikHelpers.setSubmitting(true);
-      await createPromo({
-        variables: {
-          name: values.name,
-          years: values.year,
-          students: mapToSave(parseCsv(values.csv)),
-        },
-      });
-      addToast('Promotion added successfully', {
-        appearance: 'success',
-      });
-      navigate('../');
-    } catch (e) {
-      console.error(e);
-      addToast('An error occured, please try again latter', {
-        appearance: 'error',
-      });
-    }
   };
 
   return (

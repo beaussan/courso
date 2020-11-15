@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client';
-import { useCurrentUserQuery } from '../generated/graphql';
+import {
+  CurrentUserQueryVariables,
+  useCurrentUserQuery,
+} from '../generated/graphql';
 import { useObservable } from './useObservable';
 import { userWithCorrectToken$ } from '../services/TokenService';
+import { useEffect } from 'react';
+import { useObservableState } from 'observable-hooks';
 
 gql`
   query currentUser($firebaseId: String!) {
@@ -19,19 +24,58 @@ gql`
 
 export const useCurrentUser = () => {
   const firebaseUser = useObservable(userWithCorrectToken$);
-  const { data, error, variables, loading } = useCurrentUserQuery({
+  console.log('useCurrentUser', firebaseUser);
+  console.log('useCurrentUser', firebaseUser?.uid ?? '');
+  const [
+    { data, error, fetching, extensions, operation },
+    retry,
+  ] = useCurrentUserQuery({
     variables: {
-      firebaseId: firebaseUser?.uid ?? 'anonymous',
+      firebaseId: firebaseUser?.uid ?? '',
     },
+    requestPolicy: 'network-only',
+    // pause: !firebaseUser?.uid,
+    /*
+    pause: !firebaseUser?.uid,
+    pollInterval: 1000,
+     */
   });
+  /* * /
+
+  if (!fetching) {
+    const idRequested = (operation?.variables as CurrentUserQueryVariables)
+      ?.firebaseId;
+    const currentUserId = firebaseUser?.uid;
+    if (idRequested !== currentUserId) {
+      console.log('Refresh ?');
+      retry({
+        requestPolicy: 'network-only',
+      });
+    }
+  }
+
+  /**/
   if (error) {
     if (
       error.message !==
-      'Missing Authorization header in JWT authentication mode'
+      '[GraphQL] Missing Authorization header in JWT authentication mode'
     ) {
+      console.error('ERROR IN useCurrentUser');
       console.error(error.message);
+    } else {
+      console.error('Error missing JWT', error);
+      // setTimeout(() => retry(), 1000);
     }
   }
+
+  console.log('useCurrentUser', {
+    data,
+    error,
+    fetching,
+    extensions,
+    operation,
+  });
+
   const user = data?.user?.[0];
-  return { error, user, loading, variables };
+  return { error, user, fetching, loading: fetching };
 };

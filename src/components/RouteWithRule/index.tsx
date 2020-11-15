@@ -14,6 +14,7 @@ export const RouteWithRule: React.FC<RouteWithRulesProps> = ({
 }) => {
   const userRole = useCurrentUserRole();
   const hasRoleAccess = roles.includes(userRole);
+  console.log('RouteWithRule', { userRole, hasRoleAccess });
   if (!userRole) {
     return <LoadingFullScreen />;
   }

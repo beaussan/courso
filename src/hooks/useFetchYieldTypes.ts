@@ -1,5 +1,5 @@
 import { useListTpYieldTypesQuery } from '../generated/graphql';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 
 gql`
   query listTpYieldTypes {
@@ -10,11 +10,11 @@ gql`
 `;
 
 export const useFetchYieldTypes = () => {
-  const { data: rawData, loading, error } = useListTpYieldTypesQuery();
+  const [{ data: rawData, fetching, error }] = useListTpYieldTypesQuery();
 
   const data = rawData
     ? rawData.practice_yield_type.map(({ name }) => name)
     : [];
 
-  return { data, rawData, loading, error };
+  return { data, rawData, loading: fetching, error };
 };

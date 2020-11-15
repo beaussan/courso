@@ -7,6 +7,7 @@ import {
   map,
   startWith,
   catchError,
+  distinctUntilChanged,
 } from 'rxjs/operators';
 import { User } from 'firebase';
 import { user, authState } from 'rxfire/auth';
@@ -47,6 +48,12 @@ export const userWithCorrectToken$ = user(auth).pipe(
 
 export const correctToken$ = userWithCorrectToken$.pipe(
   switchMap((user) => (user ? from(user.getIdToken()) : of(undefined))),
+  distinctUntilChanged(),
+  shareReplay({
+    bufferSize: 1,
+    refCount: true,
+  }),
+  log('correctToken$'),
 );
 
 export const authState$: Observable<AuthState> = combineLatest([

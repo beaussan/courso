@@ -2,7 +2,7 @@ import React from 'react';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
 import { useNavigate, useParams } from 'react-router-dom';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import {
   HandOffByIdQuery,
   useHandOffByIdQuery,
@@ -95,7 +95,7 @@ interface HandoffForm {
 
 const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
   useTimeInterval(1);
-  const [submitHandoff, { loading }] = useSubmitHandoffMutation();
+  const [{ fetching }, submitHandoff] = useSubmitHandoffMutation();
   const currDate = new Date();
   const close = new Date(data.practice_to_promotion_by_pk?.close_date);
   const open = new Date(data.practice_to_promotion_by_pk?.open_date);
@@ -178,7 +178,7 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
                 description={description}
               />
             ))}
-            <Loader visible={loading}>
+            <Loader visible={fetching}>
               <Button
                 isFull
                 disabled={!isValid || isValidating}
@@ -202,10 +202,10 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
 export const HandOffId = () => {
   const { handoffId } = useParams();
   const navigate = useNavigate();
-  const { data, error, loading } = useHandOffByIdQuery({
+  const [{ data, error }] = useHandOffByIdQuery({
     variables: { id: handoffId },
   });
-  if (!loading && (!data?.practice_to_promotion_by_pk || error)) {
+  if (!data?.practice_to_promotion_by_pk || error) {
     navigate('../');
   }
 
@@ -220,16 +220,14 @@ export const HandOffId = () => {
   }
   return (
     <>
-      <Loader visible={loading}>
-        <PageHead className="">
-          <div className="flex items-center">
-            <BackButton className="mr-2" />
-            {'Handoff for '} {data?.practice_to_promotion_by_pk?.practice.title}
-          </div>
-        </PageHead>
-        {body}
-        <DebugJson json={data} />
-      </Loader>
+      <PageHead className="">
+        <div className="flex items-center">
+          <BackButton className="mr-2" />
+          {'Handoff for '} {data?.practice_to_promotion_by_pk?.practice.title}
+        </div>
+      </PageHead>
+      {body}
+      <DebugJson json={data} />
     </>
   );
 };

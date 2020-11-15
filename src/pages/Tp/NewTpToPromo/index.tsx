@@ -5,7 +5,7 @@ import {
   Promotion,
   useInsertNewPracticeToPromotionMutation,
 } from '../../../generated/graphql';
-import { gql } from '@apollo/client/core';
+import gql from 'graphql-tag';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useToasts } from 'react-toast-notifications';
 import { DateTimeInputRangeField } from '../../../components/DateTimeInput';
@@ -19,6 +19,7 @@ import {
   set,
 } from 'date-fns';
 import * as yup from 'yup';
+import { useFormikMutationSubmit } from '../../../hooks/useFormikMutationSubmit';
 
 type promoItem = Pick<Promotion, 'id' | 'name' | 'years'>;
 
@@ -71,36 +72,19 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
   promotions,
   tpId,
 }) => {
-  const [insertNewTpToPromo] = useInsertNewPracticeToPromotionMutation();
+  const [{}, insertNewTpToPromo] = useInsertNewPracticeToPromotionMutation();
   const [isModalOpen, setModalOpen] = useState(false);
-  const { addToast } = useToasts();
   const onCloseModal = () => setModalOpen(false);
-
-  const onSubmit = async (
-    values: NewTpToPromoForm,
-    formikHelpers: FormikHelpers<NewTpToPromoForm>,
-  ) => {
-    try {
-      formikHelpers.setSubmitting(true);
-      await insertNewTpToPromo({
-        variables: {
-          promotion_id: values.promotion.id,
-          practice_id: tpId,
-          close_date: formatRFC3339(values.end),
-          open_date: formatRFC3339(values.start),
-        },
-      });
-      setModalOpen(false);
-      addToast('Practice successfully linked to promotion', {
-        appearance: 'success',
-      });
-    } catch (e) {
-      console.error(e);
-      addToast('An error occured, please try again latter', {
-        appearance: 'error',
-      });
-    }
-  };
+  const onSubmit = useFormikMutationSubmit({
+    mutation: insertNewTpToPromo,
+    successMessage: '',
+    mapFormData: (values: NewTpToPromoForm) => ({
+      promotion_id: values.promotion.id,
+      practice_id: tpId,
+      close_date: formatRFC3339(values.end),
+      open_date: formatRFC3339(values.start),
+    }),
+  });
 
   return (
     <>
