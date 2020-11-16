@@ -49,8 +49,6 @@ const validateData = async (values: Partial<NewPromo>) => {
     errors.csv = 'Csv is not defined !';
   } else {
     const parsedData = parseCsv(values.csv);
-    console.log(parsedData);
-
     try {
       await studentValidator.validate(parsedData);
     } catch (e) {

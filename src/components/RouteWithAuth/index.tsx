@@ -15,7 +15,6 @@ export const RouteWithRule: React.FC<RouteProps> = ({ ...rest }) => {
       navigate('/login');
     }
   }, [authState, navigate]);
-  console.log('RouteWithRule', { user, userLoading, authState, error });
 
   if (authState === 'loading' || userLoading) {
     return <LoadingFullScreen />;

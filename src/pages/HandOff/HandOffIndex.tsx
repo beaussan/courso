@@ -132,7 +132,7 @@ export const HandOffIndex: React.FC = () => {
   const currDate = new Date();
   const navigate = useNavigate();
   const [{ data, error }] = useHandoffListQuery();
-  console.log({ data, error });
+
   const sortedData = sortToIsOpenFirst(data?.practice_to_course ?? []);
   return (
     <>

@@ -25,21 +25,8 @@ const ENDPOINT = '/v1/graphql';
 const WS_URL = `${WS_BASE_URL}${ENDPOINT}`;
 const HTTP_URL = `${HTTP_BASE_URL}${ENDPOINT}`;
 
-const fancyLogPrint = (toPrint: string) =>
-  console.log(
-    `%c${toPrint}`,
-    'font-weight: bold; font-size: 50px; color: red; text-shadow: 3px 3px 0 rgb(217, 31, 38) , 6px 6px 0 rgb(226, 91, 14), 9px 9px 0 rgb(245, 221, 8), 12px 12px 0 rgb(5, 148, 68), 15px 15px 0 rgb(2, 135, 206), 18px 18px 0 rgb(4, 77, 245), 21px 21px 0 rgb(42, 21, 113); line-height: 2.5;padding-right: 20px',
-  );
-
 export const createUrqlClient = (token: string | undefined) => {
-  const clientRandomNumber = Math.floor(Math.random() * 20);
-  const fancyPrint = (toPrint: string) =>
-    fancyLogPrint(`${clientRandomNumber} : ${toPrint}`);
-  fancyPrint(
-    `Creating urql client with ${token ? token.substring(0, 10) : 'no token'}`,
-  );
   const tokenHeader = token ? `Bearer ${token}` : undefined;
-  console.log('createUrqlClient options : ', { tokenHeader });
   const subscriptionClient = new SubscriptionClient(WS_URL, {
     reconnect: true,
     connectionParams: {
@@ -58,11 +45,6 @@ export const createUrqlClient = (token: string | undefined) => {
       return { token };
     },
     addAuthToOperation: ({ authState, operation }) => {
-      fancyPrint(
-        `Called add auth to op with ${
-          authState?.token ? authState?.token.substring(0, 10) : 'no token'
-        }`,
-      );
       if (!token) {
         return operation;
       }
@@ -87,10 +69,8 @@ export const createUrqlClient = (token: string | undefined) => {
         params.error.message ===
         '[GraphQL] Missing Authorization header in JWT authentication mode'
       ) {
-        console.log('didAuthError', true);
         return true;
       }
-      console.log('didAuthError', false);
       return false;
     },
   });

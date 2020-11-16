@@ -48,13 +48,6 @@ export const LoginComponent: React.FC<LoginCmpTypes> = ({ hero }) => {
   const showSmallLoader =
     loading || (authState === 'loading' && hasInitialLoading);
 
-  console.log({
-    showSmallLoader,
-    hasInitialLoading,
-    authState,
-    custom: authState === 'loading' && !hasInitialLoading,
-  });
-
   if ((authState === 'loading' || !authState) && !hasInitialLoading) {
     return <LoadingFullScreen />;
   }

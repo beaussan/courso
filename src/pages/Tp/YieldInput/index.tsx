@@ -28,11 +28,7 @@ export const YieldInput: React.FC<{
 }> = ({ yieldTypes, baseName, remove, index }) => {
   const { getFieldProps } = useFormikContext<any>();
   const { value } = getFieldProps(`${baseName}.method`);
-
-  console.log(value);
-
   const Extra = extraInupts[value];
-  console.log({ Extra });
 
   return (
     <div className="flex flex-col justify-between items-start bg-indigo-50 rounded-lg p-3 shadow">
