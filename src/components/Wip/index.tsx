@@ -3,7 +3,7 @@ import { Alert } from '../Alert';
 
 export const Wip: React.FC<{ todo: string[] }> = ({ todo }) => (
   <div className="bg-yellow-50 p-4 shadow-lg rounded-lg my-4">
-    <Alert title="This page is still WIP. This is what is missing :">
+    <Alert noShadow title="This page is still WIP. This is what is missing :">
       <ul className="list-disc pl-5 space-y-1">
         {todo.map((it) => (
           <li key={it}>{it}</li>

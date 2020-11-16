@@ -17,10 +17,10 @@ import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
 
 gql`
   query promotionDetails($id: uuid!) {
-    promotion_by_pk(id: $id) {
+    course_by_pk(id: $id) {
       name
       years
-      student_to_promotions_aggregate {
+      student_to_courses_aggregate {
         nodes {
           student {
             id
@@ -49,22 +49,27 @@ const LinkIndicator: React.FC<{ isLinked: boolean }> = ({ isLinked }) => {
 
 export const PromotionId = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { addToast } = useToasts();
-  const [{ data, error }] = usePromotionDetailsQuery({
+
+  const [{ data, error, fetching }] = usePromotionDetailsQuery({
     variables: { id: id },
   });
+  const navigate = useNavigate();
+  const { addToast } = useToasts();
   const [{}, sendStudentMail] = useSendStudentClaimMailMutation();
-  if (!data?.promotion_by_pk || error) {
+
+  if (fetching) {
+    return <Loader />;
+  }
+  if (!data?.course_by_pk || error) {
     navigate('../');
   }
 
   const onSendStudent = async () => {
     try {
-      if (!data?.promotion_by_pk?.student_to_promotions_aggregate?.nodes) {
+      if (!data?.course_by_pk?.student_to_courses_aggregate?.nodes) {
         return;
       }
-      const studentsIds = data.promotion_by_pk.student_to_promotions_aggregate.nodes.map(
+      const studentsIds = data.course_by_pk.student_to_courses_aggregate.nodes.map(
         ({ student }) => student.id,
       );
       const { data: dataMutation, error } = await sendStudentMail({
@@ -92,9 +97,9 @@ export const PromotionId = () => {
       <PageHead className="">
         <div className="flex items-center">
           <BackButton className="mr-2" />{' '}
-          {data?.promotion_by_pk?.name ?? 'Promo name'}
+          {data?.course_by_pk?.name ?? 'Promo name'}
           {' - '}
-          {data?.promotion_by_pk?.years}
+          {data?.course_by_pk?.years}
         </div>
       </PageHead>
       <div className="bg-white mt-4 p-4 rounded-lg shadow-md">
@@ -110,9 +115,7 @@ export const PromotionId = () => {
         <Table>
           <Table.TableHead items={['Name', 'Email', 'Is linked']} />
           <Table.TBody
-            items={
-              data?.promotion_by_pk?.student_to_promotions_aggregate.nodes ?? []
-            }
+            items={data?.course_by_pk?.student_to_courses_aggregate.nodes ?? []}
           >
             {({ student }) => (
               <>

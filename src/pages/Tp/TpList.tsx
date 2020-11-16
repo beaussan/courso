@@ -13,13 +13,13 @@ gql`
     practice {
       id
       title
-      practice_to_promotions {
+      practice_to_courses {
         id
         can_student_see_feedback
         can_student_see_grade
         close_date
         open_date
-        promotion {
+        course {
           name
           years
         }

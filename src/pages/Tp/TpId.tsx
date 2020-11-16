@@ -19,20 +19,20 @@ import { Loader } from '../../components/Loader';
 
 const fragments = {
   PracticeToPromoDetails: gql`
-    fragment PracticeToPromoDetails on practice_to_promotion {
-      promotion {
+    fragment PracticeToPromoDetails on practice_to_course {
+      course {
         name
         years
         id
-        student_to_promotions {
-          promotion_id
+        student_to_courses {
+          course_id
           student_id
           student {
             id
             full_name
             email
             practice_to_students(
-              where: { practice_to_promotion: { practice_id: { _eq: $id } } }
+              where: { practice_to_course: { practice_id: { _eq: $id } } }
             ) {
               created_at
               grade
@@ -69,7 +69,7 @@ gql`
           meta
         }
       }
-      practice_to_promotions_aggregate {
+      practice_to_courses_aggregate {
         aggregate {
           count
         }
@@ -84,7 +84,7 @@ gql`
 
 gql`
   query getPromotionForTpAdd {
-    promotion(order_by: { updated_at: asc }) {
+    course(order_by: { updated_at: asc }) {
       id
       name
       years
@@ -95,14 +95,14 @@ gql`
 const TpIdHandouts: React.FC<{ data: PracticeToPromoDetailsFragment }> = ({
   data,
 }) => {
-  const amountLeft = data.promotion.student_to_promotions
+  const amountLeft = data.course.student_to_courses
     .filter((itm) => itm.student?.practice_to_students.length === 0)
     .reduce((a) => a + 1, 0);
   return (
     <CardBox key={data.id}>
       <div className="leading-loose">
-        <span className="font-bold">{data.promotion.name}</span>
-        <span>{` - ${data.promotion.years}`}</span>
+        <span className="font-bold">{data.course.name}</span>
+        <span>{` - ${data.course.years}`}</span>
       </div>
       <div>
         <FormatDates
@@ -112,12 +112,11 @@ const TpIdHandouts: React.FC<{ data: PracticeToPromoDetailsFragment }> = ({
       </div>
       <pre>{data.can_student_see_feedback}</pre>
       <div>
-        Missing {amountLeft} handouts of{' '}
-        {data.promotion.student_to_promotions.length}
+        Missing {amountLeft} handouts of {data.course.student_to_courses.length}
       </div>
       <Table>
         <Table.TableHead items={['Name', 'Email', 'Has handout']} />
-        <Table.TBody items={data.promotion.student_to_promotions}>
+        <Table.TBody items={data.course.student_to_courses}>
           {({ student }) => {
             const hasStudentHandout = student.practice_to_students.length > 0;
             return (
@@ -190,12 +189,12 @@ export const TpId = () => {
   }
 
   const practiceUsedId = (
-    data?.practice_by_pk?.practice_to_promotions_aggregate.nodes ?? []
+    data?.practice_by_pk?.practice_to_courses_aggregate.nodes ?? []
   )
-    .map((it) => it.promotion)
+    .map((it) => it.course)
     .map(({ id }) => id);
 
-  const promotionAvailable = (promotions?.promotion ?? []).filter(
+  const promotionAvailable = (promotions?.course ?? []).filter(
     ({ id }) => !practiceUsedId.includes(id),
   );
 
@@ -228,16 +227,13 @@ export const TpId = () => {
 
       <div className="my-4 flex content-between justify-between items-baseline">
         <div className="text-xl font-bold">
-          {
-            data?.practice_by_pk?.practice_to_promotions_aggregate.aggregate
-              ?.count
-          }{' '}
+          {data?.practice_by_pk?.practice_to_courses_aggregate.aggregate?.count}{' '}
           promotion
         </div>
         <NewTpToPromo tpId={id} promotions={promotionAvailable} />
       </div>
       <div className="space-y-4">
-        {data?.practice_by_pk?.practice_to_promotions_aggregate?.nodes.map(
+        {data?.practice_by_pk?.practice_to_courses_aggregate?.nodes.map(
           (promo) => {
             return <TpIdHandouts data={promo} />;
           },

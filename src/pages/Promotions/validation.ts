@@ -1,7 +1,7 @@
 import {
   Student_Constraint,
   Student_Insert_Input,
-  Student_To_Promotion_Insert_Input,
+  Student_To_Course_Insert_Input,
   Student_Update_Column,
 } from '../../generated/graphql';
 import { parse } from 'papaparse';
@@ -25,7 +25,7 @@ export const parseCsv = (data: string): PartialStudent[] => {
 
 export const mapToSave = (
   students: PartialStudent[],
-): Student_To_Promotion_Insert_Input[] =>
+): Student_To_Course_Insert_Input[] =>
   students.map((data) => ({
     student: {
       data,

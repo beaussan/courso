@@ -12,7 +12,7 @@ import {
 
 const DATA_FOR_SUBMIT_HANDOFF = gql`
   query dataForSubmitHandoff($practiceToPromoId: uuid!, $userId: uuid!) {
-    practice_to_promotion_by_pk(id: $practiceToPromoId) {
+    practice_to_course_by_pk(id: $practiceToPromoId) {
       is_open
       practice {
         practice_yields {
@@ -26,10 +26,8 @@ const DATA_FOR_SUBMIT_HANDOFF = gql`
         submited
         id
       }
-      promotion {
-        student_to_promotions(
-          where: { student: { user_id: { _eq: $userId } } }
-        ) {
+      course {
+        student_to_courses(where: { student: { user_id: { _eq: $userId } } }) {
           student_id
         }
       }
@@ -48,7 +46,7 @@ const MUTATION_SUBMIT_HANDOFF = gql`
         submited: true
         practice_to_student_yields: { data: $studentYields }
         student_id: $student_id
-        promotion_practice_id: $promotion_practice_id
+        course_practice_id: $promotion_practice_id
       }
     ) {
       affected_rows
@@ -71,7 +69,7 @@ export const submitHandoff: ActionFn<
   SubmitHandoffOutput
 > = async (args, sessionVars) => {
   await argValidation.validate(args);
-  const { practice_to_promotion_by_pk } = await gqlClient.request<
+  const { practice_to_course_by_pk } = await gqlClient.request<
     DataForSubmitHandoffQuery,
     DataForSubmitHandoffQueryVariables
   >(DATA_FOR_SUBMIT_HANDOFF, {
@@ -79,20 +77,17 @@ export const submitHandoff: ActionFn<
     userId: sessionVars['x-hasura-user-id'],
   });
 
-  if (!practice_to_promotion_by_pk) {
+  if (!practice_to_course_by_pk) {
     throw new https.HttpsError('not-found', 'Not found');
   }
-  if (
-    (practice_to_promotion_by_pk.promotion.student_to_promotions.length ??
-      0) === 0
-  ) {
+  if ((practice_to_course_by_pk.course.student_to_courses.length ?? 0) === 0) {
     throw new https.HttpsError('not-found', 'Not found');
   }
-  if (!practice_to_promotion_by_pk.practice?.id) {
+  if (!practice_to_course_by_pk.practice?.id) {
     throw new https.HttpsError('not-found', 'Not found');
   }
   const userYieldsId = args.yields.map(({ yieldId }) => yieldId);
-  const serverYieldsIds = practice_to_promotion_by_pk.practice.practice_yields.map(
+  const serverYieldsIds = practice_to_course_by_pk.practice.practice_yields.map(
     ({ id }) => id,
   );
   if (userYieldsId.length !== serverYieldsIds.length) {
@@ -102,10 +97,10 @@ export const submitHandoff: ActionFn<
     throw new https.HttpsError('invalid-argument', 'Invalid yields');
   }
 
-  if (practice_to_promotion_by_pk.practice_to_students.length > 0) {
+  if (practice_to_course_by_pk.practice_to_students.length > 0) {
     throw new https.HttpsError('invalid-argument', 'Already submitted');
   }
-  if (!practice_to_promotion_by_pk.is_open) {
+  if (!practice_to_course_by_pk.is_open) {
     throw new https.HttpsError('invalid-argument', 'Submit is not open');
   }
 
@@ -114,7 +109,7 @@ export const submitHandoff: ActionFn<
     MutationSubmitHandoffMutationVariables
   >(MUTATION_SUBMIT_HANDOFF, {
     student_id:
-      practice_to_promotion_by_pk.promotion.student_to_promotions[0].student_id,
+      practice_to_course_by_pk.course.student_to_courses[0].student_id,
     promotion_practice_id: args.practiceToPromotionId,
     studentYields: args.yields.map(({ yieldId, value }) => ({
       value,

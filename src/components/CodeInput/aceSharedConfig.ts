@@ -1,7 +1,7 @@
 import '../../fonts/monoid/monoid.css';
 
 import 'react-ace';
-import { AceEditorProps } from 'react-ace/types';
+import { IAceEditorProps } from 'react-ace';
 
 export const languages = [
   'javascript',
@@ -30,7 +30,7 @@ export const languages = [
 ] as const;
 export type SupportedLanguages = typeof languages;
 
-export const themes = ['twilight'];
+export const themes = ['dracula'];
 
 languages.forEach((lang) => {
   require(`ace-builds/src-noconflict/mode-${lang}`);
@@ -41,8 +41,9 @@ themes.forEach((theme) => {
   require(`ace-builds/src-noconflict/theme-${theme}`);
 });
 
-const aceSharedProps: Partial<AceEditorProps> = {
-  theme: 'twilight',
+const aceSharedProps: IAceEditorProps = {
+  theme: themes[0],
+  width: 'w-full',
   setOptions: {
     fontFamily: 'Monoid',
     useWorker: false,
@@ -54,9 +55,9 @@ const aceSharedProps: Partial<AceEditorProps> = {
   },
 };
 
-export const makeAceProps: (
-  props: Partial<AceEditorProps>,
-) => AceEditorProps = (props) => {
+export const makeAceProps: (props: IAceEditorProps) => IAceEditorProps = (
+  props,
+) => {
   return {
     ...aceSharedProps,
     ...props,

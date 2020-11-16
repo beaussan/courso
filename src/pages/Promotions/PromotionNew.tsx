@@ -16,13 +16,13 @@ gql`
   mutation CreatePromotion(
     $name: String!
     $years: String!
-    $students: [student_to_promotion_insert_input!]!
+    $students: [student_to_course_insert_input!]!
   ) {
-    insert_promotion_one(
+    insert_course_one(
       object: {
         name: $name
         years: $years
-        student_to_promotions: { data: $students }
+        student_to_courses: { data: $students }
       }
     ) {
       created_at

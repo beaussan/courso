@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Modal } from '../../../components/Modal';
 import {
-  Promotion,
+  Course,
   useInsertNewPracticeToPromotionMutation,
 } from '../../../generated/graphql';
 import gql from 'graphql-tag';
@@ -21,7 +21,7 @@ import {
 import * as yup from 'yup';
 import { useFormikMutationSubmit } from '../../../hooks/useFormikMutationSubmit';
 
-type promoItem = Pick<Promotion, 'id' | 'name' | 'years'>;
+type promoItem = Pick<Course, 'id' | 'name' | 'years'>;
 
 export interface NewTpToPromoProps {
   promotions: promoItem[];
@@ -35,14 +35,14 @@ gql`
     $practice_id: uuid!
     $promotion_id: uuid!
   ) {
-    insert_practice_to_promotion(
+    insert_practice_to_course(
       objects: {
         can_student_see_feedback: false
         can_student_see_grade: false
         close_date: $close_date
         open_date: $open_date
         practice_id: $practice_id
-        promotion_id: $promotion_id
+        course_id: $promotion_id
       }
     ) {
       returning {
@@ -77,7 +77,8 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
   const onCloseModal = () => setModalOpen(false);
   const onSubmit = useFormikMutationSubmit({
     mutation: insertNewTpToPromo,
-    successMessage: '',
+    successMessage: 'Successfully link',
+    navigateDestination: undefined,
     mapFormData: (values: NewTpToPromoForm) => ({
       promotion_id: values.promotion.id,
       practice_id: tpId,

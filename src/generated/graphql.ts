@@ -84,6 +84,240 @@ export type YieldForHandoff = {
   yieldId: Scalars['uuid'];
 };
 
+/** columns and relationships of "course" */
+export type Course = {
+  __typename?: 'course';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  name: Scalars['String'];
+  /** An array relationship */
+  practice_to_courses: Array<Practice_To_Course>;
+  /** An aggregated array relationship */
+  practice_to_courses_aggregate: Practice_To_Course_Aggregate;
+  /** An array relationship */
+  student_to_courses: Array<Student_To_Course>;
+  /** An aggregated array relationship */
+  student_to_courses_aggregate: Student_To_Course_Aggregate;
+  updated_at: Scalars['timestamptz'];
+  years: Scalars['String'];
+};
+
+/** columns and relationships of "course" */
+export type CoursePractice_To_CoursesArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
+};
+
+/** columns and relationships of "course" */
+export type CoursePractice_To_Courses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
+};
+
+/** columns and relationships of "course" */
+export type CourseStudent_To_CoursesArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
+};
+
+/** columns and relationships of "course" */
+export type CourseStudent_To_Courses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
+};
+
+/** aggregated selection of "course" */
+export type Course_Aggregate = {
+  __typename?: 'course_aggregate';
+  aggregate?: Maybe<Course_Aggregate_Fields>;
+  nodes: Array<Course>;
+};
+
+/** aggregate fields of "course" */
+export type Course_Aggregate_Fields = {
+  __typename?: 'course_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Course_Max_Fields>;
+  min?: Maybe<Course_Min_Fields>;
+};
+
+/** aggregate fields of "course" */
+export type Course_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Course_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "course" */
+export type Course_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Course_Max_Order_By>;
+  min?: Maybe<Course_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "course" */
+export type Course_Arr_Rel_Insert_Input = {
+  data: Array<Course_Insert_Input>;
+  on_conflict?: Maybe<Course_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "course". All fields are combined with a logical 'AND'. */
+export type Course_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Course_Bool_Exp>>>;
+  _not?: Maybe<Course_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Course_Bool_Exp>>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  practice_to_courses?: Maybe<Practice_To_Course_Bool_Exp>;
+  student_to_courses?: Maybe<Student_To_Course_Bool_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  years?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "course" */
+export enum Course_Constraint {
+  /** unique or primary key constraint */
+  PromotionNameYearsKey = 'promotion_name_years_key',
+  /** unique or primary key constraint */
+  PromotionPkey = 'promotion_pkey',
+}
+
+/** input type for inserting data into table "course" */
+export type Course_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  practice_to_courses?: Maybe<Practice_To_Course_Arr_Rel_Insert_Input>;
+  student_to_courses?: Maybe<Student_To_Course_Arr_Rel_Insert_Input>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  years?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Course_Max_Fields = {
+  __typename?: 'course_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  years?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "course" */
+export type Course_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  years?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Course_Min_Fields = {
+  __typename?: 'course_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  years?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "course" */
+export type Course_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  years?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "course" */
+export type Course_Mutation_Response = {
+  __typename?: 'course_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Course>;
+};
+
+/** input type for inserting object relation for remote table "course" */
+export type Course_Obj_Rel_Insert_Input = {
+  data: Course_Insert_Input;
+  on_conflict?: Maybe<Course_On_Conflict>;
+};
+
+/** on conflict condition type for table "course" */
+export type Course_On_Conflict = {
+  constraint: Course_Constraint;
+  update_columns: Array<Course_Update_Column>;
+  where?: Maybe<Course_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "course" */
+export type Course_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  practice_to_courses_aggregate?: Maybe<Practice_To_Course_Aggregate_Order_By>;
+  student_to_courses_aggregate?: Maybe<Student_To_Course_Aggregate_Order_By>;
+  updated_at?: Maybe<Order_By>;
+  years?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "course" */
+export type Course_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "course" */
+export enum Course_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Years = 'years',
+}
+
+/** input type for updating data in table "course" */
+export type Course_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  years?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "course" */
+export enum Course_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Years = 'years',
+}
+
 /** expression to compare columns of type json. All fields are combined with logical 'AND'. */
 export type Json_Comparison_Exp = {
   _eq?: Maybe<Scalars['json']>;
@@ -132,6 +366,10 @@ export type Mutation_Root = {
   deleteUser?: Maybe<User_Mutation_Response>;
   /** delete single row from the table: "user" */
   deleteUserByPk?: Maybe<User>;
+  /** delete data from the table: "course" */
+  delete_course?: Maybe<Course_Mutation_Response>;
+  /** delete single row from the table: "course" */
+  delete_course_by_pk?: Maybe<Course>;
   /** delete data from the table: "practice" */
   delete_practice?: Maybe<Practice_Mutation_Response>;
   /** delete single row from the table: "practice" */
@@ -146,10 +384,10 @@ export type Mutation_Root = {
   >;
   /** delete single row from the table: "practice_grade_metric_type" */
   delete_practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
-  /** delete data from the table: "practice_to_promotion" */
-  delete_practice_to_promotion?: Maybe<Practice_To_Promotion_Mutation_Response>;
-  /** delete single row from the table: "practice_to_promotion" */
-  delete_practice_to_promotion_by_pk?: Maybe<Practice_To_Promotion>;
+  /** delete data from the table: "practice_to_course" */
+  delete_practice_to_course?: Maybe<Practice_To_Course_Mutation_Response>;
+  /** delete single row from the table: "practice_to_course" */
+  delete_practice_to_course_by_pk?: Maybe<Practice_To_Course>;
   /** delete data from the table: "practice_to_student" */
   delete_practice_to_student?: Maybe<Practice_To_Student_Mutation_Response>;
   /** delete single row from the table: "practice_to_student" */
@@ -176,22 +414,22 @@ export type Mutation_Root = {
   delete_practice_yield_type?: Maybe<Practice_Yield_Type_Mutation_Response>;
   /** delete single row from the table: "practice_yield_type" */
   delete_practice_yield_type_by_pk?: Maybe<Practice_Yield_Type>;
-  /** delete data from the table: "promotion" */
-  delete_promotion?: Maybe<Promotion_Mutation_Response>;
-  /** delete single row from the table: "promotion" */
-  delete_promotion_by_pk?: Maybe<Promotion>;
   /** delete data from the table: "student" */
   delete_student?: Maybe<Student_Mutation_Response>;
   /** delete single row from the table: "student" */
   delete_student_by_pk?: Maybe<Student>;
-  /** delete data from the table: "student_to_promotion" */
-  delete_student_to_promotion?: Maybe<Student_To_Promotion_Mutation_Response>;
-  /** delete single row from the table: "student_to_promotion" */
-  delete_student_to_promotion_by_pk?: Maybe<Student_To_Promotion>;
+  /** delete data from the table: "student_to_course" */
+  delete_student_to_course?: Maybe<Student_To_Course_Mutation_Response>;
+  /** delete single row from the table: "student_to_course" */
+  delete_student_to_course_by_pk?: Maybe<Student_To_Course>;
   /** insert data into the table: "user" */
   insertUser?: Maybe<User_Mutation_Response>;
   /** insert a single row into the table: "user" */
   insertUserOne?: Maybe<User>;
+  /** insert data into the table: "course" */
+  insert_course?: Maybe<Course_Mutation_Response>;
+  /** insert a single row into the table: "course" */
+  insert_course_one?: Maybe<Course>;
   /** insert data into the table: "practice" */
   insert_practice?: Maybe<Practice_Mutation_Response>;
   /** insert data into the table: "practice_grade_metric" */
@@ -206,10 +444,10 @@ export type Mutation_Root = {
   insert_practice_grade_metric_type_one?: Maybe<Practice_Grade_Metric_Type>;
   /** insert a single row into the table: "practice" */
   insert_practice_one?: Maybe<Practice>;
-  /** insert data into the table: "practice_to_promotion" */
-  insert_practice_to_promotion?: Maybe<Practice_To_Promotion_Mutation_Response>;
-  /** insert a single row into the table: "practice_to_promotion" */
-  insert_practice_to_promotion_one?: Maybe<Practice_To_Promotion>;
+  /** insert data into the table: "practice_to_course" */
+  insert_practice_to_course?: Maybe<Practice_To_Course_Mutation_Response>;
+  /** insert a single row into the table: "practice_to_course" */
+  insert_practice_to_course_one?: Maybe<Practice_To_Course>;
   /** insert data into the table: "practice_to_student" */
   insert_practice_to_student?: Maybe<Practice_To_Student_Mutation_Response>;
   /** insert data into the table: "practice_to_student_grade_metric" */
@@ -236,18 +474,14 @@ export type Mutation_Root = {
   insert_practice_yield_type?: Maybe<Practice_Yield_Type_Mutation_Response>;
   /** insert a single row into the table: "practice_yield_type" */
   insert_practice_yield_type_one?: Maybe<Practice_Yield_Type>;
-  /** insert data into the table: "promotion" */
-  insert_promotion?: Maybe<Promotion_Mutation_Response>;
-  /** insert a single row into the table: "promotion" */
-  insert_promotion_one?: Maybe<Promotion>;
   /** insert data into the table: "student" */
   insert_student?: Maybe<Student_Mutation_Response>;
   /** insert a single row into the table: "student" */
   insert_student_one?: Maybe<Student>;
-  /** insert data into the table: "student_to_promotion" */
-  insert_student_to_promotion?: Maybe<Student_To_Promotion_Mutation_Response>;
-  /** insert a single row into the table: "student_to_promotion" */
-  insert_student_to_promotion_one?: Maybe<Student_To_Promotion>;
+  /** insert data into the table: "student_to_course" */
+  insert_student_to_course?: Maybe<Student_To_Course_Mutation_Response>;
+  /** insert a single row into the table: "student_to_course" */
+  insert_student_to_course_one?: Maybe<Student_To_Course>;
   /** perform the action: "linkStudentToUser" */
   linkStudentToUser?: Maybe<LinkStudentToUserOutput>;
   /** perform the action: "sendStudentClaimMail" */
@@ -258,6 +492,10 @@ export type Mutation_Root = {
   updateUser?: Maybe<User_Mutation_Response>;
   /** update single row of the table: "user" */
   updateUserByPk?: Maybe<User>;
+  /** update data of the table: "course" */
+  update_course?: Maybe<Course_Mutation_Response>;
+  /** update single row of the table: "course" */
+  update_course_by_pk?: Maybe<Course>;
   /** update data of the table: "practice" */
   update_practice?: Maybe<Practice_Mutation_Response>;
   /** update single row of the table: "practice" */
@@ -272,10 +510,10 @@ export type Mutation_Root = {
   >;
   /** update single row of the table: "practice_grade_metric_type" */
   update_practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
-  /** update data of the table: "practice_to_promotion" */
-  update_practice_to_promotion?: Maybe<Practice_To_Promotion_Mutation_Response>;
-  /** update single row of the table: "practice_to_promotion" */
-  update_practice_to_promotion_by_pk?: Maybe<Practice_To_Promotion>;
+  /** update data of the table: "practice_to_course" */
+  update_practice_to_course?: Maybe<Practice_To_Course_Mutation_Response>;
+  /** update single row of the table: "practice_to_course" */
+  update_practice_to_course_by_pk?: Maybe<Practice_To_Course>;
   /** update data of the table: "practice_to_student" */
   update_practice_to_student?: Maybe<Practice_To_Student_Mutation_Response>;
   /** update single row of the table: "practice_to_student" */
@@ -302,18 +540,14 @@ export type Mutation_Root = {
   update_practice_yield_type?: Maybe<Practice_Yield_Type_Mutation_Response>;
   /** update single row of the table: "practice_yield_type" */
   update_practice_yield_type_by_pk?: Maybe<Practice_Yield_Type>;
-  /** update data of the table: "promotion" */
-  update_promotion?: Maybe<Promotion_Mutation_Response>;
-  /** update single row of the table: "promotion" */
-  update_promotion_by_pk?: Maybe<Promotion>;
   /** update data of the table: "student" */
   update_student?: Maybe<Student_Mutation_Response>;
   /** update single row of the table: "student" */
   update_student_by_pk?: Maybe<Student>;
-  /** update data of the table: "student_to_promotion" */
-  update_student_to_promotion?: Maybe<Student_To_Promotion_Mutation_Response>;
-  /** update single row of the table: "student_to_promotion" */
-  update_student_to_promotion_by_pk?: Maybe<Student_To_Promotion>;
+  /** update data of the table: "student_to_course" */
+  update_student_to_course?: Maybe<Student_To_Course_Mutation_Response>;
+  /** update single row of the table: "student_to_course" */
+  update_student_to_course_by_pk?: Maybe<Student_To_Course>;
 };
 
 /** mutation root */
@@ -323,6 +557,16 @@ export type Mutation_RootDeleteUserArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteUserByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_CourseArgs = {
+  where: Course_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Course_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -357,12 +601,12 @@ export type Mutation_RootDelete_Practice_Grade_Metric_Type_By_PkArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootDelete_Practice_To_PromotionArgs = {
-  where: Practice_To_Promotion_Bool_Exp;
+export type Mutation_RootDelete_Practice_To_CourseArgs = {
+  where: Practice_To_Course_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootDelete_Practice_To_Promotion_By_PkArgs = {
+export type Mutation_RootDelete_Practice_To_Course_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -417,16 +661,6 @@ export type Mutation_RootDelete_Practice_Yield_Type_By_PkArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootDelete_PromotionArgs = {
-  where: Promotion_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootDelete_Promotion_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-/** mutation root */
 export type Mutation_RootDelete_StudentArgs = {
   where: Student_Bool_Exp;
 };
@@ -437,13 +671,13 @@ export type Mutation_RootDelete_Student_By_PkArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootDelete_Student_To_PromotionArgs = {
-  where: Student_To_Promotion_Bool_Exp;
+export type Mutation_RootDelete_Student_To_CourseArgs = {
+  where: Student_To_Course_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootDelete_Student_To_Promotion_By_PkArgs = {
-  promotion_id: Scalars['uuid'];
+export type Mutation_RootDelete_Student_To_Course_By_PkArgs = {
+  course_id: Scalars['uuid'];
   student_id: Scalars['uuid'];
 };
 
@@ -457,6 +691,18 @@ export type Mutation_RootInsertUserArgs = {
 export type Mutation_RootInsertUserOneArgs = {
   object: User_Insert_Input;
   on_conflict?: Maybe<User_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_CourseArgs = {
+  objects: Array<Course_Insert_Input>;
+  on_conflict?: Maybe<Course_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Course_OneArgs = {
+  object: Course_Insert_Input;
+  on_conflict?: Maybe<Course_On_Conflict>;
 };
 
 /** mutation root */
@@ -496,15 +742,15 @@ export type Mutation_RootInsert_Practice_OneArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootInsert_Practice_To_PromotionArgs = {
-  objects: Array<Practice_To_Promotion_Insert_Input>;
-  on_conflict?: Maybe<Practice_To_Promotion_On_Conflict>;
+export type Mutation_RootInsert_Practice_To_CourseArgs = {
+  objects: Array<Practice_To_Course_Insert_Input>;
+  on_conflict?: Maybe<Practice_To_Course_On_Conflict>;
 };
 
 /** mutation root */
-export type Mutation_RootInsert_Practice_To_Promotion_OneArgs = {
-  object: Practice_To_Promotion_Insert_Input;
-  on_conflict?: Maybe<Practice_To_Promotion_On_Conflict>;
+export type Mutation_RootInsert_Practice_To_Course_OneArgs = {
+  object: Practice_To_Course_Insert_Input;
+  on_conflict?: Maybe<Practice_To_Course_On_Conflict>;
 };
 
 /** mutation root */
@@ -568,18 +814,6 @@ export type Mutation_RootInsert_Practice_Yield_Type_OneArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootInsert_PromotionArgs = {
-  objects: Array<Promotion_Insert_Input>;
-  on_conflict?: Maybe<Promotion_On_Conflict>;
-};
-
-/** mutation root */
-export type Mutation_RootInsert_Promotion_OneArgs = {
-  object: Promotion_Insert_Input;
-  on_conflict?: Maybe<Promotion_On_Conflict>;
-};
-
-/** mutation root */
 export type Mutation_RootInsert_StudentArgs = {
   objects: Array<Student_Insert_Input>;
   on_conflict?: Maybe<Student_On_Conflict>;
@@ -592,15 +826,15 @@ export type Mutation_RootInsert_Student_OneArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootInsert_Student_To_PromotionArgs = {
-  objects: Array<Student_To_Promotion_Insert_Input>;
-  on_conflict?: Maybe<Student_To_Promotion_On_Conflict>;
+export type Mutation_RootInsert_Student_To_CourseArgs = {
+  objects: Array<Student_To_Course_Insert_Input>;
+  on_conflict?: Maybe<Student_To_Course_On_Conflict>;
 };
 
 /** mutation root */
-export type Mutation_RootInsert_Student_To_Promotion_OneArgs = {
-  object: Student_To_Promotion_Insert_Input;
-  on_conflict?: Maybe<Student_To_Promotion_On_Conflict>;
+export type Mutation_RootInsert_Student_To_Course_OneArgs = {
+  object: Student_To_Course_Insert_Input;
+  on_conflict?: Maybe<Student_To_Course_On_Conflict>;
 };
 
 /** mutation root */
@@ -629,6 +863,18 @@ export type Mutation_RootUpdateUserArgs = {
 export type Mutation_RootUpdateUserByPkArgs = {
   _set?: Maybe<User_Set_Input>;
   pk_columns: User_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_CourseArgs = {
+  _set?: Maybe<Course_Set_Input>;
+  where: Course_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Course_By_PkArgs = {
+  _set?: Maybe<Course_Set_Input>;
+  pk_columns: Course_Pk_Columns_Input;
 };
 
 /** mutation root */
@@ -680,15 +926,15 @@ export type Mutation_RootUpdate_Practice_Grade_Metric_Type_By_PkArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Practice_To_PromotionArgs = {
-  _set?: Maybe<Practice_To_Promotion_Set_Input>;
-  where: Practice_To_Promotion_Bool_Exp;
+export type Mutation_RootUpdate_Practice_To_CourseArgs = {
+  _set?: Maybe<Practice_To_Course_Set_Input>;
+  where: Practice_To_Course_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Practice_To_Promotion_By_PkArgs = {
-  _set?: Maybe<Practice_To_Promotion_Set_Input>;
-  pk_columns: Practice_To_Promotion_Pk_Columns_Input;
+export type Mutation_RootUpdate_Practice_To_Course_By_PkArgs = {
+  _set?: Maybe<Practice_To_Course_Set_Input>;
+  pk_columns: Practice_To_Course_Pk_Columns_Input;
 };
 
 /** mutation root */
@@ -780,18 +1026,6 @@ export type Mutation_RootUpdate_Practice_Yield_Type_By_PkArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_PromotionArgs = {
-  _set?: Maybe<Promotion_Set_Input>;
-  where: Promotion_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_Promotion_By_PkArgs = {
-  _set?: Maybe<Promotion_Set_Input>;
-  pk_columns: Promotion_Pk_Columns_Input;
-};
-
-/** mutation root */
 export type Mutation_RootUpdate_StudentArgs = {
   _set?: Maybe<Student_Set_Input>;
   where: Student_Bool_Exp;
@@ -804,15 +1038,15 @@ export type Mutation_RootUpdate_Student_By_PkArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Student_To_PromotionArgs = {
-  _set?: Maybe<Student_To_Promotion_Set_Input>;
-  where: Student_To_Promotion_Bool_Exp;
+export type Mutation_RootUpdate_Student_To_CourseArgs = {
+  _set?: Maybe<Student_To_Course_Set_Input>;
+  where: Student_To_Course_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Student_To_Promotion_By_PkArgs = {
-  _set?: Maybe<Student_To_Promotion_Set_Input>;
-  pk_columns: Student_To_Promotion_Pk_Columns_Input;
+export type Mutation_RootUpdate_Student_To_Course_By_PkArgs = {
+  _set?: Maybe<Student_To_Course_Set_Input>;
+  pk_columns: Student_To_Course_Pk_Columns_Input;
 };
 
 /** column ordering options */
@@ -842,9 +1076,9 @@ export type Practice = {
   /** An aggregated array relationship */
   practice_grade_metrics_aggregate: Practice_Grade_Metric_Aggregate;
   /** An array relationship */
-  practice_to_promotions: Array<Practice_To_Promotion>;
+  practice_to_courses: Array<Practice_To_Course>;
   /** An aggregated array relationship */
-  practice_to_promotions_aggregate: Practice_To_Promotion_Aggregate;
+  practice_to_courses_aggregate: Practice_To_Course_Aggregate;
   /** An array relationship */
   practice_yields: Array<Practice_Yield>;
   /** An aggregated array relationship */
@@ -872,21 +1106,21 @@ export type PracticePractice_Grade_Metrics_AggregateArgs = {
 };
 
 /** columns and relationships of "practice" */
-export type PracticePractice_To_PromotionsArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
+export type PracticePractice_To_CoursesArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
 };
 
 /** columns and relationships of "practice" */
-export type PracticePractice_To_Promotions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
+export type PracticePractice_To_Courses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
 };
 
 /** columns and relationships of "practice" */
@@ -950,7 +1184,7 @@ export type Practice_Bool_Exp = {
   description?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   practice_grade_metrics?: Maybe<Practice_Grade_Metric_Bool_Exp>;
-  practice_to_promotions?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  practice_to_courses?: Maybe<Practice_To_Course_Bool_Exp>;
   practice_yields?: Maybe<Practice_Yield_Bool_Exp>;
   title?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -968,6 +1202,7 @@ export enum Practice_Constraint {
 export type Practice_Grade_Metric = {
   __typename?: 'practice_grade_metric';
   created_at: Scalars['timestamptz'];
+  expected: Scalars['String'];
   feedbacks: Scalars['jsonb'];
   id: Scalars['uuid'];
   meta: Scalars['jsonb'];
@@ -1090,6 +1325,7 @@ export type Practice_Grade_Metric_Bool_Exp = {
   _not?: Maybe<Practice_Grade_Metric_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Practice_Grade_Metric_Bool_Exp>>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  expected?: Maybe<String_Comparison_Exp>;
   feedbacks?: Maybe<Jsonb_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   meta?: Maybe<Jsonb_Comparison_Exp>;
@@ -1139,6 +1375,7 @@ export type Practice_Grade_Metric_Inc_Input = {
 /** input type for inserting data into table "practice_grade_metric" */
 export type Practice_Grade_Metric_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  expected?: Maybe<Scalars['String']>;
   feedbacks?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['uuid']>;
   meta?: Maybe<Scalars['jsonb']>;
@@ -1162,6 +1399,7 @@ export type Practice_Grade_Metric_Insert_Input = {
 export type Practice_Grade_Metric_Max_Fields = {
   __typename?: 'practice_grade_metric_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  expected?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   points?: Maybe<Scalars['Int']>;
@@ -1173,6 +1411,7 @@ export type Practice_Grade_Metric_Max_Fields = {
 /** order by max() on columns of table "practice_grade_metric" */
 export type Practice_Grade_Metric_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  expected?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   points?: Maybe<Order_By>;
@@ -1185,6 +1424,7 @@ export type Practice_Grade_Metric_Max_Order_By = {
 export type Practice_Grade_Metric_Min_Fields = {
   __typename?: 'practice_grade_metric_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  expected?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   points?: Maybe<Scalars['Int']>;
@@ -1196,6 +1436,7 @@ export type Practice_Grade_Metric_Min_Fields = {
 /** order by min() on columns of table "practice_grade_metric" */
 export type Practice_Grade_Metric_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  expected?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   points?: Maybe<Order_By>;
@@ -1229,6 +1470,7 @@ export type Practice_Grade_Metric_On_Conflict = {
 /** ordering options when selecting data from "practice_grade_metric" */
 export type Practice_Grade_Metric_Order_By = {
   created_at?: Maybe<Order_By>;
+  expected?: Maybe<Order_By>;
   feedbacks?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   meta?: Maybe<Order_By>;
@@ -1262,6 +1504,8 @@ export enum Practice_Grade_Metric_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Expected = 'expected',
+  /** column name */
   Feedbacks = 'feedbacks',
   /** column name */
   Id = 'id',
@@ -1284,6 +1528,7 @@ export enum Practice_Grade_Metric_Select_Column {
 /** input type for updating data in table "practice_grade_metric" */
 export type Practice_Grade_Metric_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  expected?: Maybe<Scalars['String']>;
   feedbacks?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['uuid']>;
   meta?: Maybe<Scalars['jsonb']>;
@@ -1515,6 +1760,8 @@ export enum Practice_Grade_Metric_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Expected = 'expected',
+  /** column name */
   Feedbacks = 'feedbacks',
   /** column name */
   Id = 'id',
@@ -1573,7 +1820,7 @@ export type Practice_Insert_Input = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   practice_grade_metrics?: Maybe<Practice_Grade_Metric_Arr_Rel_Insert_Input>;
-  practice_to_promotions?: Maybe<Practice_To_Promotion_Arr_Rel_Insert_Input>;
+  practice_to_courses?: Maybe<Practice_To_Course_Arr_Rel_Insert_Input>;
   practice_yields?: Maybe<Practice_Yield_Arr_Rel_Insert_Input>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -1647,9 +1894,7 @@ export type Practice_Order_By = {
   practice_grade_metrics_aggregate?: Maybe<
     Practice_Grade_Metric_Aggregate_Order_By
   >;
-  practice_to_promotions_aggregate?: Maybe<
-    Practice_To_Promotion_Aggregate_Order_By
-  >;
+  practice_to_courses_aggregate?: Maybe<Practice_To_Course_Aggregate_Order_By>;
   practice_yields_aggregate?: Maybe<Practice_Yield_Aggregate_Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -1683,16 +1928,19 @@ export type Practice_Set_Input = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** columns and relationships of "practice_to_promotion" */
-export type Practice_To_Promotion = {
-  __typename?: 'practice_to_promotion';
+/** columns and relationships of "practice_to_course" */
+export type Practice_To_Course = {
+  __typename?: 'practice_to_course';
   can_student_see_feedback: Scalars['Boolean'];
   can_student_see_grade: Scalars['Boolean'];
   close_date?: Maybe<Scalars['timestamptz']>;
+  /** An object relationship */
+  course: Course;
+  course_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
   gitea_org_name?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
-  /** A computed field, executes function "is_open_practice_to_promotion_fn" */
+  /** A computed field, executes function "is_open_practice_to_course_fn" */
   is_open?: Maybe<Scalars['Boolean']>;
   open_date?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
@@ -1702,14 +1950,11 @@ export type Practice_To_Promotion = {
   practice_to_students: Array<Practice_To_Student>;
   /** An aggregated array relationship */
   practice_to_students_aggregate: Practice_To_Student_Aggregate;
-  /** An object relationship */
-  promotion: Promotion;
-  promotion_id: Scalars['uuid'];
   updated_at: Scalars['timestamptz'];
 };
 
-/** columns and relationships of "practice_to_promotion" */
-export type Practice_To_PromotionPractice_To_StudentsArgs = {
+/** columns and relationships of "practice_to_course" */
+export type Practice_To_CoursePractice_To_StudentsArgs = {
   distinct_on?: Maybe<Array<Practice_To_Student_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -1717,8 +1962,8 @@ export type Practice_To_PromotionPractice_To_StudentsArgs = {
   where?: Maybe<Practice_To_Student_Bool_Exp>;
 };
 
-/** columns and relationships of "practice_to_promotion" */
-export type Practice_To_PromotionPractice_To_Students_AggregateArgs = {
+/** columns and relationships of "practice_to_course" */
+export type Practice_To_CoursePractice_To_Students_AggregateArgs = {
   distinct_on?: Maybe<Array<Practice_To_Student_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -1726,48 +1971,50 @@ export type Practice_To_PromotionPractice_To_Students_AggregateArgs = {
   where?: Maybe<Practice_To_Student_Bool_Exp>;
 };
 
-/** aggregated selection of "practice_to_promotion" */
-export type Practice_To_Promotion_Aggregate = {
-  __typename?: 'practice_to_promotion_aggregate';
-  aggregate?: Maybe<Practice_To_Promotion_Aggregate_Fields>;
-  nodes: Array<Practice_To_Promotion>;
+/** aggregated selection of "practice_to_course" */
+export type Practice_To_Course_Aggregate = {
+  __typename?: 'practice_to_course_aggregate';
+  aggregate?: Maybe<Practice_To_Course_Aggregate_Fields>;
+  nodes: Array<Practice_To_Course>;
 };
 
-/** aggregate fields of "practice_to_promotion" */
-export type Practice_To_Promotion_Aggregate_Fields = {
-  __typename?: 'practice_to_promotion_aggregate_fields';
+/** aggregate fields of "practice_to_course" */
+export type Practice_To_Course_Aggregate_Fields = {
+  __typename?: 'practice_to_course_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Practice_To_Promotion_Max_Fields>;
-  min?: Maybe<Practice_To_Promotion_Min_Fields>;
+  max?: Maybe<Practice_To_Course_Max_Fields>;
+  min?: Maybe<Practice_To_Course_Min_Fields>;
 };
 
-/** aggregate fields of "practice_to_promotion" */
-export type Practice_To_Promotion_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
+/** aggregate fields of "practice_to_course" */
+export type Practice_To_Course_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Practice_To_Course_Select_Column>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "practice_to_promotion" */
-export type Practice_To_Promotion_Aggregate_Order_By = {
+/** order by aggregate values of table "practice_to_course" */
+export type Practice_To_Course_Aggregate_Order_By = {
   count?: Maybe<Order_By>;
-  max?: Maybe<Practice_To_Promotion_Max_Order_By>;
-  min?: Maybe<Practice_To_Promotion_Min_Order_By>;
+  max?: Maybe<Practice_To_Course_Max_Order_By>;
+  min?: Maybe<Practice_To_Course_Min_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "practice_to_promotion" */
-export type Practice_To_Promotion_Arr_Rel_Insert_Input = {
-  data: Array<Practice_To_Promotion_Insert_Input>;
-  on_conflict?: Maybe<Practice_To_Promotion_On_Conflict>;
+/** input type for inserting array relation for remote table "practice_to_course" */
+export type Practice_To_Course_Arr_Rel_Insert_Input = {
+  data: Array<Practice_To_Course_Insert_Input>;
+  on_conflict?: Maybe<Practice_To_Course_On_Conflict>;
 };
 
-/** Boolean expression to filter rows from the table "practice_to_promotion". All fields are combined with a logical 'AND'. */
-export type Practice_To_Promotion_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Practice_To_Promotion_Bool_Exp>>>;
-  _not?: Maybe<Practice_To_Promotion_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Practice_To_Promotion_Bool_Exp>>>;
+/** Boolean expression to filter rows from the table "practice_to_course". All fields are combined with a logical 'AND'. */
+export type Practice_To_Course_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Practice_To_Course_Bool_Exp>>>;
+  _not?: Maybe<Practice_To_Course_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Practice_To_Course_Bool_Exp>>>;
   can_student_see_feedback?: Maybe<Boolean_Comparison_Exp>;
   can_student_see_grade?: Maybe<Boolean_Comparison_Exp>;
   close_date?: Maybe<Timestamptz_Comparison_Exp>;
+  course?: Maybe<Course_Bool_Exp>;
+  course_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   gitea_org_name?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
@@ -1775,24 +2022,24 @@ export type Practice_To_Promotion_Bool_Exp = {
   practice?: Maybe<Practice_Bool_Exp>;
   practice_id?: Maybe<Uuid_Comparison_Exp>;
   practice_to_students?: Maybe<Practice_To_Student_Bool_Exp>;
-  promotion?: Maybe<Promotion_Bool_Exp>;
-  promotion_id?: Maybe<Uuid_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "practice_to_promotion" */
-export enum Practice_To_Promotion_Constraint {
+/** unique or primary key constraints on table "practice_to_course" */
+export enum Practice_To_Course_Constraint {
   /** unique or primary key constraint */
   PracticeToPromotionPkey = 'practice_to_promotion_pkey',
   /** unique or primary key constraint */
   PracticeToPromotionPromotionIdPracticeIdKey = 'practice_to_promotion_promotion_id_practice_id_key',
 }
 
-/** input type for inserting data into table "practice_to_promotion" */
-export type Practice_To_Promotion_Insert_Input = {
+/** input type for inserting data into table "practice_to_course" */
+export type Practice_To_Course_Insert_Input = {
   can_student_see_feedback?: Maybe<Scalars['Boolean']>;
   can_student_see_grade?: Maybe<Scalars['Boolean']>;
   close_date?: Maybe<Scalars['timestamptz']>;
+  course?: Maybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   gitea_org_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
@@ -1800,88 +2047,88 @@ export type Practice_To_Promotion_Insert_Input = {
   practice?: Maybe<Practice_Obj_Rel_Insert_Input>;
   practice_id?: Maybe<Scalars['uuid']>;
   practice_to_students?: Maybe<Practice_To_Student_Arr_Rel_Insert_Input>;
-  promotion?: Maybe<Promotion_Obj_Rel_Insert_Input>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
-export type Practice_To_Promotion_Max_Fields = {
-  __typename?: 'practice_to_promotion_max_fields';
+export type Practice_To_Course_Max_Fields = {
+  __typename?: 'practice_to_course_max_fields';
   close_date?: Maybe<Scalars['timestamptz']>;
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   gitea_org_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   open_date?: Maybe<Scalars['timestamptz']>;
   practice_id?: Maybe<Scalars['uuid']>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by max() on columns of table "practice_to_promotion" */
-export type Practice_To_Promotion_Max_Order_By = {
+/** order by max() on columns of table "practice_to_course" */
+export type Practice_To_Course_Max_Order_By = {
   close_date?: Maybe<Order_By>;
+  course_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   gitea_org_name?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   open_date?: Maybe<Order_By>;
   practice_id?: Maybe<Order_By>;
-  promotion_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
-export type Practice_To_Promotion_Min_Fields = {
-  __typename?: 'practice_to_promotion_min_fields';
+export type Practice_To_Course_Min_Fields = {
+  __typename?: 'practice_to_course_min_fields';
   close_date?: Maybe<Scalars['timestamptz']>;
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   gitea_org_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   open_date?: Maybe<Scalars['timestamptz']>;
   practice_id?: Maybe<Scalars['uuid']>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by min() on columns of table "practice_to_promotion" */
-export type Practice_To_Promotion_Min_Order_By = {
+/** order by min() on columns of table "practice_to_course" */
+export type Practice_To_Course_Min_Order_By = {
   close_date?: Maybe<Order_By>;
+  course_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   gitea_org_name?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   open_date?: Maybe<Order_By>;
   practice_id?: Maybe<Order_By>;
-  promotion_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
-/** response of any mutation on the table "practice_to_promotion" */
-export type Practice_To_Promotion_Mutation_Response = {
-  __typename?: 'practice_to_promotion_mutation_response';
+/** response of any mutation on the table "practice_to_course" */
+export type Practice_To_Course_Mutation_Response = {
+  __typename?: 'practice_to_course_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
-  returning: Array<Practice_To_Promotion>;
+  returning: Array<Practice_To_Course>;
 };
 
-/** input type for inserting object relation for remote table "practice_to_promotion" */
-export type Practice_To_Promotion_Obj_Rel_Insert_Input = {
-  data: Practice_To_Promotion_Insert_Input;
-  on_conflict?: Maybe<Practice_To_Promotion_On_Conflict>;
+/** input type for inserting object relation for remote table "practice_to_course" */
+export type Practice_To_Course_Obj_Rel_Insert_Input = {
+  data: Practice_To_Course_Insert_Input;
+  on_conflict?: Maybe<Practice_To_Course_On_Conflict>;
 };
 
-/** on conflict condition type for table "practice_to_promotion" */
-export type Practice_To_Promotion_On_Conflict = {
-  constraint: Practice_To_Promotion_Constraint;
-  update_columns: Array<Practice_To_Promotion_Update_Column>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
+/** on conflict condition type for table "practice_to_course" */
+export type Practice_To_Course_On_Conflict = {
+  constraint: Practice_To_Course_Constraint;
+  update_columns: Array<Practice_To_Course_Update_Column>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "practice_to_promotion" */
-export type Practice_To_Promotion_Order_By = {
+/** ordering options when selecting data from "practice_to_course" */
+export type Practice_To_Course_Order_By = {
   can_student_see_feedback?: Maybe<Order_By>;
   can_student_see_grade?: Maybe<Order_By>;
   close_date?: Maybe<Order_By>;
+  course?: Maybe<Course_Order_By>;
+  course_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   gitea_org_name?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -1891,24 +2138,24 @@ export type Practice_To_Promotion_Order_By = {
   practice_to_students_aggregate?: Maybe<
     Practice_To_Student_Aggregate_Order_By
   >;
-  promotion?: Maybe<Promotion_Order_By>;
-  promotion_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
-/** primary key columns input for table: "practice_to_promotion" */
-export type Practice_To_Promotion_Pk_Columns_Input = {
+/** primary key columns input for table: "practice_to_course" */
+export type Practice_To_Course_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
 
-/** select columns of table "practice_to_promotion" */
-export enum Practice_To_Promotion_Select_Column {
+/** select columns of table "practice_to_course" */
+export enum Practice_To_Course_Select_Column {
   /** column name */
   CanStudentSeeFeedback = 'can_student_see_feedback',
   /** column name */
   CanStudentSeeGrade = 'can_student_see_grade',
   /** column name */
   CloseDate = 'close_date',
+  /** column name */
+  CourseId = 'course_id',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1920,33 +2167,33 @@ export enum Practice_To_Promotion_Select_Column {
   /** column name */
   PracticeId = 'practice_id',
   /** column name */
-  PromotionId = 'promotion_id',
-  /** column name */
   UpdatedAt = 'updated_at',
 }
 
-/** input type for updating data in table "practice_to_promotion" */
-export type Practice_To_Promotion_Set_Input = {
+/** input type for updating data in table "practice_to_course" */
+export type Practice_To_Course_Set_Input = {
   can_student_see_feedback?: Maybe<Scalars['Boolean']>;
   can_student_see_grade?: Maybe<Scalars['Boolean']>;
   close_date?: Maybe<Scalars['timestamptz']>;
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   gitea_org_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   open_date?: Maybe<Scalars['timestamptz']>;
   practice_id?: Maybe<Scalars['uuid']>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** update columns of table "practice_to_promotion" */
-export enum Practice_To_Promotion_Update_Column {
+/** update columns of table "practice_to_course" */
+export enum Practice_To_Course_Update_Column {
   /** column name */
   CanStudentSeeFeedback = 'can_student_see_feedback',
   /** column name */
   CanStudentSeeGrade = 'can_student_see_grade',
   /** column name */
   CloseDate = 'close_date',
+  /** column name */
+  CourseId = 'course_id',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1957,8 +2204,6 @@ export enum Practice_To_Promotion_Update_Column {
   OpenDate = 'open_date',
   /** column name */
   PracticeId = 'practice_id',
-  /** column name */
-  PromotionId = 'promotion_id',
   /** column name */
   UpdatedAt = 'updated_at',
 }
@@ -1966,13 +2211,14 @@ export enum Practice_To_Promotion_Update_Column {
 /** columns and relationships of "practice_to_student" */
 export type Practice_To_Student = {
   __typename?: 'practice_to_student';
+  course_practice_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
   feedback?: Maybe<Scalars['String']>;
   grade?: Maybe<Scalars['Int']>;
   graded: Scalars['Boolean'];
   id: Scalars['uuid'];
   /** An object relationship */
-  practice_to_promotion: Practice_To_Promotion;
+  practice_to_course: Practice_To_Course;
   /** An array relationship */
   practice_to_student_grade_metrics: Array<Practice_To_Student_Grade_Metric>;
   /** An aggregated array relationship */
@@ -1981,7 +2227,6 @@ export type Practice_To_Student = {
   practice_to_student_yields: Array<Practice_To_Student_Yield>;
   /** An aggregated array relationship */
   practice_to_student_yields_aggregate: Practice_To_Student_Yield_Aggregate;
-  promotion_practice_id: Scalars['uuid'];
   /** An object relationship */
   student: Student;
   student_id: Scalars['uuid'];
@@ -2091,17 +2336,17 @@ export type Practice_To_Student_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Practice_To_Student_Bool_Exp>>>;
   _not?: Maybe<Practice_To_Student_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Practice_To_Student_Bool_Exp>>>;
+  course_practice_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   feedback?: Maybe<String_Comparison_Exp>;
   grade?: Maybe<Int_Comparison_Exp>;
   graded?: Maybe<Boolean_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
-  practice_to_promotion?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  practice_to_course?: Maybe<Practice_To_Course_Bool_Exp>;
   practice_to_student_grade_metrics?: Maybe<
     Practice_To_Student_Grade_Metric_Bool_Exp
   >;
   practice_to_student_yields?: Maybe<Practice_To_Student_Yield_Bool_Exp>;
-  promotion_practice_id?: Maybe<Uuid_Comparison_Exp>;
   student?: Maybe<Student_Bool_Exp>;
   student_id?: Maybe<Uuid_Comparison_Exp>;
   submited?: Maybe<Boolean_Comparison_Exp>;
@@ -2476,19 +2721,19 @@ export type Practice_To_Student_Inc_Input = {
 
 /** input type for inserting data into table "practice_to_student" */
 export type Practice_To_Student_Insert_Input = {
+  course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   feedback?: Maybe<Scalars['String']>;
   grade?: Maybe<Scalars['Int']>;
   graded?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
-  practice_to_promotion?: Maybe<Practice_To_Promotion_Obj_Rel_Insert_Input>;
+  practice_to_course?: Maybe<Practice_To_Course_Obj_Rel_Insert_Input>;
   practice_to_student_grade_metrics?: Maybe<
     Practice_To_Student_Grade_Metric_Arr_Rel_Insert_Input
   >;
   practice_to_student_yields?: Maybe<
     Practice_To_Student_Yield_Arr_Rel_Insert_Input
   >;
-  promotion_practice_id?: Maybe<Scalars['uuid']>;
   student?: Maybe<Student_Obj_Rel_Insert_Input>;
   student_id?: Maybe<Scalars['uuid']>;
   submited?: Maybe<Scalars['Boolean']>;
@@ -2498,22 +2743,22 @@ export type Practice_To_Student_Insert_Input = {
 /** aggregate max on columns */
 export type Practice_To_Student_Max_Fields = {
   __typename?: 'practice_to_student_max_fields';
+  course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   feedback?: Maybe<Scalars['String']>;
   grade?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
-  promotion_practice_id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by max() on columns of table "practice_to_student" */
 export type Practice_To_Student_Max_Order_By = {
+  course_practice_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   feedback?: Maybe<Order_By>;
   grade?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
-  promotion_practice_id?: Maybe<Order_By>;
   student_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -2521,22 +2766,22 @@ export type Practice_To_Student_Max_Order_By = {
 /** aggregate min on columns */
 export type Practice_To_Student_Min_Fields = {
   __typename?: 'practice_to_student_min_fields';
+  course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   feedback?: Maybe<Scalars['String']>;
   grade?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
-  promotion_practice_id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "practice_to_student" */
 export type Practice_To_Student_Min_Order_By = {
+  course_practice_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   feedback?: Maybe<Order_By>;
   grade?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
-  promotion_practice_id?: Maybe<Order_By>;
   student_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -2565,19 +2810,19 @@ export type Practice_To_Student_On_Conflict = {
 
 /** ordering options when selecting data from "practice_to_student" */
 export type Practice_To_Student_Order_By = {
+  course_practice_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   feedback?: Maybe<Order_By>;
   grade?: Maybe<Order_By>;
   graded?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
-  practice_to_promotion?: Maybe<Practice_To_Promotion_Order_By>;
+  practice_to_course?: Maybe<Practice_To_Course_Order_By>;
   practice_to_student_grade_metrics_aggregate?: Maybe<
     Practice_To_Student_Grade_Metric_Aggregate_Order_By
   >;
   practice_to_student_yields_aggregate?: Maybe<
     Practice_To_Student_Yield_Aggregate_Order_By
   >;
-  promotion_practice_id?: Maybe<Order_By>;
   student?: Maybe<Student_Order_By>;
   student_id?: Maybe<Order_By>;
   submited?: Maybe<Order_By>;
@@ -2592,6 +2837,8 @@ export type Practice_To_Student_Pk_Columns_Input = {
 /** select columns of table "practice_to_student" */
 export enum Practice_To_Student_Select_Column {
   /** column name */
+  CoursePracticeId = 'course_practice_id',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Feedback = 'feedback',
@@ -2602,8 +2849,6 @@ export enum Practice_To_Student_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  PromotionPracticeId = 'promotion_practice_id',
-  /** column name */
   StudentId = 'student_id',
   /** column name */
   Submited = 'submited',
@@ -2613,12 +2858,12 @@ export enum Practice_To_Student_Select_Column {
 
 /** input type for updating data in table "practice_to_student" */
 export type Practice_To_Student_Set_Input = {
+  course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   feedback?: Maybe<Scalars['String']>;
   grade?: Maybe<Scalars['Int']>;
   graded?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
-  promotion_practice_id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   submited?: Maybe<Scalars['Boolean']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2671,6 +2916,8 @@ export type Practice_To_Student_Sum_Order_By = {
 /** update columns of table "practice_to_student" */
 export enum Practice_To_Student_Update_Column {
   /** column name */
+  CoursePracticeId = 'course_practice_id',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Feedback = 'feedback',
@@ -2680,8 +2927,6 @@ export enum Practice_To_Student_Update_Column {
   Graded = 'graded',
   /** column name */
   Id = 'id',
-  /** column name */
-  PromotionPracticeId = 'promotion_practice_id',
   /** column name */
   StudentId = 'student_id',
   /** column name */
@@ -2961,7 +3206,7 @@ export enum Practice_Update_Column {
 export type Practice_Yield = {
   __typename?: 'practice_yield';
   created_at: Scalars['timestamptz'];
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   meta?: Maybe<Scalars['jsonb']>;
   method: Practice_Yield_Type_Enum;
@@ -3437,247 +3682,15 @@ export enum Practice_Yield_Update_Column {
   UpdatedAt = 'updated_at',
 }
 
-/** columns and relationships of "promotion" */
-export type Promotion = {
-  __typename?: 'promotion';
-  created_at: Scalars['timestamptz'];
-  id: Scalars['uuid'];
-  name: Scalars['String'];
-  /** An array relationship */
-  practice_to_promotions: Array<Practice_To_Promotion>;
-  /** An aggregated array relationship */
-  practice_to_promotions_aggregate: Practice_To_Promotion_Aggregate;
-  /** An array relationship */
-  student_to_promotions: Array<Student_To_Promotion>;
-  /** An aggregated array relationship */
-  student_to_promotions_aggregate: Student_To_Promotion_Aggregate;
-  updated_at: Scalars['timestamptz'];
-  years: Scalars['String'];
-};
-
-/** columns and relationships of "promotion" */
-export type PromotionPractice_To_PromotionsArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
-};
-
-/** columns and relationships of "promotion" */
-export type PromotionPractice_To_Promotions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
-};
-
-/** columns and relationships of "promotion" */
-export type PromotionStudent_To_PromotionsArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
-};
-
-/** columns and relationships of "promotion" */
-export type PromotionStudent_To_Promotions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
-};
-
-/** aggregated selection of "promotion" */
-export type Promotion_Aggregate = {
-  __typename?: 'promotion_aggregate';
-  aggregate?: Maybe<Promotion_Aggregate_Fields>;
-  nodes: Array<Promotion>;
-};
-
-/** aggregate fields of "promotion" */
-export type Promotion_Aggregate_Fields = {
-  __typename?: 'promotion_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Promotion_Max_Fields>;
-  min?: Maybe<Promotion_Min_Fields>;
-};
-
-/** aggregate fields of "promotion" */
-export type Promotion_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Promotion_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "promotion" */
-export type Promotion_Aggregate_Order_By = {
-  count?: Maybe<Order_By>;
-  max?: Maybe<Promotion_Max_Order_By>;
-  min?: Maybe<Promotion_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "promotion" */
-export type Promotion_Arr_Rel_Insert_Input = {
-  data: Array<Promotion_Insert_Input>;
-  on_conflict?: Maybe<Promotion_On_Conflict>;
-};
-
-/** Boolean expression to filter rows from the table "promotion". All fields are combined with a logical 'AND'. */
-export type Promotion_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Promotion_Bool_Exp>>>;
-  _not?: Maybe<Promotion_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Promotion_Bool_Exp>>>;
-  created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  id?: Maybe<Uuid_Comparison_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  practice_to_promotions?: Maybe<Practice_To_Promotion_Bool_Exp>;
-  student_to_promotions?: Maybe<Student_To_Promotion_Bool_Exp>;
-  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  years?: Maybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "promotion" */
-export enum Promotion_Constraint {
-  /** unique or primary key constraint */
-  PromotionNameYearsKey = 'promotion_name_years_key',
-  /** unique or primary key constraint */
-  PromotionPkey = 'promotion_pkey',
-}
-
-/** input type for inserting data into table "promotion" */
-export type Promotion_Insert_Input = {
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  practice_to_promotions?: Maybe<Practice_To_Promotion_Arr_Rel_Insert_Input>;
-  student_to_promotions?: Maybe<Student_To_Promotion_Arr_Rel_Insert_Input>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  years?: Maybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type Promotion_Max_Fields = {
-  __typename?: 'promotion_max_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  years?: Maybe<Scalars['String']>;
-};
-
-/** order by max() on columns of table "promotion" */
-export type Promotion_Max_Order_By = {
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-  years?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Promotion_Min_Fields = {
-  __typename?: 'promotion_min_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  years?: Maybe<Scalars['String']>;
-};
-
-/** order by min() on columns of table "promotion" */
-export type Promotion_Min_Order_By = {
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-  years?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "promotion" */
-export type Promotion_Mutation_Response = {
-  __typename?: 'promotion_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Promotion>;
-};
-
-/** input type for inserting object relation for remote table "promotion" */
-export type Promotion_Obj_Rel_Insert_Input = {
-  data: Promotion_Insert_Input;
-  on_conflict?: Maybe<Promotion_On_Conflict>;
-};
-
-/** on conflict condition type for table "promotion" */
-export type Promotion_On_Conflict = {
-  constraint: Promotion_Constraint;
-  update_columns: Array<Promotion_Update_Column>;
-  where?: Maybe<Promotion_Bool_Exp>;
-};
-
-/** ordering options when selecting data from "promotion" */
-export type Promotion_Order_By = {
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  practice_to_promotions_aggregate?: Maybe<
-    Practice_To_Promotion_Aggregate_Order_By
-  >;
-  student_to_promotions_aggregate?: Maybe<
-    Student_To_Promotion_Aggregate_Order_By
-  >;
-  updated_at?: Maybe<Order_By>;
-  years?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: "promotion" */
-export type Promotion_Pk_Columns_Input = {
-  id: Scalars['uuid'];
-};
-
-/** select columns of table "promotion" */
-export enum Promotion_Select_Column {
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  Years = 'years',
-}
-
-/** input type for updating data in table "promotion" */
-export type Promotion_Set_Input = {
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  years?: Maybe<Scalars['String']>;
-};
-
-/** update columns of table "promotion" */
-export enum Promotion_Update_Column {
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  Years = 'years',
-}
-
 /** query root */
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "course" */
+  course: Array<Course>;
+  /** fetch aggregated fields from the table: "course" */
+  course_aggregate: Course_Aggregate;
+  /** fetch data from the table: "course" using primary key columns */
+  course_by_pk?: Maybe<Course>;
   /** fetch data from the table: "practice" */
   practice: Array<Practice>;
   /** fetch aggregated fields from the table: "practice" */
@@ -3696,12 +3709,12 @@ export type Query_Root = {
   practice_grade_metric_type_aggregate: Practice_Grade_Metric_Type_Aggregate;
   /** fetch data from the table: "practice_grade_metric_type" using primary key columns */
   practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
-  /** fetch data from the table: "practice_to_promotion" */
-  practice_to_promotion: Array<Practice_To_Promotion>;
-  /** fetch aggregated fields from the table: "practice_to_promotion" */
-  practice_to_promotion_aggregate: Practice_To_Promotion_Aggregate;
-  /** fetch data from the table: "practice_to_promotion" using primary key columns */
-  practice_to_promotion_by_pk?: Maybe<Practice_To_Promotion>;
+  /** fetch data from the table: "practice_to_course" */
+  practice_to_course: Array<Practice_To_Course>;
+  /** fetch aggregated fields from the table: "practice_to_course" */
+  practice_to_course_aggregate: Practice_To_Course_Aggregate;
+  /** fetch data from the table: "practice_to_course" using primary key columns */
+  practice_to_course_by_pk?: Maybe<Practice_To_Course>;
   /** fetch data from the table: "practice_to_student" */
   practice_to_student: Array<Practice_To_Student>;
   /** fetch aggregated fields from the table: "practice_to_student" */
@@ -3734,30 +3747,47 @@ export type Query_Root = {
   practice_yield_type_aggregate: Practice_Yield_Type_Aggregate;
   /** fetch data from the table: "practice_yield_type" using primary key columns */
   practice_yield_type_by_pk?: Maybe<Practice_Yield_Type>;
-  /** fetch data from the table: "promotion" */
-  promotion: Array<Promotion>;
-  /** fetch aggregated fields from the table: "promotion" */
-  promotion_aggregate: Promotion_Aggregate;
-  /** fetch data from the table: "promotion" using primary key columns */
-  promotion_by_pk?: Maybe<Promotion>;
   /** fetch data from the table: "student" */
   student: Array<Student>;
   /** fetch aggregated fields from the table: "student" */
   student_aggregate: Student_Aggregate;
   /** fetch data from the table: "student" using primary key columns */
   student_by_pk?: Maybe<Student>;
-  /** fetch data from the table: "student_to_promotion" */
-  student_to_promotion: Array<Student_To_Promotion>;
-  /** fetch aggregated fields from the table: "student_to_promotion" */
-  student_to_promotion_aggregate: Student_To_Promotion_Aggregate;
-  /** fetch data from the table: "student_to_promotion" using primary key columns */
-  student_to_promotion_by_pk?: Maybe<Student_To_Promotion>;
+  /** fetch data from the table: "student_to_course" */
+  student_to_course: Array<Student_To_Course>;
+  /** fetch aggregated fields from the table: "student_to_course" */
+  student_to_course_aggregate: Student_To_Course_Aggregate;
+  /** fetch data from the table: "student_to_course" using primary key columns */
+  student_to_course_by_pk?: Maybe<Student_To_Course>;
   /** fetch data from the table: "user" */
   user: Array<User>;
   /** fetch aggregated fields from the table: "user" */
   userAggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   userByPk?: Maybe<User>;
+};
+
+/** query root */
+export type Query_RootCourseArgs = {
+  distinct_on?: Maybe<Array<Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Order_By>>;
+  where?: Maybe<Course_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootCourse_AggregateArgs = {
+  distinct_on?: Maybe<Array<Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Order_By>>;
+  where?: Maybe<Course_Bool_Exp>;
+};
+
+/** query root */
+export type Query_RootCourse_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 /** query root */
@@ -3830,25 +3860,25 @@ export type Query_RootPractice_Grade_Metric_Type_By_PkArgs = {
 };
 
 /** query root */
-export type Query_RootPractice_To_PromotionArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
+export type Query_RootPractice_To_CourseArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
 };
 
 /** query root */
-export type Query_RootPractice_To_Promotion_AggregateArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
+export type Query_RootPractice_To_Course_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
 };
 
 /** query root */
-export type Query_RootPractice_To_Promotion_By_PkArgs = {
+export type Query_RootPractice_To_Course_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -3968,29 +3998,6 @@ export type Query_RootPractice_Yield_Type_By_PkArgs = {
 };
 
 /** query root */
-export type Query_RootPromotionArgs = {
-  distinct_on?: Maybe<Array<Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Promotion_Order_By>>;
-  where?: Maybe<Promotion_Bool_Exp>;
-};
-
-/** query root */
-export type Query_RootPromotion_AggregateArgs = {
-  distinct_on?: Maybe<Array<Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Promotion_Order_By>>;
-  where?: Maybe<Promotion_Bool_Exp>;
-};
-
-/** query root */
-export type Query_RootPromotion_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-/** query root */
 export type Query_RootStudentArgs = {
   distinct_on?: Maybe<Array<Student_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -4014,26 +4021,26 @@ export type Query_RootStudent_By_PkArgs = {
 };
 
 /** query root */
-export type Query_RootStudent_To_PromotionArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
+export type Query_RootStudent_To_CourseArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
 };
 
 /** query root */
-export type Query_RootStudent_To_Promotion_AggregateArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
+export type Query_RootStudent_To_Course_AggregateArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
 };
 
 /** query root */
-export type Query_RootStudent_To_Promotion_By_PkArgs = {
-  promotion_id: Scalars['uuid'];
+export type Query_RootStudent_To_Course_By_PkArgs = {
+  course_id: Scalars['uuid'];
   student_id: Scalars['uuid'];
 };
 
@@ -4076,9 +4083,9 @@ export type Student = {
   /** An aggregated array relationship */
   practice_to_students_aggregate: Practice_To_Student_Aggregate;
   /** An array relationship */
-  student_to_promotions: Array<Student_To_Promotion>;
+  student_to_courses: Array<Student_To_Course>;
   /** An aggregated array relationship */
-  student_to_promotions_aggregate: Student_To_Promotion_Aggregate;
+  student_to_courses_aggregate: Student_To_Course_Aggregate;
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
   user?: Maybe<User>;
@@ -4104,21 +4111,21 @@ export type StudentPractice_To_Students_AggregateArgs = {
 };
 
 /** columns and relationships of "student" */
-export type StudentStudent_To_PromotionsArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
+export type StudentStudent_To_CoursesArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
 };
 
 /** columns and relationships of "student" */
-export type StudentStudent_To_Promotions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
+export type StudentStudent_To_Courses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
 };
 
 /** aggregated selection of "student" */
@@ -4167,7 +4174,7 @@ export type Student_Bool_Exp = {
   id?: Maybe<Uuid_Comparison_Exp>;
   last_name?: Maybe<String_Comparison_Exp>;
   practice_to_students?: Maybe<Practice_To_Student_Bool_Exp>;
-  student_to_promotions?: Maybe<Student_To_Promotion_Bool_Exp>;
+  student_to_courses?: Maybe<Student_To_Course_Bool_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   user?: Maybe<User_Bool_Exp>;
   user_id?: Maybe<Uuid_Comparison_Exp>;
@@ -4194,7 +4201,7 @@ export type Student_Insert_Input = {
   id?: Maybe<Scalars['uuid']>;
   last_name?: Maybe<Scalars['String']>;
   practice_to_students?: Maybe<Practice_To_Student_Arr_Rel_Insert_Input>;
-  student_to_promotions?: Maybe<Student_To_Promotion_Arr_Rel_Insert_Input>;
+  student_to_courses?: Maybe<Student_To_Course_Arr_Rel_Insert_Input>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user?: Maybe<User_Obj_Rel_Insert_Input>;
   user_id?: Maybe<Scalars['uuid']>;
@@ -4283,9 +4290,7 @@ export type Student_Order_By = {
   practice_to_students_aggregate?: Maybe<
     Practice_To_Student_Aggregate_Order_By
   >;
-  student_to_promotions_aggregate?: Maybe<
-    Student_To_Promotion_Aggregate_Order_By
-  >;
+  student_to_courses_aggregate?: Maybe<Student_To_Course_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
   user?: Maybe<User_Order_By>;
   user_id?: Maybe<Order_By>;
@@ -4328,182 +4333,182 @@ export type Student_Set_Input = {
   user_id?: Maybe<Scalars['uuid']>;
 };
 
-/** columns and relationships of "student_to_promotion" */
-export type Student_To_Promotion = {
-  __typename?: 'student_to_promotion';
-  created_at: Scalars['timestamptz'];
+/** columns and relationships of "student_to_course" */
+export type Student_To_Course = {
+  __typename?: 'student_to_course';
   /** An object relationship */
-  promotion: Promotion;
-  promotion_id: Scalars['uuid'];
+  course: Course;
+  course_id: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
   /** An object relationship */
   student: Student;
   student_id: Scalars['uuid'];
   updated_at: Scalars['timestamptz'];
 };
 
-/** aggregated selection of "student_to_promotion" */
-export type Student_To_Promotion_Aggregate = {
-  __typename?: 'student_to_promotion_aggregate';
-  aggregate?: Maybe<Student_To_Promotion_Aggregate_Fields>;
-  nodes: Array<Student_To_Promotion>;
+/** aggregated selection of "student_to_course" */
+export type Student_To_Course_Aggregate = {
+  __typename?: 'student_to_course_aggregate';
+  aggregate?: Maybe<Student_To_Course_Aggregate_Fields>;
+  nodes: Array<Student_To_Course>;
 };
 
-/** aggregate fields of "student_to_promotion" */
-export type Student_To_Promotion_Aggregate_Fields = {
-  __typename?: 'student_to_promotion_aggregate_fields';
+/** aggregate fields of "student_to_course" */
+export type Student_To_Course_Aggregate_Fields = {
+  __typename?: 'student_to_course_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Student_To_Promotion_Max_Fields>;
-  min?: Maybe<Student_To_Promotion_Min_Fields>;
+  max?: Maybe<Student_To_Course_Max_Fields>;
+  min?: Maybe<Student_To_Course_Min_Fields>;
 };
 
-/** aggregate fields of "student_to_promotion" */
-export type Student_To_Promotion_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Student_To_Promotion_Select_Column>>;
+/** aggregate fields of "student_to_course" */
+export type Student_To_Course_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Student_To_Course_Select_Column>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "student_to_promotion" */
-export type Student_To_Promotion_Aggregate_Order_By = {
+/** order by aggregate values of table "student_to_course" */
+export type Student_To_Course_Aggregate_Order_By = {
   count?: Maybe<Order_By>;
-  max?: Maybe<Student_To_Promotion_Max_Order_By>;
-  min?: Maybe<Student_To_Promotion_Min_Order_By>;
+  max?: Maybe<Student_To_Course_Max_Order_By>;
+  min?: Maybe<Student_To_Course_Min_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "student_to_promotion" */
-export type Student_To_Promotion_Arr_Rel_Insert_Input = {
-  data: Array<Student_To_Promotion_Insert_Input>;
-  on_conflict?: Maybe<Student_To_Promotion_On_Conflict>;
+/** input type for inserting array relation for remote table "student_to_course" */
+export type Student_To_Course_Arr_Rel_Insert_Input = {
+  data: Array<Student_To_Course_Insert_Input>;
+  on_conflict?: Maybe<Student_To_Course_On_Conflict>;
 };
 
-/** Boolean expression to filter rows from the table "student_to_promotion". All fields are combined with a logical 'AND'. */
-export type Student_To_Promotion_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Student_To_Promotion_Bool_Exp>>>;
-  _not?: Maybe<Student_To_Promotion_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Student_To_Promotion_Bool_Exp>>>;
+/** Boolean expression to filter rows from the table "student_to_course". All fields are combined with a logical 'AND'. */
+export type Student_To_Course_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Student_To_Course_Bool_Exp>>>;
+  _not?: Maybe<Student_To_Course_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Student_To_Course_Bool_Exp>>>;
+  course?: Maybe<Course_Bool_Exp>;
+  course_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  promotion?: Maybe<Promotion_Bool_Exp>;
-  promotion_id?: Maybe<Uuid_Comparison_Exp>;
   student?: Maybe<Student_Bool_Exp>;
   student_id?: Maybe<Uuid_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "student_to_promotion" */
-export enum Student_To_Promotion_Constraint {
+/** unique or primary key constraints on table "student_to_course" */
+export enum Student_To_Course_Constraint {
   /** unique or primary key constraint */
   StudentToPromotionPkey = 'student_to_promotion_pkey',
   /** unique or primary key constraint */
   StudentToPromotionPromotionIdStudentIdKey = 'student_to_promotion_promotion_id_student_id_key',
 }
 
-/** input type for inserting data into table "student_to_promotion" */
-export type Student_To_Promotion_Insert_Input = {
+/** input type for inserting data into table "student_to_course" */
+export type Student_To_Course_Insert_Input = {
+  course?: Maybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  promotion?: Maybe<Promotion_Obj_Rel_Insert_Input>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   student?: Maybe<Student_Obj_Rel_Insert_Input>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
-export type Student_To_Promotion_Max_Fields = {
-  __typename?: 'student_to_promotion_max_fields';
+export type Student_To_Course_Max_Fields = {
+  __typename?: 'student_to_course_max_fields';
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by max() on columns of table "student_to_promotion" */
-export type Student_To_Promotion_Max_Order_By = {
+/** order by max() on columns of table "student_to_course" */
+export type Student_To_Course_Max_Order_By = {
+  course_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
-  promotion_id?: Maybe<Order_By>;
   student_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
-export type Student_To_Promotion_Min_Fields = {
-  __typename?: 'student_to_promotion_min_fields';
+export type Student_To_Course_Min_Fields = {
+  __typename?: 'student_to_course_min_fields';
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by min() on columns of table "student_to_promotion" */
-export type Student_To_Promotion_Min_Order_By = {
+/** order by min() on columns of table "student_to_course" */
+export type Student_To_Course_Min_Order_By = {
+  course_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
-  promotion_id?: Maybe<Order_By>;
   student_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
-/** response of any mutation on the table "student_to_promotion" */
-export type Student_To_Promotion_Mutation_Response = {
-  __typename?: 'student_to_promotion_mutation_response';
+/** response of any mutation on the table "student_to_course" */
+export type Student_To_Course_Mutation_Response = {
+  __typename?: 'student_to_course_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
-  returning: Array<Student_To_Promotion>;
+  returning: Array<Student_To_Course>;
 };
 
-/** input type for inserting object relation for remote table "student_to_promotion" */
-export type Student_To_Promotion_Obj_Rel_Insert_Input = {
-  data: Student_To_Promotion_Insert_Input;
-  on_conflict?: Maybe<Student_To_Promotion_On_Conflict>;
+/** input type for inserting object relation for remote table "student_to_course" */
+export type Student_To_Course_Obj_Rel_Insert_Input = {
+  data: Student_To_Course_Insert_Input;
+  on_conflict?: Maybe<Student_To_Course_On_Conflict>;
 };
 
-/** on conflict condition type for table "student_to_promotion" */
-export type Student_To_Promotion_On_Conflict = {
-  constraint: Student_To_Promotion_Constraint;
-  update_columns: Array<Student_To_Promotion_Update_Column>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
+/** on conflict condition type for table "student_to_course" */
+export type Student_To_Course_On_Conflict = {
+  constraint: Student_To_Course_Constraint;
+  update_columns: Array<Student_To_Course_Update_Column>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "student_to_promotion" */
-export type Student_To_Promotion_Order_By = {
+/** ordering options when selecting data from "student_to_course" */
+export type Student_To_Course_Order_By = {
+  course?: Maybe<Course_Order_By>;
+  course_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
-  promotion?: Maybe<Promotion_Order_By>;
-  promotion_id?: Maybe<Order_By>;
   student?: Maybe<Student_Order_By>;
   student_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
-/** primary key columns input for table: "student_to_promotion" */
-export type Student_To_Promotion_Pk_Columns_Input = {
-  promotion_id: Scalars['uuid'];
+/** primary key columns input for table: "student_to_course" */
+export type Student_To_Course_Pk_Columns_Input = {
+  course_id: Scalars['uuid'];
   student_id: Scalars['uuid'];
 };
 
-/** select columns of table "student_to_promotion" */
-export enum Student_To_Promotion_Select_Column {
+/** select columns of table "student_to_course" */
+export enum Student_To_Course_Select_Column {
+  /** column name */
+  CourseId = 'course_id',
   /** column name */
   CreatedAt = 'created_at',
-  /** column name */
-  PromotionId = 'promotion_id',
   /** column name */
   StudentId = 'student_id',
   /** column name */
   UpdatedAt = 'updated_at',
 }
 
-/** input type for updating data in table "student_to_promotion" */
-export type Student_To_Promotion_Set_Input = {
+/** input type for updating data in table "student_to_course" */
+export type Student_To_Course_Set_Input = {
+  course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  promotion_id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** update columns of table "student_to_promotion" */
-export enum Student_To_Promotion_Update_Column {
+/** update columns of table "student_to_course" */
+export enum Student_To_Course_Update_Column {
+  /** column name */
+  CourseId = 'course_id',
   /** column name */
   CreatedAt = 'created_at',
-  /** column name */
-  PromotionId = 'promotion_id',
   /** column name */
   StudentId = 'student_id',
   /** column name */
@@ -4533,6 +4538,12 @@ export enum Student_Update_Column {
 /** subscription root */
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table: "course" */
+  course: Array<Course>;
+  /** fetch aggregated fields from the table: "course" */
+  course_aggregate: Course_Aggregate;
+  /** fetch data from the table: "course" using primary key columns */
+  course_by_pk?: Maybe<Course>;
   /** fetch data from the table: "practice" */
   practice: Array<Practice>;
   /** fetch aggregated fields from the table: "practice" */
@@ -4551,12 +4562,12 @@ export type Subscription_Root = {
   practice_grade_metric_type_aggregate: Practice_Grade_Metric_Type_Aggregate;
   /** fetch data from the table: "practice_grade_metric_type" using primary key columns */
   practice_grade_metric_type_by_pk?: Maybe<Practice_Grade_Metric_Type>;
-  /** fetch data from the table: "practice_to_promotion" */
-  practice_to_promotion: Array<Practice_To_Promotion>;
-  /** fetch aggregated fields from the table: "practice_to_promotion" */
-  practice_to_promotion_aggregate: Practice_To_Promotion_Aggregate;
-  /** fetch data from the table: "practice_to_promotion" using primary key columns */
-  practice_to_promotion_by_pk?: Maybe<Practice_To_Promotion>;
+  /** fetch data from the table: "practice_to_course" */
+  practice_to_course: Array<Practice_To_Course>;
+  /** fetch aggregated fields from the table: "practice_to_course" */
+  practice_to_course_aggregate: Practice_To_Course_Aggregate;
+  /** fetch data from the table: "practice_to_course" using primary key columns */
+  practice_to_course_by_pk?: Maybe<Practice_To_Course>;
   /** fetch data from the table: "practice_to_student" */
   practice_to_student: Array<Practice_To_Student>;
   /** fetch aggregated fields from the table: "practice_to_student" */
@@ -4589,30 +4600,47 @@ export type Subscription_Root = {
   practice_yield_type_aggregate: Practice_Yield_Type_Aggregate;
   /** fetch data from the table: "practice_yield_type" using primary key columns */
   practice_yield_type_by_pk?: Maybe<Practice_Yield_Type>;
-  /** fetch data from the table: "promotion" */
-  promotion: Array<Promotion>;
-  /** fetch aggregated fields from the table: "promotion" */
-  promotion_aggregate: Promotion_Aggregate;
-  /** fetch data from the table: "promotion" using primary key columns */
-  promotion_by_pk?: Maybe<Promotion>;
   /** fetch data from the table: "student" */
   student: Array<Student>;
   /** fetch aggregated fields from the table: "student" */
   student_aggregate: Student_Aggregate;
   /** fetch data from the table: "student" using primary key columns */
   student_by_pk?: Maybe<Student>;
-  /** fetch data from the table: "student_to_promotion" */
-  student_to_promotion: Array<Student_To_Promotion>;
-  /** fetch aggregated fields from the table: "student_to_promotion" */
-  student_to_promotion_aggregate: Student_To_Promotion_Aggregate;
-  /** fetch data from the table: "student_to_promotion" using primary key columns */
-  student_to_promotion_by_pk?: Maybe<Student_To_Promotion>;
+  /** fetch data from the table: "student_to_course" */
+  student_to_course: Array<Student_To_Course>;
+  /** fetch aggregated fields from the table: "student_to_course" */
+  student_to_course_aggregate: Student_To_Course_Aggregate;
+  /** fetch data from the table: "student_to_course" using primary key columns */
+  student_to_course_by_pk?: Maybe<Student_To_Course>;
   /** fetch data from the table: "user" */
   user: Array<User>;
   /** fetch aggregated fields from the table: "user" */
   userAggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   userByPk?: Maybe<User>;
+};
+
+/** subscription root */
+export type Subscription_RootCourseArgs = {
+  distinct_on?: Maybe<Array<Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Order_By>>;
+  where?: Maybe<Course_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootCourse_AggregateArgs = {
+  distinct_on?: Maybe<Array<Course_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Order_By>>;
+  where?: Maybe<Course_Bool_Exp>;
+};
+
+/** subscription root */
+export type Subscription_RootCourse_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 /** subscription root */
@@ -4685,25 +4713,25 @@ export type Subscription_RootPractice_Grade_Metric_Type_By_PkArgs = {
 };
 
 /** subscription root */
-export type Subscription_RootPractice_To_PromotionArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
+export type Subscription_RootPractice_To_CourseArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
 };
 
 /** subscription root */
-export type Subscription_RootPractice_To_Promotion_AggregateArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Promotion_Select_Column>>;
+export type Subscription_RootPractice_To_Course_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Promotion_Order_By>>;
-  where?: Maybe<Practice_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
+  where?: Maybe<Practice_To_Course_Bool_Exp>;
 };
 
 /** subscription root */
-export type Subscription_RootPractice_To_Promotion_By_PkArgs = {
+export type Subscription_RootPractice_To_Course_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -4823,29 +4851,6 @@ export type Subscription_RootPractice_Yield_Type_By_PkArgs = {
 };
 
 /** subscription root */
-export type Subscription_RootPromotionArgs = {
-  distinct_on?: Maybe<Array<Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Promotion_Order_By>>;
-  where?: Maybe<Promotion_Bool_Exp>;
-};
-
-/** subscription root */
-export type Subscription_RootPromotion_AggregateArgs = {
-  distinct_on?: Maybe<Array<Promotion_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Promotion_Order_By>>;
-  where?: Maybe<Promotion_Bool_Exp>;
-};
-
-/** subscription root */
-export type Subscription_RootPromotion_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-/** subscription root */
 export type Subscription_RootStudentArgs = {
   distinct_on?: Maybe<Array<Student_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -4869,26 +4874,26 @@ export type Subscription_RootStudent_By_PkArgs = {
 };
 
 /** subscription root */
-export type Subscription_RootStudent_To_PromotionArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
+export type Subscription_RootStudent_To_CourseArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
 };
 
 /** subscription root */
-export type Subscription_RootStudent_To_Promotion_AggregateArgs = {
-  distinct_on?: Maybe<Array<Student_To_Promotion_Select_Column>>;
+export type Subscription_RootStudent_To_Course_AggregateArgs = {
+  distinct_on?: Maybe<Array<Student_To_Course_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Student_To_Promotion_Order_By>>;
-  where?: Maybe<Student_To_Promotion_Bool_Exp>;
+  order_by?: Maybe<Array<Student_To_Course_Order_By>>;
+  where?: Maybe<Student_To_Course_Bool_Exp>;
 };
 
 /** subscription root */
-export type Subscription_RootStudent_To_Promotion_By_PkArgs = {
-  promotion_id: Scalars['uuid'];
+export type Subscription_RootStudent_To_Course_By_PkArgs = {
+  course_id: Scalars['uuid'];
   student_id: Scalars['uuid'];
 };
 
@@ -5183,14 +5188,18 @@ export type ListTpYieldTypesQuery = { __typename?: 'query_root' } & {
   >;
 };
 
+export type YieldPracticeInputFragment = {
+  __typename?: 'practice_yield';
+} & Pick<Practice_Yield, 'id' | 'meta' | 'method' | 'name' | 'description'>;
+
 export type HandOffByIdQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 export type HandOffByIdQuery = { __typename?: 'query_root' } & {
-  practice_to_promotion_by_pk?: Maybe<
-    { __typename?: 'practice_to_promotion' } & Pick<
-      Practice_To_Promotion,
+  practice_to_course_by_pk?: Maybe<
+    { __typename?: 'practice_to_course' } & Pick<
+      Practice_To_Course,
       'is_open' | 'open_date' | 'created_at' | 'close_date' | 'id'
     > & {
         practice: { __typename?: 'practice' } & Pick<
@@ -5198,10 +5207,7 @@ export type HandOffByIdQuery = { __typename?: 'query_root' } & {
           'title' | 'description' | 'created_at' | 'id'
         > & {
             practice_yields: Array<
-              { __typename?: 'practice_yield' } & Pick<
-                Practice_Yield,
-                'id' | 'meta' | 'method' | 'name' | 'description'
-              >
+              { __typename?: 'practice_yield' } & YieldPracticeInputFragment
             >;
           };
         practice_to_students: Array<
@@ -5228,19 +5234,16 @@ export type SubmitHandoffMutation = { __typename?: 'mutation_root' } & {
 export type HandoffListQueryVariables = Exact<{ [key: string]: never }>;
 
 export type HandoffListQuery = { __typename?: 'query_root' } & {
-  practice_to_promotion: Array<
-    { __typename?: 'practice_to_promotion' } & Pick<
-      Practice_To_Promotion,
+  practice_to_course: Array<
+    { __typename?: 'practice_to_course' } & Pick<
+      Practice_To_Course,
       'is_open' | 'open_date' | 'created_at' | 'close_date' | 'id'
     > & {
         practice: { __typename?: 'practice' } & Pick<
           Practice,
           'title' | 'created_at' | 'id'
         >;
-        promotion: { __typename?: 'promotion' } & Pick<
-          Promotion,
-          'name' | 'years'
-        >;
+        course: { __typename?: 'course' } & Pick<Course, 'name' | 'years'>;
         practice_to_students: Array<
           { __typename?: 'practice_to_student' } & Pick<
             Practice_To_Student,
@@ -5269,13 +5272,13 @@ export type PromotionDetailsQueryVariables = Exact<{
 }>;
 
 export type PromotionDetailsQuery = { __typename?: 'query_root' } & {
-  promotion_by_pk?: Maybe<
-    { __typename?: 'promotion' } & Pick<Promotion, 'name' | 'years'> & {
-        student_to_promotions_aggregate: {
-          __typename?: 'student_to_promotion_aggregate';
+  course_by_pk?: Maybe<
+    { __typename?: 'course' } & Pick<Course, 'name' | 'years'> & {
+        student_to_courses_aggregate: {
+          __typename?: 'student_to_course_aggregate';
         } & {
           nodes: Array<
-            { __typename?: 'student_to_promotion' } & {
+            { __typename?: 'student_to_course' } & {
               student: { __typename?: 'student' } & Pick<
                 Student,
                 'id' | 'email' | 'full_name' | 'user_id'
@@ -5283,8 +5286,8 @@ export type PromotionDetailsQuery = { __typename?: 'query_root' } & {
             }
           >;
           aggregate?: Maybe<
-            { __typename?: 'student_to_promotion_aggregate_fields' } & Pick<
-              Student_To_Promotion_Aggregate_Fields,
+            { __typename?: 'student_to_course_aggregate_fields' } & Pick<
+              Student_To_Course_Aggregate_Fields,
               'count'
             >
           >;
@@ -5306,34 +5309,37 @@ export type SendStudentClaimMailMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
+export type CourseCardFragment = { __typename?: 'course' } & Pick<
+  Course,
+  'id' | 'name' | 'years'
+> & {
+    student_to_courses_aggregate: {
+      __typename?: 'student_to_course_aggregate';
+    } & {
+      aggregate?: Maybe<
+        { __typename?: 'student_to_course_aggregate_fields' } & Pick<
+          Student_To_Course_Aggregate_Fields,
+          'count'
+        >
+      >;
+    };
+  };
+
 export type ListPromotionsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ListPromotionsQuery = { __typename?: 'query_root' } & {
-  promotion: Array<
-    { __typename?: 'promotion' } & Pick<Promotion, 'id' | 'name' | 'years'> & {
-        student_to_promotions_aggregate: {
-          __typename?: 'student_to_promotion_aggregate';
-        } & {
-          aggregate?: Maybe<
-            { __typename?: 'student_to_promotion_aggregate_fields' } & Pick<
-              Student_To_Promotion_Aggregate_Fields,
-              'count'
-            >
-          >;
-        };
-      }
-  >;
+  course: Array<{ __typename?: 'course' } & CourseCardFragment>;
 };
 
 export type CreatePromotionMutationVariables = Exact<{
   name: Scalars['String'];
   years: Scalars['String'];
-  students: Array<Student_To_Promotion_Insert_Input>;
+  students: Array<Student_To_Course_Insert_Input>;
 }>;
 
 export type CreatePromotionMutation = { __typename?: 'mutation_root' } & {
-  insert_promotion_one?: Maybe<
-    { __typename?: 'promotion' } & Pick<Promotion, 'created_at' | 'id'>
+  insert_course_one?: Maybe<
+    { __typename?: 'course' } & Pick<Course, 'created_at' | 'id'>
   >;
 };
 
@@ -5347,22 +5353,19 @@ export type InsertNewPracticeToPromotionMutationVariables = Exact<{
 export type InsertNewPracticeToPromotionMutation = {
   __typename?: 'mutation_root';
 } & {
-  insert_practice_to_promotion?: Maybe<
-    { __typename?: 'practice_to_promotion_mutation_response' } & {
+  insert_practice_to_course?: Maybe<
+    { __typename?: 'practice_to_course_mutation_response' } & {
       returning: Array<
-        { __typename?: 'practice_to_promotion' } & Pick<
-          Practice_To_Promotion,
-          'id'
-        >
+        { __typename?: 'practice_to_course' } & Pick<Practice_To_Course, 'id'>
       >;
     }
   >;
 };
 
 export type PracticeToPromoDetailsFragment = {
-  __typename?: 'practice_to_promotion';
+  __typename?: 'practice_to_course';
 } & Pick<
-  Practice_To_Promotion,
+  Practice_To_Course,
   | 'can_student_see_feedback'
   | 'can_student_see_grade'
   | 'close_date'
@@ -5373,14 +5376,14 @@ export type PracticeToPromoDetailsFragment = {
   | 'open_date'
   | 'updated_at'
 > & {
-    promotion: { __typename?: 'promotion' } & Pick<
-      Promotion,
+    course: { __typename?: 'course' } & Pick<
+      Course,
       'name' | 'years' | 'id'
     > & {
-        student_to_promotions: Array<
-          { __typename?: 'student_to_promotion' } & Pick<
-            Student_To_Promotion,
-            'promotion_id' | 'student_id'
+        student_to_courses: Array<
+          { __typename?: 'student_to_course' } & Pick<
+            Student_To_Course,
+            'course_id' | 'student_id'
           > & {
               student: { __typename?: 'student' } & Pick<
                 Student,
@@ -5421,18 +5424,18 @@ export type GetPracticeDetailQuery = { __typename?: 'query_root' } & {
             >
           >;
         };
-        practice_to_promotions_aggregate: {
-          __typename?: 'practice_to_promotion_aggregate';
+        practice_to_courses_aggregate: {
+          __typename?: 'practice_to_course_aggregate';
         } & {
           aggregate?: Maybe<
-            { __typename?: 'practice_to_promotion_aggregate_fields' } & Pick<
-              Practice_To_Promotion_Aggregate_Fields,
+            { __typename?: 'practice_to_course_aggregate_fields' } & Pick<
+              Practice_To_Course_Aggregate_Fields,
               'count'
             >
           >;
           nodes: Array<
             {
-              __typename?: 'practice_to_promotion';
+              __typename?: 'practice_to_course';
             } & PracticeToPromoDetailsFragment
           >;
         };
@@ -5445,8 +5448,8 @@ export type GetPromotionForTpAddQueryVariables = Exact<{
 }>;
 
 export type GetPromotionForTpAddQuery = { __typename?: 'query_root' } & {
-  promotion: Array<
-    { __typename?: 'promotion' } & Pick<Promotion, 'id' | 'name' | 'years'>
+  course: Array<
+    { __typename?: 'course' } & Pick<Course, 'id' | 'name' | 'years'>
   >;
 };
 
@@ -5455,17 +5458,17 @@ export type ListPracticeQueryVariables = Exact<{ [key: string]: never }>;
 export type ListPracticeQuery = { __typename?: 'query_root' } & {
   practice: Array<
     { __typename?: 'practice' } & Pick<Practice, 'id' | 'title'> & {
-        practice_to_promotions: Array<
-          { __typename?: 'practice_to_promotion' } & Pick<
-            Practice_To_Promotion,
+        practice_to_courses: Array<
+          { __typename?: 'practice_to_course' } & Pick<
+            Practice_To_Course,
             | 'id'
             | 'can_student_see_feedback'
             | 'can_student_see_grade'
             | 'close_date'
             | 'open_date'
           > & {
-              promotion: { __typename?: 'promotion' } & Pick<
-                Promotion,
+              course: { __typename?: 'course' } & Pick<
+                Course,
                 'name' | 'years'
               >;
             }
@@ -5489,21 +5492,42 @@ export type CreateNewPracticeMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
+export const YieldPracticeInputFragmentDoc = gql`
+  fragment YieldPracticeInput on practice_yield {
+    id
+    meta
+    method
+    name
+    description
+  }
+`;
+export const CourseCardFragmentDoc = gql`
+  fragment CourseCard on course {
+    id
+    name
+    years
+    student_to_courses_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
 export const PracticeToPromoDetailsFragmentDoc = gql`
-  fragment PracticeToPromoDetails on practice_to_promotion {
-    promotion {
+  fragment PracticeToPromoDetails on practice_to_course {
+    course {
       name
       years
       id
-      student_to_promotions {
-        promotion_id
+      student_to_courses {
+        course_id
         student_id
         student {
           id
           full_name
           email
           practice_to_students(
-            where: { practice_to_promotion: { practice_id: { _eq: $id } } }
+            where: { practice_to_course: { practice_id: { _eq: $id } } }
           ) {
             created_at
             grade
@@ -5565,18 +5589,14 @@ export function useListTpYieldTypesQuery(
 }
 export const HandOffByIdDocument = gql`
   query HandOffById($id: uuid!) {
-    practice_to_promotion_by_pk(id: $id) {
+    practice_to_course_by_pk(id: $id) {
       practice {
         title
         description
         created_at
         id
         practice_yields {
-          id
-          meta
-          method
-          name
-          description
+          ...YieldPracticeInput
         }
       }
       practice_to_students {
@@ -5591,6 +5611,7 @@ export const HandOffByIdDocument = gql`
       id
     }
   }
+  ${YieldPracticeInputFragmentDoc}
 `;
 
 export function useHandOffByIdQuery(
@@ -5623,13 +5644,13 @@ export function useSubmitHandoffMutation() {
 }
 export const HandoffListDocument = gql`
   query handoffList {
-    practice_to_promotion(order_by: { close_date: desc }) {
+    practice_to_course(order_by: { close_date: desc }) {
       practice {
         title
         created_at
         id
       }
-      promotion {
+      course {
         name
         years
       }
@@ -5671,10 +5692,10 @@ export function useLinkStudentToUserMutation() {
 }
 export const PromotionDetailsDocument = gql`
   query promotionDetails($id: uuid!) {
-    promotion_by_pk(id: $id) {
+    course_by_pk(id: $id) {
       name
       years
-      student_to_promotions_aggregate {
+      student_to_courses_aggregate {
         nodes {
           student {
             id
@@ -5718,17 +5739,11 @@ export function useSendStudentClaimMailMutation() {
 }
 export const ListPromotionsDocument = gql`
   query ListPromotions {
-    promotion {
-      id
-      name
-      years
-      student_to_promotions_aggregate {
-        aggregate {
-          count
-        }
-      }
+    course {
+      ...CourseCard
     }
   }
+  ${CourseCardFragmentDoc}
 `;
 
 export function useListPromotionsQuery(
@@ -5743,13 +5758,13 @@ export const CreatePromotionDocument = gql`
   mutation CreatePromotion(
     $name: String!
     $years: String!
-    $students: [student_to_promotion_insert_input!]!
+    $students: [student_to_course_insert_input!]!
   ) {
-    insert_promotion_one(
+    insert_course_one(
       object: {
         name: $name
         years: $years
-        student_to_promotions: { data: $students }
+        student_to_courses: { data: $students }
       }
     ) {
       created_at
@@ -5771,14 +5786,14 @@ export const InsertNewPracticeToPromotionDocument = gql`
     $practice_id: uuid!
     $promotion_id: uuid!
   ) {
-    insert_practice_to_promotion(
+    insert_practice_to_course(
       objects: {
         can_student_see_feedback: false
         can_student_see_grade: false
         close_date: $close_date
         open_date: $open_date
         practice_id: $practice_id
-        promotion_id: $promotion_id
+        course_id: $promotion_id
       }
     ) {
       returning {
@@ -5810,7 +5825,7 @@ export const GetPracticeDetailDocument = gql`
           meta
         }
       }
-      practice_to_promotions_aggregate {
+      practice_to_courses_aggregate {
         aggregate {
           count
         }
@@ -5836,7 +5851,7 @@ export function useGetPracticeDetailQuery(
 }
 export const GetPromotionForTpAddDocument = gql`
   query getPromotionForTpAdd {
-    promotion(order_by: { updated_at: asc }) {
+    course(order_by: { updated_at: asc }) {
       id
       name
       years
@@ -5860,13 +5875,13 @@ export const ListPracticeDocument = gql`
     practice {
       id
       title
-      practice_to_promotions {
+      practice_to_courses {
         id
         can_student_see_feedback
         can_student_see_grade
         close_date
         open_date
-        promotion {
+        course {
           name
           years
         }

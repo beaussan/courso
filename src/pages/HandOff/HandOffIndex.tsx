@@ -20,13 +20,13 @@ import { useNavigate } from 'react-router-dom';
 
 gql`
   query handoffList {
-    practice_to_promotion(order_by: { close_date: desc }) {
+    practice_to_course(order_by: { close_date: desc }) {
       practice {
         title
         created_at
         id
       }
-      promotion {
+      course {
         name
         years
       }
@@ -133,7 +133,7 @@ export const HandOffIndex: React.FC = () => {
   const navigate = useNavigate();
   const [{ data, error }] = useHandoffListQuery();
   console.log({ data, error });
-  const sortedData = sortToIsOpenFirst(data?.practice_to_promotion ?? []);
+  const sortedData = sortToIsOpenFirst(data?.practice_to_course ?? []);
   return (
     <>
       <PageHead>Handoff</PageHead>
@@ -146,6 +146,7 @@ export const HandOffIndex: React.FC = () => {
           const isSubmited = value.practice_to_students.length > 0;
           return (
             <CardBox
+              key={value.id}
               onClick={
                 isStarted && !isSubmited
                   ? () => {
@@ -157,8 +158,8 @@ export const HandOffIndex: React.FC = () => {
               <div className="flex justify-between">
                 <div className="text-xl mb-4">
                   <span className="font-bold">{value.practice.title}</span>{' '}
-                  <span>{value.promotion.name}</span>{' '}
-                  <span>{value.promotion.years}</span>
+                  <span>{value.course.name}</span>{' '}
+                  <span>{value.course.years}</span>
                 </div>
                 <div>
                   <Chip variant={isSubmited ? 'success' : 'error'}>

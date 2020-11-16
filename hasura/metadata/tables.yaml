@@ -1,5 +1,70 @@
 - table:
     schema: public
+    name: course
+  array_relationships:
+    - name: practice_to_courses
+      using:
+        foreign_key_constraint_on:
+          column: course_id
+          table:
+            schema: public
+            name: practice_to_course
+    - name: student_to_courses
+      using:
+        foreign_key_constraint_on:
+          column: course_id
+          table:
+            schema: public
+            name: student_to_course
+  insert_permissions:
+    - role: teacher
+      permission:
+        check: {}
+        columns:
+          - id
+          - name
+          - years
+          - created_at
+          - updated_at
+        backend_only: false
+  select_permissions:
+    - role: student
+      permission:
+        columns:
+          - name
+          - years
+        filter:
+          student_to_courses:
+            student:
+              user_id:
+                _eq: X-Hasura-User-Id
+    - role: teacher
+      permission:
+        columns:
+          - name
+          - years
+          - created_at
+          - updated_at
+          - id
+        filter: {}
+        allow_aggregations: true
+  update_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - name
+          - years
+          - created_at
+          - updated_at
+          - id
+        filter: {}
+        check: null
+  delete_permissions:
+    - role: teacher
+      permission:
+        filter: {}
+- table:
+    schema: public
     name: practice
   array_relationships:
     - name: practice_grade_metrics
@@ -9,13 +74,13 @@
           table:
             schema: public
             name: practice_grade_metric
-    - name: practice_to_promotions
+    - name: practice_to_courses
       using:
         foreign_key_constraint_on:
           column: practice_id
           table:
             schema: public
-            name: practice_to_promotion
+            name: practice_to_course
     - name: practice_yields
       using:
         foreign_key_constraint_on:
@@ -44,9 +109,9 @@
           - title
           - updated_at
         filter:
-          practice_to_promotions:
-            promotion:
-              student_to_promotions:
+          practice_to_courses:
+            course:
+              student_to_courses:
                 student:
                   user_id:
                     _eq: X-Hasura-User-Id
@@ -160,19 +225,19 @@
         filter: {}
 - table:
     schema: public
-    name: practice_to_promotion
+    name: practice_to_course
   object_relationships:
+    - name: course
+      using:
+        foreign_key_constraint_on: course_id
     - name: practice
       using:
         foreign_key_constraint_on: practice_id
-    - name: promotion
-      using:
-        foreign_key_constraint_on: promotion_id
   array_relationships:
     - name: practice_to_students
       using:
         foreign_key_constraint_on:
-          column: promotion_practice_id
+          column: course_practice_id
           table:
             schema: public
             name: practice_to_student
@@ -181,7 +246,7 @@
       definition:
         function:
           schema: public
-          name: is_open_practice_to_promotion_fn
+          name: is_open_practice_to_course_fn
       comment: ''
   insert_permissions:
     - role: teacher
@@ -194,7 +259,7 @@
           - id
           - open_date
           - practice_id
-          - promotion_id
+          - course_id
         backend_only: false
   select_permissions:
     - role: student
@@ -207,13 +272,11 @@
           - id
           - open_date
           - practice_id
-          - promotion_id
+          - course_id
           - updated_at
-        computed_fields:
-          - is_open
         filter:
-          promotion:
-            student_to_promotions:
+          course:
+            student_to_courses:
               student:
                 user_id:
                   _eq: X-Hasura-User-Id
@@ -229,10 +292,8 @@
           - id
           - open_date
           - practice_id
-          - promotion_id
+          - course_id
           - updated_at
-        computed_fields:
-          - is_open
         filter: {}
         allow_aggregations: true
   update_permissions:
@@ -245,7 +306,7 @@
           - id
           - open_date
           - practice_id
-          - promotion_id
+          - course_id
         filter: {}
         check: null
   delete_permissions:
@@ -283,9 +344,9 @@
     schema: public
     name: practice_to_student
   object_relationships:
-    - name: practice_to_promotion
+    - name: practice_to_course
       using:
-        foreign_key_constraint_on: promotion_practice_id
+        foreign_key_constraint_on: course_practice_id
     - name: student
       using:
         foreign_key_constraint_on: student_id
@@ -310,7 +371,7 @@
         columns:
           - created_at
           - id
-          - promotion_practice_id
+          - course_practice_id
           - student_id
           - updated_at
         filter:
@@ -324,7 +385,7 @@
           - created_at
           - updated_at
           - student_id
-          - promotion_practice_id
+          - course_practice_id
           - grade
           - feedback
           - graded
@@ -457,9 +518,9 @@
           - updated_at
         filter:
           practice:
-            practice_to_promotions:
-              promotion:
-                student_to_promotions:
+            practice_to_courses:
+              course:
+                student_to_courses:
                   student:
                     user_id:
                       _eq: X-Hasura-User-Id
@@ -519,71 +580,6 @@
         filter: {}
 - table:
     schema: public
-    name: promotion
-  array_relationships:
-    - name: practice_to_promotions
-      using:
-        foreign_key_constraint_on:
-          column: promotion_id
-          table:
-            schema: public
-            name: practice_to_promotion
-    - name: student_to_promotions
-      using:
-        foreign_key_constraint_on:
-          column: promotion_id
-          table:
-            schema: public
-            name: student_to_promotion
-  insert_permissions:
-    - role: teacher
-      permission:
-        check: {}
-        columns:
-          - id
-          - name
-          - years
-          - created_at
-          - updated_at
-        backend_only: false
-  select_permissions:
-    - role: student
-      permission:
-        columns:
-          - name
-          - years
-        filter:
-          student_to_promotions:
-            student:
-              user_id:
-                _eq: X-Hasura-User-Id
-    - role: teacher
-      permission:
-        columns:
-          - name
-          - years
-          - created_at
-          - updated_at
-          - id
-        filter: {}
-        allow_aggregations: true
-  update_permissions:
-    - role: teacher
-      permission:
-        columns:
-          - name
-          - years
-          - created_at
-          - updated_at
-          - id
-        filter: {}
-        check: null
-  delete_permissions:
-    - role: teacher
-      permission:
-        filter: {}
-- table:
-    schema: public
     name: student
   object_relationships:
     - name: user
@@ -597,13 +593,13 @@
           table:
             schema: public
             name: practice_to_student
-    - name: student_to_promotions
+    - name: student_to_courses
       using:
         foreign_key_constraint_on:
           column: student_id
           table:
             schema: public
-            name: student_to_promotion
+            name: student_to_course
   computed_fields:
     - name: full_name
       definition:
@@ -656,11 +652,11 @@
         filter: {}
 - table:
     schema: public
-    name: student_to_promotion
+    name: student_to_course
   object_relationships:
-    - name: promotion
+    - name: course
       using:
-        foreign_key_constraint_on: promotion_id
+        foreign_key_constraint_on: course_id
     - name: student
       using:
         foreign_key_constraint_on: student_id
@@ -669,9 +665,9 @@
       permission:
         check: {}
         columns:
-          - promotion_id
-          - student_id
+          - course_id
           - created_at
+          - student_id
           - updated_at
         backend_only: false
   select_permissions:
@@ -679,32 +675,31 @@
       permission:
         columns:
           - created_at
-          - promotion_id
           - student_id
           - updated_at
         filter:
-          promotion:
-            student_to_promotions:
+          course:
+            student_to_courses:
               student:
                 user_id:
                   _eq: X-Hasura-User-Id
     - role: teacher
       permission:
         columns:
+          - course_id
           - created_at
-          - updated_at
-          - promotion_id
           - student_id
+          - updated_at
         filter: {}
         allow_aggregations: true
   update_permissions:
     - role: teacher
       permission:
         columns:
+          - course_id
           - created_at
-          - updated_at
-          - promotion_id
           - student_id
+          - updated_at
         filter: {}
         check: {}
   delete_permissions:

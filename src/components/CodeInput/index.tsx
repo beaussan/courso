@@ -1,13 +1,13 @@
 import React from 'react';
 import { makeAceProps, SupportedLanguages } from './aceSharedConfig';
-import AceEditor, { AceEditorProps } from 'react-ace/types';
+import AceEditor, { IAceEditorProps } from 'react-ace';
 import { Field } from 'formik';
 import { FieldProps } from 'formik/dist/Field';
 
 export interface CodeInputProps {
   lang: SupportedLanguages;
   value: string;
-  onChange?: AceEditorProps['onChange'];
+  onChange?: IAceEditorProps['onChange'];
   isReadonly?: boolean;
 }
 
@@ -15,11 +15,13 @@ export const CodeInput: React.FC<CodeInputProps> = ({
   value,
   lang,
   isReadonly = false,
+  onChange,
 }) => {
   return (
     <AceEditor
       {...makeAceProps({
         value,
+        onChange,
         mode: (lang as unknown) as string,
         setOptions: {
           readOnly: isReadonly,

@@ -5,8 +5,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import gql from 'graphql-tag';
 import {
   HandOffByIdQuery,
+  Maybe,
+  Practice_Yield_Type_Enum,
   useHandOffByIdQuery,
   useSubmitHandoffMutation,
+  YieldPracticeInputFragment,
 } from '../../generated/graphql';
 import { DebugJson } from '../../components/DebugJson';
 import { Loader } from '../../components/Loader';
@@ -19,28 +22,33 @@ import {
 } from 'date-fns';
 import { useTimeInterval } from '../../hooks/useTimeInterval';
 import { enGB } from 'date-fns/locale';
-import { Input } from '../../components/Input';
+import { Input, TextArea } from '../../components/Input';
 import { CardBox } from '../../components/CardBox';
 import { Form, Formik } from 'formik';
 import { Alert } from '../../components/Alert';
 import * as yup from 'yup';
 import { Button } from '../../components/Button';
 import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
+import { ObjectSchema } from 'yup';
+import { CodeInputField } from '../../components/CodeInput';
 
 gql`
+  fragment YieldPracticeInput on practice_yield {
+    id
+    meta
+    method
+    name
+    description
+  }
   query HandOffById($id: uuid!) {
-    practice_to_promotion_by_pk(id: $id) {
+    practice_to_course_by_pk(id: $id) {
       practice {
         title
         description
         created_at
         id
         practice_yields {
-          id
-          meta
-          method
-          name
-          description
+          ...YieldPracticeInput
         }
       }
       practice_to_students {
@@ -69,22 +77,96 @@ gql`
   }
 `;
 
-const GitField = ({
-  name,
+const InputBlock: React.FC<{ label: string; description?: string | null }> = ({
   label,
   description,
-}: {
-  name: string;
-  label: string;
-  description: string;
-}) => {
+  children,
+}) => (
+  <div className="py-4">
+    <div className="mb-1 font-bold text-lg leading-relaxed">{label}</div>
+    {description && <div className="font-light mb-3">{description}</div>}
+    {children}
+  </div>
+);
+type FormInputElem = React.FC<{ data: YieldPracticeInputFragment }>;
+
+const GitField: FormInputElem = ({ data }) => {
   return (
-    <div>
-      <div className="mb-1 text-lg leading-relaxed">{label}</div>
-      <div className="font-light mb-3">{description}</div>
-      <Input label="Git HTTP(S) url" name={`${name}.value`} />
-    </div>
+    <InputBlock label={data.name} description={data.description}>
+      <Alert className="mb-2">
+        <ul className="list-disc ml-4">
+          <li>
+            All git url will be{' '}
+            <span className="font-semibold">cloned at submit</span>.
+          </li>
+          <li>
+            It should be{' '}
+            <span className="font-semibold">a public git repository.</span>
+          </li>
+        </ul>
+      </Alert>
+      <Input label="Git HTTP(S) url" name={`${data.name}.value`} />
+    </InputBlock>
   );
+};
+
+const BlobField: FormInputElem = ({ data }) => {
+  return (
+    <InputBlock label={data.name} description={data.description}>
+      <TextArea
+        label={data.meta?.label ?? 'Your input'}
+        name={`${data.name}.value`}
+      />
+    </InputBlock>
+  );
+};
+
+const UrlInput: FormInputElem = ({ data }) => {
+  return (
+    <InputBlock label={data.name} description={data.description}>
+      <Input
+        label={data.meta?.label ?? 'The URL'}
+        name={`${data.name}.value`}
+      />
+    </InputBlock>
+  );
+};
+
+const CodeYieldInput: FormInputElem = ({ data }) => {
+  return (
+    <InputBlock label={data.name} description={data.description}>
+      <CodeInputField
+        lang={data.meta.lang}
+        name={`${data.name}.value`}
+        label={`Code input (${data.meta.lang})`}
+      />
+    </InputBlock>
+  );
+};
+
+const FormElementsByMethod: Record<Practice_Yield_Type_Enum, FormInputElem> = {
+  GIT_REPO: GitField,
+  BLOB: BlobField,
+  CODE: CodeYieldInput,
+  URL: UrlInput,
+};
+
+const Validation: Record<Practice_Yield_Type_Enum, ObjectSchema> = {
+  GIT_REPO: yup.object({
+    value: yup.string().url('Git url is not a valid url'),
+  }),
+  BLOB: yup.object({
+    value: yup
+      .string()
+      .url('Git url is not a valid url')
+      .required('Git url missing'),
+  }),
+  CODE: yup.object({
+    value: yup.string(),
+  }),
+  URL: yup.object({
+    value: yup.string().url('This is not a valid url'),
+  }),
 };
 
 interface HandoffForm {
@@ -97,20 +179,19 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
   useTimeInterval(1);
   const [{ fetching }, submitHandoff] = useSubmitHandoffMutation();
   const currDate = new Date();
-  const close = new Date(data.practice_to_promotion_by_pk?.close_date);
-  const open = new Date(data.practice_to_promotion_by_pk?.open_date);
+  const close = new Date(data.practice_to_course_by_pk?.close_date);
+  const open = new Date(data.practice_to_course_by_pk?.open_date);
   const isOpen = isAfter(currDate, open) && isBefore(currDate, close);
   const onSubmit = useFormikMutationSubmit({
     mutation: submitHandoff,
     successMessage: 'Succesfully submit handoff',
     mapFormData: (values: HandoffForm) => ({
-      practiceToPromotionId: data?.practice_to_promotion_by_pk?.id,
+      practiceToPromotionId: data?.practice_to_course_by_pk?.id,
       yields: Object.entries(values).map(([yieldId, { value }]) => ({
         value,
         yieldId,
       })),
     }),
-    navigateDestination: undefined,
   });
 
   const timeLeft = formatDuration(
@@ -127,7 +208,7 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
     );
   }
   const yeilds =
-    data?.practice_to_promotion_by_pk?.practice?.practice_yields ?? [];
+    data?.practice_to_course_by_pk?.practice?.practice_yields ?? [];
   const initialValues: HandoffForm = yeilds
     .map(({ id }) => ({ [id]: { value: '' } }))
     .reduce((prev, curr) => ({ ...prev, ...curr }), {});
@@ -138,13 +219,8 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
         onSubmit={onSubmit}
         validationSchema={yup.object(
           yeilds
-            .map(({ id }) => ({
-              [id]: yup.object({
-                value: yup
-                  .string()
-                  .url('Git url is not a valid url')
-                  .required('Git url missing'),
-              }),
+            .map(({ id, method }) => ({
+              [id]: Validation[method],
             }))
             .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
         )}
@@ -155,29 +231,16 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
               All handoff are <span className="font-semibold">permanent</span>,
               and{' '}
               <span className="font-semibold">no second try can be done.</span>.
-              <br />
-              All git url will be{' '}
-              <span className="font-semibold">
-                cloned when you click submit
-              </span>
-              , so{' '}
-              <span className="font-semibold">
-                any new commit will be ignored.
-              </span>
-              <br />
-              <span>
-                It should be <span className="font-semibold">public.</span>
-              </span>
             </Alert>
-            <div className="my-4 font-semibold">What you need to handoff :</div>
-            {yeilds.map(({ name, id, description }) => (
-              <GitField
-                key={id}
-                name={id}
-                label={name}
-                description={description}
-              />
-            ))}
+            <div className="my-4 text-2xl font-semibold">
+              What you need to handoff :
+            </div>
+            <div className="space-y-4 divide-y">
+              {yeilds.map((value, index) => {
+                const ToRender = FormElementsByMethod[value.method];
+                return <ToRender data={value} key={index} />;
+              })}
+            </div>
             <Loader visible={fetching}>
               <Button
                 isFull
@@ -202,16 +265,17 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
 export const HandOffId = () => {
   const { handoffId } = useParams();
   const navigate = useNavigate();
-  const [{ data, error }] = useHandOffByIdQuery({
+  const [{ data, error, fetching }] = useHandOffByIdQuery({
     variables: { id: handoffId },
   });
-  if (!data?.practice_to_promotion_by_pk || error) {
+  if (fetching) {
+    return <Loader />;
+  }
+  if (!data?.practice_to_course_by_pk || error) {
     navigate('../');
   }
 
-  if (
-    (data?.practice_to_promotion_by_pk?.practice_to_students?.length ?? 0) > 0
-  ) {
+  if ((data?.practice_to_course_by_pk?.practice_to_students?.length ?? 0) > 0) {
     navigate('../');
   }
   let body = <div />;
@@ -223,11 +287,10 @@ export const HandOffId = () => {
       <PageHead className="">
         <div className="flex items-center">
           <BackButton className="mr-2" />
-          {'Handoff for '} {data?.practice_to_promotion_by_pk?.practice.title}
+          {'Handoff for '} {data?.practice_to_course_by_pk?.practice.title}
         </div>
       </PageHead>
       {body}
-      <DebugJson json={data} />
     </>
   );
 };

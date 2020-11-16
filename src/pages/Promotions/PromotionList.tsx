@@ -4,43 +4,30 @@ import { PageHead } from '../../components/PageHead';
 import { Button } from '../../components/Button';
 import gql from 'graphql-tag';
 import {
-  Maybe,
-  Promotion,
-  Student_To_Promotion_Aggregate_Fields,
+  CourseCardFragment,
   useListPromotionsQuery,
 } from '../../generated/graphql';
-import { Loader } from '../../components/Loader';
 import { CardBox } from '../../components/CardBox';
 
 gql`
-  query ListPromotions {
-    promotion {
-      id
-      name
-      years
-      student_to_promotions_aggregate {
-        aggregate {
-          count
-        }
+  fragment CourseCard on course {
+    id
+    name
+    years
+    student_to_courses_aggregate {
+      aggregate {
+        count
       }
+    }
+  }
+  query ListPromotions {
+    course {
+      ...CourseCard
     }
   }
 `;
 
-type CardType = Pick<Promotion, 'name' | 'years' | 'id'> & {
-  student_to_promotions_aggregate: {
-    __typename?: 'student_to_promotion_aggregate';
-  } & {
-    aggregate?: Maybe<
-      { __typename?: 'student_to_promotion_aggregate_fields' } & Pick<
-        Student_To_Promotion_Aggregate_Fields,
-        'count'
-      >
-    >;
-  };
-};
-
-const PromoCard: React.FC<{ data: CardType }> = ({ data }) => {
+const PromoCard: React.FC<{ data: CourseCardFragment }> = ({ data }) => {
   const navigate = useNavigate();
   return (
     <CardBox onClick={() => navigate(`./${data.id}`)}>
@@ -50,7 +37,7 @@ const PromoCard: React.FC<{ data: CardType }> = ({ data }) => {
         <span>{data.years}</span>
       </div>
       <div className="text-gray-600">
-        {data.student_to_promotions_aggregate.aggregate?.count} students
+        {data.student_to_courses_aggregate.aggregate?.count} students
       </div>
     </CardBox>
   );
@@ -70,7 +57,7 @@ export const PromotionIndex = () => {
       </PageHead>
 
       <div className="space-y-4">
-        {data?.promotion.map((data) => (
+        {data?.course.map((data) => (
           <PromoCard key={data.id} data={data} />
         ))}
       </div>

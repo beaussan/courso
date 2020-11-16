@@ -12,11 +12,11 @@ import {
 
 const GET_META_FOR_GITEA_ORG_NAME = gql`
   query getPracticeToPromotionMeta($id: uuid!) {
-    practice_to_promotion_by_pk(id: $id) {
+    practice_to_course_by_pk(id: $id) {
       practice {
         title
       }
-      promotion {
+      course {
         name
         years
       }
@@ -26,7 +26,7 @@ const GET_META_FOR_GITEA_ORG_NAME = gql`
 
 const UPDATE_GITEA_ORG_NAME = gql`
   mutation UpdateGiteaOrgName($id: uuid!, $gitea_org_name: String!) {
-    update_practice_to_promotion_by_pk(
+    update_practice_to_course_by_pk(
       pk_columns: { id: $id }
       _set: { gitea_org_name: $gitea_org_name }
     ) {
@@ -42,19 +42,19 @@ const generateSlugOrgName = async (id: string): Promise<string> => {
   >(GET_META_FOR_GITEA_ORG_NAME, { id });
   if (
     !data ||
-    !data.practice_to_promotion_by_pk ||
-    !data.practice_to_promotion_by_pk.practice ||
-    !data.practice_to_promotion_by_pk.promotion
+    !data.practice_to_course_by_pk ||
+    !data.practice_to_course_by_pk.practice ||
+    !data.practice_to_course_by_pk.course
   ) {
     throw new functions.https.HttpsError(
       'invalid-argument',
-      'could not get promotion data',
+      'could not get course data',
     );
   }
   const {
-    practice_to_promotion_by_pk: {
+    practice_to_course_by_pk: {
       practice: { title },
-      promotion: { name, years },
+      course: { name, years },
     },
   } = data;
   return slug(`${years} ${name} ${title}`, { lower: false });

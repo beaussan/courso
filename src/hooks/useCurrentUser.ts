@@ -1,12 +1,7 @@
 import { gql } from '@apollo/client';
-import {
-  CurrentUserQueryVariables,
-  useCurrentUserQuery,
-} from '../generated/graphql';
+import { useCurrentUserQuery } from '../generated/graphql';
 import { useObservable } from './useObservable';
 import { userWithCorrectToken$ } from '../services/TokenService';
-import { useEffect } from 'react';
-import { useObservableState } from 'observable-hooks';
 
 gql`
   query currentUser($firebaseId: String!) {

@@ -23,7 +23,7 @@ const ON_STUDENT_YIELD_CREATED_QUERY = gql`
         student {
           full_name
         }
-        practice_to_promotion {
+        practice_to_course {
           gitea_org_name
         }
       }
@@ -67,7 +67,7 @@ const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
   }
 
   if (
-    !practice_to_student_yield_by_pk.practice_to_student.practice_to_promotion
+    !practice_to_student_yield_by_pk.practice_to_student.practice_to_course
       .gitea_org_name
   ) {
     throw new functions.https.HttpsError('internal', 'gita org not found');
@@ -78,7 +78,7 @@ const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
     { lower: false },
   );
   const repoOwner =
-    practice_to_student_yield_by_pk.practice_to_student.practice_to_promotion
+    practice_to_student_yield_by_pk.practice_to_student.practice_to_course
       .gitea_org_name;
 
   const { ok, originalError, data } = await giteaClient.post('/repos/migrate', {
