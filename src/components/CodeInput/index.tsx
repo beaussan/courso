@@ -1,8 +1,9 @@
 import React from 'react';
-import { makeAceProps, SupportedLanguages } from './aceSharedConfig';
+import { makeAceProps } from './aceSharedConfig';
 import AceEditor, { IAceEditorProps } from 'react-ace';
 import { Field } from 'formik';
 import { FieldProps } from 'formik/dist/Field';
+import { SupportedLanguages } from './supportedLangs';
 
 export interface CodeInputProps {
   lang: SupportedLanguages;
@@ -86,3 +87,5 @@ export const CodeInputField: React.FC<CodeInputFieldProps> = ({
     </Field>
   );
 };
+
+export default CodeInputField;

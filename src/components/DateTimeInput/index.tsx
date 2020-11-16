@@ -129,7 +129,7 @@ export const DateTimeInputRangeField: React.FC<DateTimeInputRangeFieldProps> = (
   labelEnd,
   minDate = new Date(),
 }) => {
-  const { values, setFieldValue, getFieldProps } = useFormikContext<any>();
+  const { setFieldValue, getFieldProps } = useFormikContext<any>();
   const { value: startDate } = getFieldProps(nameStart);
   const { value: endDate } = getFieldProps(nameEnd);
 

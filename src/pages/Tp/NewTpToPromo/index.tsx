@@ -6,8 +6,7 @@ import {
   useInsertNewPracticeToPromotionMutation,
 } from '../../../generated/graphql';
 import gql from 'graphql-tag';
-import { Form, Formik, FormikHelpers } from 'formik';
-import { useToasts } from 'react-toast-notifications';
+import { Form, Formik } from 'formik';
 import { DateTimeInputRangeField } from '../../../components/DateTimeInput';
 import { DropList } from '../../../components/DropList';
 import {
@@ -72,7 +71,7 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
   promotions,
   tpId,
 }) => {
-  const [{}, insertNewTpToPromo] = useInsertNewPracticeToPromotionMutation();
+  const [, insertNewTpToPromo] = useInsertNewPracticeToPromotionMutation();
   const [isModalOpen, setModalOpen] = useState(false);
   const onCloseModal = () => setModalOpen(false);
   const onSubmit = useFormikMutationSubmit({

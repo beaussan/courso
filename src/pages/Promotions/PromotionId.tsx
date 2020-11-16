@@ -13,7 +13,6 @@ import { ButtonWithConfirm } from '../../components/ButtonWithConfirm';
 import { Table } from '../../components/Table';
 import { Chip } from '../../components/Chip';
 import { useToasts } from 'react-toast-notifications';
-import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
 
 gql`
   query promotionDetails($id: uuid!) {
@@ -55,7 +54,7 @@ export const PromotionId = () => {
   });
   const navigate = useNavigate();
   const { addToast } = useToasts();
-  const [{}, sendStudentMail] = useSendStudentClaimMailMutation();
+  const [, sendStudentMail] = useSendStudentClaimMailMutation();
 
   if (fetching) {
     return <Loader />;

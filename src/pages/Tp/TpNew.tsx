@@ -54,7 +54,7 @@ interface NewTp {
 
 export const TpNew = () => {
   const { data: yieldTypes, loading } = useFetchYieldTypes();
-  const [{}, createTp] = useCreateNewPracticeMutation();
+  const [, createTp] = useCreateNewPracticeMutation();
   const onSubmit = useFormikMutationSubmit({
     mutation: createTp,
     successMessage: 'TP added successfully',

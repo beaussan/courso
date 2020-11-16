@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import gql from 'graphql-tag';
 import {
   HandOffByIdQuery,
-  Maybe,
   Practice_Yield_Type_Enum,
   useHandOffByIdQuery,
   useSubmitHandoffMutation,
   YieldPracticeInputFragment,
 } from '../../generated/graphql';
-import { DebugJson } from '../../components/DebugJson';
 import { Loader } from '../../components/Loader';
 import {
   formatDuration,
@@ -30,7 +28,6 @@ import * as yup from 'yup';
 import { Button } from '../../components/Button';
 import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
 import { ObjectSchema } from 'yup';
-import { CodeInputField } from '../../components/CodeInput';
 
 gql`
   fragment YieldPracticeInput on practice_yield {
@@ -132,14 +129,17 @@ const UrlInput: FormInputElem = ({ data }) => {
   );
 };
 
+const CodeInputField = lazy(() => import('../../components/CodeInput/index'));
 const CodeYieldInput: FormInputElem = ({ data }) => {
   return (
     <InputBlock label={data.name} description={data.description}>
-      <CodeInputField
-        lang={data.meta.lang}
-        name={`${data.name}.value`}
-        label={`Code input (${data.meta.lang})`}
-      />
+      <Suspense fallback={<Loader />}>
+        <CodeInputField
+          lang={data.meta.lang}
+          name={`${data.name}.value`}
+          label={`Code input (${data.meta.lang})`}
+        />
+      </Suspense>
     </InputBlock>
   );
 };
@@ -225,7 +225,7 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
             .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
         )}
       >
-        {({ isValid, isValidating, values }) => (
+        {({ isValid, isValidating }) => (
           <Form className="flex flex-col">
             <Alert title="Be carefull">
               All handoff are <span className="font-semibold">permanent</span>,
@@ -294,3 +294,5 @@ export const HandOffId = () => {
     </>
   );
 };
+
+export default HandOffId;

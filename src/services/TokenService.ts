@@ -24,7 +24,7 @@ const getUserWithClaims = (user: User): Observable<User> =>
   from(user.getIdToken()).pipe(
     switchMap(() => from(user.getIdTokenResult())),
     pluck('claims'),
-    log('Claims :'),
+    // log('Claims :'),
     switchMap((claims) =>
       claims['https://hasura.io/jwt/claims']
         ? of(user)
@@ -38,7 +38,7 @@ const getUserWithClaims = (user: User): Observable<User> =>
   );
 
 export const userWithCorrectToken$ = user(auth).pipe(
-  log('User auth direct call'),
+  // log('User auth direct call'),
   switchMap((user) => (user ? getUserWithClaims(user) : of(undefined))),
   shareReplay({
     bufferSize: 1,
@@ -53,7 +53,6 @@ export const correctToken$ = userWithCorrectToken$.pipe(
     bufferSize: 1,
     refCount: true,
   }),
-  log('correctToken$'),
 );
 
 export const authState$: Observable<AuthState> = combineLatest([
@@ -71,7 +70,7 @@ export const authState$: Observable<AuthState> = combineLatest([
     ),
   ),
 ]).pipe(
-  log('pre result'),
+  // log('pre result'),
   map(([authStateRaw, withToken]: any) => {
     if (withToken?.value) {
       return 'in';
@@ -106,7 +105,7 @@ export const userRole$ = userWithCorrectToken$.pipe(
         ]).pipe(map(([a, b]) => a))
       : of(undefined),
   ),
-  log('user role'),
+  // log('user role'),
   shareReplay({
     bufferSize: 1,
     refCount: true,

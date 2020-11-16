@@ -1,11 +1,4 @@
-import React, {
-  Suspense,
-  lazy,
-  useMemo,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Error500 } from './pages/Error500';
 
@@ -16,8 +9,6 @@ import { ToastProvider } from 'react-toast-notifications';
 import { Provider as UrqlProvider } from 'urql';
 import { createUrqlClient } from './services/urqlClient';
 import { BrowserRouter } from 'react-router-dom';
-import { useWhyDidYouUpdate } from './hooks/useWhyDidYouUpdate';
-import { useMemoCompare } from './hooks/useMemoCompare';
 import { LoadingFullScreen } from './pages/LoadingFullScreen';
 
 const LinkPage = lazy(() => import('./pages/Link'));

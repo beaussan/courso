@@ -1,6 +1,6 @@
 import React from 'react';
 import { DropList } from '../DropList';
-import { languages } from '../CodeInput/aceSharedConfig';
+import { supportedAceLang } from '../CodeInput/supportedLangs';
 
 export const CodeLangField: React.FC<{ name: string; label?: string }> = ({
   name,
@@ -10,7 +10,7 @@ export const CodeLangField: React.FC<{ name: string; label?: string }> = ({
     <DropList
       label={label ?? 'Code language'}
       name={name}
-      values={(languages as unknown) as string[]}
+      values={(supportedAceLang as unknown) as string[]}
     />
   );
 };

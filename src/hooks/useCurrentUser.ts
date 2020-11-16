@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import gql from 'graphql-tag';
 import { useCurrentUserQuery } from '../generated/graphql';
 import { useObservable } from './useObservable';
 import { userWithCorrectToken$ } from '../services/TokenService';
@@ -20,10 +20,7 @@ gql`
 export const useCurrentUser = () => {
   const firebaseUser = useObservable(userWithCorrectToken$);
 
-  const [
-    { data, error, fetching, extensions, operation },
-    retry,
-  ] = useCurrentUserQuery({
+  const [{ data, error, fetching }] = useCurrentUserQuery({
     variables: {
       firebaseId: firebaseUser?.uid ?? '',
     },
@@ -33,12 +30,10 @@ export const useCurrentUser = () => {
   if (error) {
     if (
       error.message !==
-      '[GraphQL] Missing Authorization header in JWT authentication mode'
+      '[GraphQL] field "user" not found in type: \'query_root\''
     ) {
       console.error('ERROR IN useCurrentUser');
       console.error(error.message);
-    } else {
-      console.error('Error missing JWT', error);
     }
   }
 

@@ -8,7 +8,7 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 export const RouteWithRule: React.FC<RouteProps> = ({ ...rest }) => {
   const authState = useAuthState();
   const navigate = useNavigate();
-  const { user, loading: userLoading, error } = useCurrentUser();
+  const { user, loading: userLoading } = useCurrentUser();
 
   useEffect(() => {
     if (authState === 'out') {

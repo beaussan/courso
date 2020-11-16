@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { HandOffIndex } from './HandOffIndex';
-import { HandOffId } from './HandOffId';
+
+const HandOffIndexPage = lazy(() => import('./HandOffIndex'));
+const HandOffIdPage = lazy(() => import('./HandOffId'));
 
 export const HandOff = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HandOffIndex />} />
-        <Route path="/:handoffId" element={<HandOffId />} />
+        <Route path="/" element={<HandOffIndexPage />} />
+        <Route path="/:handoffId" element={<HandOffIdPage />} />
       </Routes>
     </>
   );

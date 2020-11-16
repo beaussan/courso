@@ -7,11 +7,9 @@ import {
 } from 'urql';
 import { devtoolsExchange } from '@urql/devtools';
 import { makeOperation } from '@urql/core';
-import { take } from 'rxjs/operators';
 
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { authExchange } from '@urql/exchange-auth';
-import { correctToken$ } from './TokenService';
 
 if (!process.env.REACT_APP_HASURA_ENDPOINT) {
   throw new Error('Config not found');
@@ -102,7 +100,7 @@ export const createUrqlClient = (token: string | undefined) => {
       }),
 
        */
-      // dedupExchange,
+      dedupExchange,
       cacheExchange,
       /*
       retryExchange({

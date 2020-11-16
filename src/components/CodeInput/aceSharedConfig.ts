@@ -1,45 +1,38 @@
 import '../../fonts/monoid/monoid.css';
-
 import 'react-ace';
 import { IAceEditorProps } from 'react-ace';
-
-export const languages = [
-  'javascript',
-  'java',
-  'xml',
-  'yaml',
-  'typescript',
-  'css',
-  'sass',
-  'json',
-  'html',
-  'kotlin',
-  'text',
-  'sh',
-  'dockerfile',
-  // 'java',
-  // 'python',
-  //  'ruby',
-  //  'sass',
-  //  'markdown',
-  //  'mysql',
-  //  'handlebars',
-  //  'golang',
-  //  'csharp',
-  //  'elixir',
-] as const;
-export type SupportedLanguages = typeof languages;
+/*
+ * Manual inputs in order to reduce the bundle size from 1.3M to 278KB
+ */
+import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-java';
+import 'ace-builds/src-noconflict/mode-xml';
+import 'ace-builds/src-noconflict/mode-yaml';
+import 'ace-builds/src-noconflict/mode-typescript';
+import 'ace-builds/src-noconflict/mode-css';
+import 'ace-builds/src-noconflict/mode-sass';
+import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/mode-html';
+import 'ace-builds/src-noconflict/mode-kotlin';
+import 'ace-builds/src-noconflict/mode-text';
+import 'ace-builds/src-noconflict/mode-sh';
+import 'ace-builds/src-noconflict/mode-dockerfile';
+import 'ace-builds/src-noconflict/snippets/javascript';
+import 'ace-builds/src-noconflict/snippets/java';
+import 'ace-builds/src-noconflict/snippets/xml';
+import 'ace-builds/src-noconflict/snippets/yaml';
+import 'ace-builds/src-noconflict/snippets/typescript';
+import 'ace-builds/src-noconflict/snippets/css';
+import 'ace-builds/src-noconflict/snippets/sass';
+import 'ace-builds/src-noconflict/snippets/json';
+import 'ace-builds/src-noconflict/snippets/html';
+import 'ace-builds/src-noconflict/snippets/kotlin';
+import 'ace-builds/src-noconflict/snippets/text';
+import 'ace-builds/src-noconflict/snippets/sh';
+import 'ace-builds/src-noconflict/snippets/dockerfile';
+import 'ace-builds/src-noconflict/theme-dracula';
 
 export const themes = ['dracula'];
-
-languages.forEach((lang) => {
-  require(`ace-builds/src-noconflict/mode-${lang}`);
-  require(`ace-builds/src-noconflict/snippets/${lang}`);
-});
-
-themes.forEach((theme) => {
-  require(`ace-builds/src-noconflict/theme-${theme}`);
-});
 
 const aceSharedProps: IAceEditorProps = {
   theme: themes[0],

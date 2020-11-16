@@ -2,12 +2,10 @@ import gql from 'graphql-tag';
 import { useCreatePromotionMutation } from '../../generated/graphql';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik } from 'formik';
 import { Input, TextArea } from '../../components/Input';
 import { Button } from '../../components/Button';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useToasts } from 'react-toast-notifications';
 import { mapToSave, parseCsv, studentValidator } from './validation';
 import { CardBox } from '../../components/CardBox';
 import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
@@ -61,9 +59,7 @@ const validateData = async (values: Partial<NewPromo>) => {
 };
 
 export const PromotionNew = () => {
-  const [{}, createPromo] = useCreatePromotionMutation();
-  const navigate = useNavigate();
-  const { addToast } = useToasts();
+  const [, createPromo] = useCreatePromotionMutation();
   const onSubmit = useFormikMutationSubmit({
     mapFormData: (values: NewPromo) => {
       return {

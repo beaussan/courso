@@ -3,7 +3,6 @@ import { PageHead } from '../../components/PageHead';
 import gql from 'graphql-tag';
 import { Maybe, useHandoffListQuery } from '../../generated/graphql';
 import { CardBox } from '../../components/CardBox';
-import { Loader } from '../../components/Loader';
 import { Chip } from '../../components/Chip';
 import {
   format,
@@ -131,7 +130,7 @@ const FormatTimeLeft: React.FC<{ open: Date; close: Date }> = ({
 export const HandOffIndex: React.FC = () => {
   const currDate = new Date();
   const navigate = useNavigate();
-  const [{ data, error }] = useHandoffListQuery();
+  const [{ data }] = useHandoffListQuery();
 
   const sortedData = sortToIsOpenFirst(data?.practice_to_course ?? []);
   return (
@@ -186,3 +185,4 @@ export const HandOffIndex: React.FC = () => {
     </>
   );
 };
+export default HandOffIndex;
