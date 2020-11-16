@@ -129,9 +129,9 @@ export const DateTimeInputRangeField: React.FC<DateTimeInputRangeFieldProps> = (
   labelEnd,
   minDate = new Date(),
 }) => {
-  const { values, setFieldValue } = useFormikContext<any>();
-  const startDate = values[nameStart];
-  const endDate = values[nameEnd];
+  const { values, setFieldValue, getFieldProps } = useFormikContext<any>();
+  const { value: startDate } = getFieldProps(nameStart);
+  const { value: endDate } = getFieldProps(nameEnd);
 
   useEffect(() => {
     if (isBefore(endDate, addMinutes(startDate, 29))) {

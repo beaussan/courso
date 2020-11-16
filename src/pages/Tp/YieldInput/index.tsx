@@ -3,25 +3,15 @@ import { DropList } from '../../../components/DropList';
 import { Button } from '../../../components/Button';
 import { ReactComponent as Remove } from '../../../icons/outline/minus.svg';
 import React from 'react';
-import { useFormikContext } from 'formik';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const allowedLanguages = [
-  'dockerfile',
-  'yaml',
-  'typescript',
-  'tsx',
-  'sh',
-  'text',
-];
+import { useFormikContext } from 'formik';
+import { CodeLangField } from '../../../components/CodeLangField';
 
 const CodeSpecificInputs: React.FC<{ baseName: string }> = ({ baseName }) => {
   return (
     <div>
-      <DropList
-        label="Kind of code"
-        name={`${baseName}.codeMethod`}
-        values={allowedLanguages}
-      />
+      <CodeLangField label="Lang of code" name={`${baseName}.meta.lang`} />
     </div>
   );
 };
@@ -32,29 +22,22 @@ const extraInupts: { [key: string]: React.FC<{ baseName: string }> } = {
 
 export const YieldInput: React.FC<{
   baseName: string;
+  index: number;
   yieldTypes: string[];
   remove?: Function;
-}> = ({ yieldTypes, baseName, remove }) => {
+}> = ({ yieldTypes, baseName, remove, index }) => {
   const { getFieldProps } = useFormikContext<any>();
   const { value } = getFieldProps(`${baseName}.method`);
 
   console.log(value);
 
   const Extra = extraInupts[value];
+  console.log({ Extra });
 
   return (
-    <div className="flex flex-col justify-between items-start mb-5 space-y-4">
-      <div className="flex justify-between w-full">
-        <div className="flex-1">
-          <Input label="Name" type="text" name={`${baseName}.name`} />
-        </div>
-        <div className="w-40 mx-4">
-          <DropList
-            label="Kind of yield"
-            name={`${baseName}.method`}
-            values={yieldTypes}
-          />
-        </div>
+    <div className="flex flex-col justify-between items-start bg-indigo-50 rounded-lg p-3 shadow">
+      <div className="flex w-full justify-between mb-5">
+        <div className="flex-1 font-bold text-xl">Yield {index + 1}</div>
         {remove && (
           <Button
             className="self-start"
@@ -64,16 +47,44 @@ export const YieldInput: React.FC<{
           />
         )}
       </div>
+      <div className="flex justify-between w-full mb-5">
+        <div className="flex-1">
+          <Input label="Name" type="text" name={`${baseName}.name`} />
+        </div>
+        <div className="w-40 ml-4">
+          <DropList
+            label="Kind of yield"
+            name={`${baseName}.method`}
+            values={yieldTypes}
+          />
+        </div>
+      </div>
 
-      <div className="flex-1 w-full">
+      <div className="flex-1 flex w-full">
         <TextArea
           label="Description (markdown allowed)"
           className=""
           type="text"
           name={`${baseName}.description`}
         />
+        <AnimatePresence>
+          {Extra && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="ml-4"
+              variants={{
+                hidden: { width: 0 },
+                visible: { width: 'auto' },
+              }}
+              transition={{ duration: 0.275 }}
+            >
+              <Extra baseName={baseName} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <div>{Extra && <Extra baseName={baseName} />}</div>
     </div>
   );
 };

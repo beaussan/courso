@@ -11,6 +11,19 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
+      minWidth: (theme) => ({
+        '0': '0',
+        ...theme('spacing'),
+        'full': '100%',
+        'min-content': 'min-content',
+        'max-content': 'max-content',
+      }),
+      minHeight: (theme) => ({
+        0: '0',
+        full: '100%',
+        ...theme('spacing'),
+        screen: '100vh',
+      }),
     },
   },
   experimental: {

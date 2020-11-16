@@ -83,20 +83,19 @@ export const DropList = <T extends unknown>({
                     <Listbox.Label className="block text-sm leading-5 font-semibold text-gray-700">
                       {label}
                     </Listbox.Label>
-                    <div className="relative">
-                      <span className="inline-block w-full rounded-md shadow-sm cursor-pointer">
+                    <div className="relative min-w-32">
+                      <span className="inline-block w-full rounded-md shadow-sm cursor-pointer min-w-32">
                         <Listbox.Button
                           className={clsx(
-                            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150',
-                            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150',
+                            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 min-w-32',
                             {
                               'group-hover:border-red-500  border-red-500': hasError,
                               'group-hover:border-blue-500 border-gray-300': !hasError,
                             },
                           )}
                         >
-                          <span className="block truncate">
-                            {itemToString(value)}
+                          <span className="block truncate min-w-32  min-h-6">
+                            {itemToString(value) ?? ' '}
                           </span>
                           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                             <FirstSvg />

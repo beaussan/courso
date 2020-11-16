@@ -16,6 +16,8 @@ import * as yup from 'yup';
 import { YieldInput } from './YieldInput';
 import { CardBox } from '../../components/CardBox';
 import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
+import { YieldTypesDescription } from './YieldTypesDescription';
+import { AnimatePresence, motion } from 'framer-motion';
 
 gql`
   mutation createNewPractice(
@@ -45,6 +47,7 @@ interface NewTp {
     {
       name: string;
       method: string;
+      meta?: any;
     },
   ];
 }
@@ -92,9 +95,7 @@ export const TpNew = () => {
                   .of(
                     yup.object().shape({
                       name: yup.string().required('Name is required'),
-                      description: yup
-                        .string()
-                        .required('Description is required'),
+                      description: yup.string().notRequired(),
                       method: yup
                         .string()
                         .oneOf(yieldTypes)
@@ -134,31 +135,33 @@ export const TpNew = () => {
                           Add new yield from student
                         </Button>
                       </div>
-                      <div className="mb-4 flex flex-col">
-                        <div>
-                          Right now, we only support two way for student to
-                          yield answers : BLOB or GIT_REPO
-                        </div>
-                        <div>
-                          <span className="font-bold">BLOB</span> : a content as
-                          a string, for now
-                        </div>
-                        <div>
-                          <span className="font-bold">GIT_REPO</span> : a git
-                          repo url that will be copied into a selfhosted git.
-                          You will be able to read content of the git for the
-                          correction.
-                        </div>
-                      </div>
-                      <div className="space-y-12">
-                        {(values?.yields || []).map((data, idx) => (
-                          <YieldInput
-                            key={idx}
-                            baseName={`yields.${idx}`}
-                            yieldTypes={yieldTypes}
-                            remove={() => remove(idx)}
-                          />
-                        ))}
+                      <YieldTypesDescription />
+                      <div className="space-y-8">
+                        <AnimatePresence>
+                          {(values?.yields || []).map((data, idx) => (
+                            <motion.div
+                              initial="hidden"
+                              animate="visible"
+                              exit="hidden"
+                              variants={{
+                                hidden: { height: 0, overflow: 'hidden' },
+                                visible: {
+                                  height: 'auto',
+                                  overflow: 'visible',
+                                },
+                              }}
+                              transition={{ duration: 0.275 }}
+                            >
+                              <YieldInput
+                                index={idx}
+                                key={idx}
+                                baseName={`yields.${idx}`}
+                                yieldTypes={yieldTypes}
+                                remove={() => remove(idx)}
+                              />
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
                       </div>
                     </>
                   )}
