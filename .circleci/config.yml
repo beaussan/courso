@@ -91,6 +91,12 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run:
+          name: List in deploy dir
+          command: ls -tRFh /tmp/<< parameters.deploy-folder >>
+      - run:
+          name: List in tmp dir
+          command: ls -tRFh /tmp
+      - run:
           name: Deploy app
           command: yarn add netlify-cli && yarn netlify deploy -d /tmp/<< parameters.deploy-folder >> -a $NETLIFY_TOKEN -s << parameters.site-id >> -p
 
