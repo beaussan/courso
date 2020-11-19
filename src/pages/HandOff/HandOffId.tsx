@@ -28,6 +28,7 @@ import * as yup from 'yup';
 import { Button } from '../../components/Button';
 import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
 import { ObjectSchema } from 'yup';
+import { DebugJson } from '../../components/DebugJson';
 
 gql`
   fragment YieldPracticeInput on practice_yield {
@@ -102,7 +103,7 @@ const GitField: FormInputElem = ({ data }) => {
           </li>
         </ul>
       </Alert>
-      <Input label="Git HTTP(S) url" name={`${data.name}.value`} />
+      <Input label="Git HTTP(S) url" name={`${data.id}.value`} />
     </InputBlock>
   );
 };
@@ -112,7 +113,7 @@ const BlobField: FormInputElem = ({ data }) => {
     <InputBlock label={data.name} description={data.description}>
       <TextArea
         label={data.meta?.label ?? 'Your input'}
-        name={`${data.name}.value`}
+        name={`${data.id}.value`}
       />
     </InputBlock>
   );
@@ -121,10 +122,7 @@ const BlobField: FormInputElem = ({ data }) => {
 const UrlInput: FormInputElem = ({ data }) => {
   return (
     <InputBlock label={data.name} description={data.description}>
-      <Input
-        label={data.meta?.label ?? 'The URL'}
-        name={`${data.name}.value`}
-      />
+      <Input label={data.meta?.label ?? 'The URL'} name={`${data.id}.value`} />
     </InputBlock>
   );
 };
@@ -136,7 +134,7 @@ const CodeYieldInput: FormInputElem = ({ data }) => {
       <Suspense fallback={<Loader />}>
         <CodeInputField
           lang={data.meta.lang}
-          name={`${data.name}.value`}
+          name={`${data.id}.value`}
           label={`Code input (${data.meta.lang})`}
         />
       </Suspense>
@@ -156,10 +154,7 @@ const Validation: Record<Practice_Yield_Type_Enum, ObjectSchema> = {
     value: yup.string().url('Git url is not a valid url'),
   }),
   BLOB: yup.object({
-    value: yup
-      .string()
-      .url('Git url is not a valid url')
-      .required('Git url missing'),
+    value: yup.string(),
   }),
   CODE: yup.object({
     value: yup.string(),
@@ -225,7 +220,7 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
             .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
         )}
       >
-        {({ isValid, isValidating }) => (
+        {({ isValid, isValidating, values }) => (
           <Form className="flex flex-col">
             <Alert title="Be carefull">
               All handoff are <span className="font-semibold">permanent</span>,
@@ -251,6 +246,7 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
                 Submit
               </Button>
             </Loader>
+            <DebugJson json={values} />
           </Form>
         )}
       </Formik>

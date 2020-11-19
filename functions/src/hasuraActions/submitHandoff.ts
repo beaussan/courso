@@ -59,7 +59,7 @@ const argValidation = yup.object().shape({
   yields: yup.array().of(
     yup.object({
       yieldId: yup.string().uuid().required(),
-      value: yup.string().url().required(),
+      value: yup.string().required(),
     }),
   ),
 });

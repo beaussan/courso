@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
   future: {
@@ -10,6 +11,9 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        teal: colors.teal,
       },
       minWidth: (theme) => ({
         '0': '0',
@@ -26,9 +30,10 @@ module.exports = {
       }),
     },
   },
-  experimental: {
-    uniformColorPalette: true,
-  },
   variants: {},
-  plugins: [require('@tailwindcss/ui')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/aspect-ratio'),
+  ],
 };

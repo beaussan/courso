@@ -77,7 +77,7 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
   const onSubmit = useFormikMutationSubmit({
     mutation: insertNewTpToPromo,
     successMessage: 'Successfully link',
-    navigateDestination: undefined,
+    navigateDestination: null,
     mapFormData: (values: NewTpToPromoForm) => ({
       promotion_id: values.promotion.id,
       practice_id: tpId,
@@ -104,7 +104,7 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
           }}
           validationSchema={yup.object().shape({
             promotion: yup.object().required(),
-            start: yup.date().required().min(new Date()),
+            start: yup.date().required(),
             end: yup.date().required(),
           })}
           onSubmit={onSubmit}
@@ -135,6 +135,7 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
                         nameEnd="end"
                         labelStart="Open date"
                         nameStart="start"
+                        minDate={undefined}
                       />
                     </div>
                     {interval && (

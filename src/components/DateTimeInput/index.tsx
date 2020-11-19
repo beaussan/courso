@@ -28,8 +28,8 @@ const ExampleCustomInput: React.FC<{
         <button
           id={id}
           className={clsx(
-            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150',
-            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150',
+            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:ring-blue focus:border-blue-300 transition ease-in-out duration-150',
+            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:ring-blue focus:border-blue-300 transition ease-in-out duration-150',
             {
               'group-hover:border-red-500  border-red-500': error,
               'group-hover:border-blue-500 border-gray-300': !error,
@@ -127,7 +127,7 @@ export const DateTimeInputRangeField: React.FC<DateTimeInputRangeFieldProps> = (
   labelStart,
   nameEnd,
   labelEnd,
-  minDate = new Date(),
+  minDate,
 }) => {
   const { setFieldValue, getFieldProps } = useFormikContext<any>();
   const { value: startDate } = getFieldProps(nameStart);

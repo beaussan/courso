@@ -50,6 +50,7 @@ const generateInput = (component: string): React.FC<InputProps> => ({
                 'text-gray-500': disabled,
               },
             ),
+            type: 'text',
             disabled,
             ...rest,
             ...field,

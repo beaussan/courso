@@ -87,7 +87,7 @@ export const DropList = <T extends unknown>({
                       <span className="inline-block w-full rounded-md shadow-sm cursor-pointer min-w-32">
                         <Listbox.Button
                           className={clsx(
-                            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 min-w-32',
+                            'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:ring-blue focus:border-blue-300 transition ease-in-out duration-150 min-w-32',
                             {
                               'group-hover:border-red-500  border-red-500': hasError,
                               'group-hover:border-blue-500 border-gray-300': !hasError,
@@ -127,7 +127,7 @@ export const DropList = <T extends unknown>({
                       >
                         <Listbox.Options
                           static
-                          className="z-30 max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
+                          className="z-30 max-h-60 rounded-md py-1 text-base leading-6 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm sm:leading-5"
                         >
                           {values.map((value) => (
                             <Listbox.Option<any, T>

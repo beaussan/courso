@@ -38,7 +38,7 @@ const Td: React.FC<{ isMainInfo?: boolean }> = ({
   <td
     className={`${
       isMainInfo ? 'text-gray-900 font-medium' : 'text-gray-500'
-    } px-6 py-4 whitespace-no-wrap text-sm leading-5`}
+    } px-6 py-4 whitespace-nowrap text-sm leading-5`}
   >
     {children}
   </td>

@@ -16,7 +16,7 @@ export function useFormikMutationSubmit<TFormData, TData, TVariables>({
   ) => Promise<OperationResult<TData, TVariables>>;
   extraParamsMutation?: Partial<OperationContext>;
   mapFormData: (values: TFormData) => Promise<TVariables> | TVariables;
-  navigateDestination?: string;
+  navigateDestination?: string | null;
   successMessage: string;
 }) {
   const navigate = useNavigate();
@@ -26,7 +26,10 @@ export function useFormikMutationSubmit<TFormData, TData, TVariables>({
     try {
       formikHelpers.setSubmitting(true);
       const dataForMutation = await mapFormData(values);
-      await mutation(dataForMutation, extraParamsMutation);
+      const { error } = await mutation(dataForMutation, extraParamsMutation);
+      if (error) {
+        throw error;
+      }
       addToast(successMessage, {
         appearance: 'success',
       });

@@ -130,7 +130,9 @@ const FormatTimeLeft: React.FC<{ open: Date; close: Date }> = ({
 export const HandOffIndex: React.FC = () => {
   const currDate = new Date();
   const navigate = useNavigate();
-  const [{ data }] = useHandoffListQuery();
+  const [{ data }] = useHandoffListQuery({
+    requestPolicy: 'network-only',
+  });
 
   const sortedData = sortToIsOpenFirst(data?.practice_to_course ?? []);
   return (
