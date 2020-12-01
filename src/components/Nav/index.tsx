@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { ReactComponent as Menu } from '../../icons/solid/menu.svg';
-import { NavLink } from 'react-router-dom';
 import { auth } from '../../services/firebase';
 import { Logo } from '../Logo';
 import { ActiveNavLink } from '../ActivNavLink';

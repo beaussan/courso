@@ -1,10 +1,9 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React from 'react';
 import { Button } from '../../components/Button';
 import { auth } from '../../services/firebase';
 import { PageHead } from '../../components/PageHead';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { Wip } from '../../components/Wip';
-import { Logo } from '../../components/Logo';
 import { Feedback } from '../../components/Feedback';
 
 export const Dash = () => {

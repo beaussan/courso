@@ -2,14 +2,7 @@ import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  PracticeToPromoDetailsFragment,
-  useGetPracticeDetailQuery,
-  useGetPracticeForGradeMetricQuery,
-  useGetPromotionForTpAddQuery,
-} from '../../generated/graphql';
-import { CardBox } from '../../components/CardBox';
-import { NewTpToPromo } from './NewTpToPromo';
+import { useGetPracticeForGradeMetricQuery } from '../../generated/graphql';
 import { Wip } from '../../components/Wip';
 import gql from 'graphql-tag';
 import { Loader } from '../../components/Loader';

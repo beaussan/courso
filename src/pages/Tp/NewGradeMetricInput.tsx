@@ -12,9 +12,7 @@ import {
   useInsertYieldGradeMetricNewDataMutation,
 } from '../../generated/graphql';
 import { Loader } from '../../components/Loader';
-import { FieldArray, Form, Formik } from 'formik';
-import { Modal } from '../../components/Modal';
-import { TextArea } from '../../components/Input';
+import { Form, Formik } from 'formik';
 import { Button } from '../../components/Button';
 import { DebugJson } from '../../components/DebugJson';
 import { CardBox } from '../../components/CardBox';
@@ -125,10 +123,7 @@ export const NewGradeMetricInput: React.FC<NewGradeMetricInputProps> = ({
   const [{ fetching, error, data }] = useGetYieldsForNewGradeTpQuery({
     variables: { tpId },
   });
-  const [
-    mutateState,
-    mutateNewGradeMetric,
-  ] = useInsertYieldGradeMetricNewDataMutation();
+  const [, mutateNewGradeMetric] = useInsertYieldGradeMetricNewDataMutation();
   const onSubmit = useFormikMutationSubmit({
     mutation: mutateNewGradeMetric,
     mapFormData: (values: NewGradeMetricInputForm) => ({
