@@ -16,6 +16,7 @@ import { format, formatDistanceToNowStrict } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import gql from 'graphql-tag';
 import { Loader } from '../../components/Loader';
+import { Button } from '../../components/Button';
 
 const fragments = {
   PracticeToPromoDetails: gql`
@@ -205,6 +206,11 @@ export const TpId = () => {
           <BackButton className="mr-2" /> {data?.practice_by_pk?.title ?? ''}
         </div>
       </PageHead>
+      <CardBox>
+        <Button onClick={() => navigate('./newGradesMetrics')}>
+          Add grading criteria
+        </Button>
+      </CardBox>
       <CardBox>
         <div className="font-bold text-xl">
           {(data &&

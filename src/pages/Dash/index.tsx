@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { Button } from '../../components/Button';
 import { auth } from '../../services/firebase';
 import { PageHead } from '../../components/PageHead';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { Wip } from '../../components/Wip';
 import { Logo } from '../../components/Logo';
+import { Feedback } from '../../components/Feedback';
 
 export const Dash = () => {
   const { user } = useCurrentUser();
@@ -20,17 +21,7 @@ export const Dash = () => {
         <Button onClick={logout} variant="secondary">
           Logout
         </Button>
-      </div>
-      <div className="flex">
-        <div>
-          <Logo variant="vertical" className="w-64 h-64"></Logo>
-        </div>
-        <div>
-          <Logo variant="horizontal" className="w-64 h-64"></Logo>
-        </div>
-        <div>
-          <Logo variant="standalone" className="w-64 h-64"></Logo>
-        </div>
+        <Feedback />
       </div>
       <Wip
         todo={[

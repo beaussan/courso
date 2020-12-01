@@ -66,6 +66,10 @@ const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
     return 'ok';
   }
 
+  if (`${after.value}`.length === 0) {
+    return 'value not set';
+  }
+
   if (
     !practice_to_student_yield_by_pk.practice_to_student.practice_to_course
       .gitea_org_name

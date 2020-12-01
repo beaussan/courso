@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,6 +29,7 @@ import { Button } from '../../components/Button';
 import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
 import { ObjectSchema } from 'yup';
 import { DebugJson } from '../../components/DebugJson';
+import { CodeInputFieldLazy } from '../../components/CodeInput/CodeInputFieldLazy';
 
 gql`
   fragment YieldPracticeInput on practice_yield {
@@ -127,17 +128,14 @@ const UrlInput: FormInputElem = ({ data }) => {
   );
 };
 
-const CodeInputField = lazy(() => import('../../components/CodeInput/index'));
 const CodeYieldInput: FormInputElem = ({ data }) => {
   return (
     <InputBlock label={data.name} description={data.description}>
-      <Suspense fallback={<Loader />}>
-        <CodeInputField
-          lang={data.meta.lang}
-          name={`${data.id}.value`}
-          label={`Code input (${data.meta.lang})`}
-        />
-      </Suspense>
+      <CodeInputFieldLazy
+        lang={data.meta.lang}
+        name={`${data.id}.value`}
+        label={`Code input (${data.meta.lang})`}
+      />
     </InputBlock>
   );
 };

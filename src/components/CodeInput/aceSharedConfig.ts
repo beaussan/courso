@@ -40,10 +40,13 @@ const aceSharedProps: IAceEditorProps = {
   setOptions: {
     fontFamily: 'Monoid',
     useWorker: false,
+    /*
     enableBasicAutocompletion: false,
     enableLiveAutocompletion: false,
     enableSnippets: false,
+     */
     showLineNumbers: true,
+
     tabSize: 2,
   },
 };

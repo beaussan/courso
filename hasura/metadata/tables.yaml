@@ -67,13 +67,6 @@
     schema: public
     name: practice
   array_relationships:
-    - name: practice_grade_metrics
-      using:
-        foreign_key_constraint_on:
-          column: practice_id
-          table:
-            schema: public
-            name: practice_grade_metric
     - name: practice_to_courses
       using:
         foreign_key_constraint_on:
@@ -81,6 +74,13 @@
           table:
             schema: public
             name: practice_to_course
+    - name: practice_yield_expected_outputs
+      using:
+        foreign_key_constraint_on:
+          column: practice_id
+          table:
+            schema: public
+            name: practice_yield_expected_output
     - name: practice_yields
       using:
         foreign_key_constraint_on:
@@ -139,89 +139,6 @@
   delete_permissions:
     - role: teacher
       permission:
-        filter: {}
-- table:
-    schema: public
-    name: practice_grade_metric
-  object_relationships:
-    - name: practice
-      using:
-        foreign_key_constraint_on: practice_id
-    - name: practice_grade_metric_type
-      using:
-        foreign_key_constraint_on: method
-    - name: practice_yield
-      using:
-        foreign_key_constraint_on: yield_id
-  array_relationships:
-    - name: practice_to_student_grade_metrics
-      using:
-        foreign_key_constraint_on:
-          column: practice_grade_metric_id
-          table:
-            schema: public
-            name: practice_to_student_grade_metric
-  insert_permissions:
-    - role: teacher
-      permission:
-        check: {}
-        columns:
-          - expected
-          - feedbacks
-          - meta
-          - method
-          - name
-          - points
-          - practice_id
-          - yield_id
-        backend_only: false
-  select_permissions:
-    - role: teacher
-      permission:
-        columns:
-          - created_at
-          - expected
-          - feedbacks
-          - id
-          - meta
-          - method
-          - name
-          - points
-          - practice_id
-          - updated_at
-          - yield_id
-        filter: {}
-  update_permissions:
-    - role: teacher
-      permission:
-        columns:
-          - expected
-          - feedbacks
-          - meta
-          - method
-          - name
-          - points
-          - practice_id
-          - yield_id
-        filter: {}
-        check: null
-- table:
-    schema: public
-    name: practice_grade_metric_type
-  is_enum: true
-  array_relationships:
-    - name: practice_grade_metrics
-      using:
-        foreign_key_constraint_on:
-          column: method
-          table:
-            schema: public
-            name: practice_grade_metric
-  select_permissions:
-    - role: teacher
-      permission:
-        columns:
-          - name
         filter: {}
 - table:
     schema: public
@@ -404,12 +321,12 @@
     schema: public
     name: practice_to_student_grade_metric
   object_relationships:
-    - name: practice_grade_metric
-      using:
-        foreign_key_constraint_on: practice_grade_metric_id
     - name: practice_to_student
       using:
         foreign_key_constraint_on: practice_to_student_id
+    - name: practice_yield_grade_metric
+      using:
+        foreign_key_constraint_on: practice_yield_grade_metric_id
 - table:
     schema: public
     name: practice_to_student_yield
@@ -476,13 +393,6 @@
       using:
         foreign_key_constraint_on: method
   array_relationships:
-    - name: practice_grade_metrics
-      using:
-        foreign_key_constraint_on:
-          column: yield_id
-          table:
-            schema: public
-            name: practice_grade_metric
     - name: practice_to_student_yields
       using:
         foreign_key_constraint_on:
@@ -490,6 +400,13 @@
           table:
             schema: public
             name: practice_to_student_yield
+    - name: practice_yield_expected_outputs
+      using:
+        foreign_key_constraint_on:
+          column: practice_yield_id
+          table:
+            schema: public
+            name: practice_yield_expected_output
   insert_permissions:
     - role: teacher
       permission:
@@ -554,6 +471,116 @@
   delete_permissions:
     - role: teacher
       permission:
+        filter: {}
+- table:
+    schema: public
+    name: practice_yield_expected_output
+  object_relationships:
+    - name: practice
+      using:
+        foreign_key_constraint_on: practice_id
+    - name: practice_yield
+      using:
+        foreign_key_constraint_on: practice_yield_id
+    - name: practice_yield_expected_output_type
+      using:
+        foreign_key_constraint_on: method
+  array_relationships:
+    - name: practice_yield_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: expected_yield_id
+          table:
+            schema: public
+            name: practice_yield_grade_metric
+  insert_permissions:
+    - role: teacher
+      permission:
+        check: {}
+        columns:
+          - id
+          - created_at
+          - updated_at
+          - practice_id
+          - practice_yield_id
+          - git_path
+          - code_lang
+          - method
+          - expected
+        backend_only: false
+  select_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - code_lang
+          - expected
+          - git_path
+          - method
+          - created_at
+          - updated_at
+          - id
+          - practice_id
+          - practice_yield_id
+        filter: {}
+- table:
+    schema: public
+    name: practice_yield_expected_output_types
+  is_enum: true
+  array_relationships:
+    - name: practice_yield_expected_outputs
+      using:
+        foreign_key_constraint_on:
+          column: method
+          table:
+            schema: public
+            name: practice_yield_expected_output
+  select_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - name
+        filter: {}
+- table:
+    schema: public
+    name: practice_yield_grade_metric
+  object_relationships:
+    - name: practice_yield_expected_output
+      using:
+        foreign_key_constraint_on: expected_yield_id
+  array_relationships:
+    - name: practice_to_student_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: practice_yield_grade_metric_id
+          table:
+            schema: public
+            name: practice_to_student_grade_metric
+  insert_permissions:
+    - role: teacher
+      permission:
+        check: {}
+        columns:
+          - id
+          - created_at
+          - updated_at
+          - name
+          - practice_id
+          - expected_yield_id
+          - feedbacks
+          - points
+        backend_only: false
+  select_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - points
+          - feedbacks
+          - name
+          - practice_id
+          - created_at
+          - updated_at
+          - expected_yield_id
+          - id
         filter: {}
 - table:
     schema: public
