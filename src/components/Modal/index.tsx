@@ -1,10 +1,11 @@
 import React, { ReactNode, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Transition } from '@headlessui/react';
 import { ReactComponent as Exclamation } from '../../icons/outline/exclamation.svg';
 import { ReactComponent as EditIcon } from '../../icons/outline/pencil.svg';
 import { ReactComponent as InfoIcon } from '../../icons/outline/information-circle.svg';
-import { ReactComponent as X } from '../../icons/solid/x.svg';
 import { ReactComponent as AddIcon } from '../../icons/solid/plus.svg';
+import { CloseButton } from '../CloseButton';
 
 const Warn = () => (
   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
@@ -72,14 +73,7 @@ const ModalBody: React.FC<{
       aria-labelledby="modal-headline"
     >
       <div className="block absolute top-0 right-0 pt-4 pr-4">
-        <button
-          onClick={() => onClose()}
-          type="button"
-          className="text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500 transition ease-in-out duration-150"
-          aria-label="Close"
-        >
-          <X className="h-6 w-6" />
-        </button>
+        <CloseButton onClick={() => onClose()} />
       </div>
       <div className="sm:flex sm:items-start">
         {Icon && <Icon />}
@@ -114,8 +108,8 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     };
   }, [escFunction]);
 
-  return (
-    <Transition show={isOpen} className="fixed inset-0 z-10 overflow-y-auto">
+  return createPortal(
+    <Transition show={isOpen} className="fixed inset-0 z-30 overflow-y-auto">
       <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <Transition.Child
           enter="ease-out duration-300"
@@ -150,7 +144,8 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           {children}
         </Transition.Child>
       </div>
-    </Transition>
+    </Transition>,
+    document.body,
   );
 };
 

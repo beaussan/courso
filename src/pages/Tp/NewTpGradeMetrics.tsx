@@ -18,10 +18,10 @@ gql`
 `;
 
 export const NewTpGradeMetrics = () => {
-  const { id } = useParams();
+  const { tpId } = useParams();
   const navigate = useNavigate();
   const [{ data, error, fetching }] = useGetPracticeForGradeMetricQuery({
-    variables: { id },
+    variables: { id: tpId },
     pollInterval: 10000,
   });
 
@@ -39,7 +39,7 @@ export const NewTpGradeMetrics = () => {
           <BackButton className="mr-2" /> {data?.practice_by_pk?.title ?? ''}
         </div>
       </PageHead>
-      <NewGradeMetricInput tpId={id} onTpNotFound={() => navigate('../')} />
+      <NewGradeMetricInput tpId={tpId} onTpNotFound={() => navigate('../')} />
       <Wip todo={['Able to see old inputs']} />
     </>
   );

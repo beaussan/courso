@@ -63,7 +63,7 @@ const ExampleCustomInput: React.FC<{
   );
 };
 
-export interface DateTimeInputField
+export interface DateTimeInputFieldProps
   extends Omit<
     ReactDatePickerProps,
     | 'customInput'
@@ -77,7 +77,7 @@ export interface DateTimeInputField
   label: string;
 }
 
-export const DateTimeInputField: React.FC<DateTimeInputField> = ({
+export const DateTimeInputField: React.FC<DateTimeInputFieldProps> = ({
   name,
   label,
   ...rest

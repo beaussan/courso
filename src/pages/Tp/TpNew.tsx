@@ -15,7 +15,7 @@ import { ReactComponent as Add } from '../../icons/outline/plus.svg';
 import * as yup from 'yup';
 import { YieldInput } from './YieldInput';
 import { CardBox } from '../../components/CardBox';
-import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
+import { useFormikMutationSubmitWithNavigate } from '../../hooks/useFormikMutationSubmit';
 import { YieldTypesDescription } from './YieldTypesDescription';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -55,7 +55,7 @@ interface NewTp {
 export const TpNew = () => {
   const { data: yieldTypes, loading } = useFetchYieldTypes();
   const [, createTp] = useCreateNewPracticeMutation();
-  const onSubmit = useFormikMutationSubmit({
+  const onSubmit = useFormikMutationSubmitWithNavigate({
     mutation: createTp,
     successMessage: 'TP added successfully',
     mapFormData: (values: NewTp) => ({

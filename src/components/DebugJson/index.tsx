@@ -1,13 +1,18 @@
 import React from 'react';
 
-export const DebugJson: React.FC<{ json: any }> = ({ json }) => {
+export const DebugJson: React.FC<{ json: any; title?: string }> = ({
+  json,
+  title,
+}) => {
   if (process.env.NODE_ENV === 'production') {
     return null;
   }
   return (
     <details>
-      <summary>Debug data</summary>
-      <pre>{JSON.stringify(json, null, 2)}</pre>
+      <summary>{title ?? 'Debug data'}</summary>
+      <pre className="font-mono bg-gray-300 text-xs p-2 rounded-lg">
+        {JSON.stringify(json, null, 2)}
+      </pre>
     </details>
   );
 };

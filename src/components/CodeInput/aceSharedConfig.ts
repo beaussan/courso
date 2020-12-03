@@ -1,6 +1,6 @@
 import '../../fonts/monoid/monoid.css';
 import 'react-ace';
-import { IAceEditorProps } from 'react-ace';
+import { IAceEditorProps, ISplitEditorProps } from 'react-ace';
 /*
  * Manual inputs in order to reduce the bundle size from 1.3M to 278KB
  */
@@ -51,6 +51,24 @@ const aceSharedProps: IAceEditorProps = {
   },
 };
 
+const splitSharedProps: Partial<ISplitEditorProps> = {
+  theme: themes[0],
+  width: 'w-full',
+  setOptions: {
+    fontFamily: 'Monoid',
+    fontSize: '10px',
+    useWorker: false,
+    /*
+    enableBasicAutocompletion: false,
+    enableLiveAutocompletion: false,
+    enableSnippets: false,
+     */
+    showLineNumbers: true,
+
+    tabSize: 2,
+  },
+};
+
 export const makeAceProps: (props: IAceEditorProps) => IAceEditorProps = (
   props,
 ) => {
@@ -59,6 +77,19 @@ export const makeAceProps: (props: IAceEditorProps) => IAceEditorProps = (
     ...props,
     setOptions: {
       ...aceSharedProps.setOptions,
+      ...props.setOptions,
+    },
+  };
+};
+
+export const makeSplitProps: (props: ISplitEditorProps) => ISplitEditorProps = (
+  props,
+) => {
+  return {
+    ...splitSharedProps,
+    ...props,
+    setOptions: {
+      ...splitSharedProps.setOptions,
       ...props.setOptions,
     },
   };

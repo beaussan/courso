@@ -49,7 +49,7 @@ export const LoginComponent: React.FC<LoginCmpTypes> = ({ hero }) => {
     loading || (authState === 'loading' && hasInitialLoading);
 
   if ((authState === 'loading' || !authState) && !hasInitialLoading) {
-    return <LoadingFullScreen />;
+    return <LoadingFullScreen debugName="Login component" />;
   }
 
   const loginWithGoogle = async () =>

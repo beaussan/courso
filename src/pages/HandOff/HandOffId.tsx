@@ -26,7 +26,7 @@ import { Form, Formik } from 'formik';
 import { Alert } from '../../components/Alert';
 import * as yup from 'yup';
 import { Button } from '../../components/Button';
-import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
+import { useFormikMutationSubmitWithNavigate } from '../../hooks/useFormikMutationSubmit';
 import { ObjectSchema } from 'yup';
 import { DebugJson } from '../../components/DebugJson';
 import { CodeInputFieldLazy } from '../../components/CodeInput/CodeInputFieldLazy';
@@ -175,7 +175,7 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
   const close = new Date(data.practice_to_course_by_pk?.close_date);
   const open = new Date(data.practice_to_course_by_pk?.open_date);
   const isOpen = isAfter(currDate, open) && isBefore(currDate, close);
-  const onSubmit = useFormikMutationSubmit({
+  const onSubmit = useFormikMutationSubmitWithNavigate({
     mutation: submitHandoff,
     successMessage: 'Succesfully submit handoff',
     mapFormData: (values: HandoffForm) => ({

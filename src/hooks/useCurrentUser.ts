@@ -19,6 +19,7 @@ gql`
 
 export const useCurrentUser = () => {
   const firebaseUser = useObservable(userWithCorrectToken$);
+  console.log('Firebase user :', firebaseUser);
 
   const [{ data, error, fetching }] = useCurrentUserQuery({
     variables: {

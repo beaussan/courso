@@ -18,7 +18,7 @@ import {
   set,
 } from 'date-fns';
 import * as yup from 'yup';
-import { useFormikMutationSubmit } from '../../../hooks/useFormikMutationSubmit';
+import { useFormikMutationSubmitWithNavigate } from '../../../hooks/useFormikMutationSubmit';
 
 type promoItem = Pick<Course, 'id' | 'name' | 'years'>;
 
@@ -74,7 +74,7 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
   const [, insertNewTpToPromo] = useInsertNewPracticeToPromotionMutation();
   const [isModalOpen, setModalOpen] = useState(false);
   const onCloseModal = () => setModalOpen(false);
-  const onSubmit = useFormikMutationSubmit({
+  const onSubmit = useFormikMutationSubmitWithNavigate({
     mutation: insertNewTpToPromo,
     successMessage: 'Successfully link',
     navigateDestination: null,

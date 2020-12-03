@@ -8,7 +8,7 @@ import { Button } from '../../components/Button';
 import React from 'react';
 import { mapToSave, parseCsv, studentValidator } from './validation';
 import { CardBox } from '../../components/CardBox';
-import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
+import { useFormikMutationSubmitWithNavigate } from '../../hooks/useFormikMutationSubmit';
 
 gql`
   mutation CreatePromotion(
@@ -60,7 +60,7 @@ const validateData = async (values: Partial<NewPromo>) => {
 
 export const PromotionNew = () => {
   const [, createPromo] = useCreatePromotionMutation();
-  const onSubmit = useFormikMutationSubmit({
+  const onSubmit = useFormikMutationSubmitWithNavigate({
     mapFormData: (values: NewPromo) => {
       return {
         name: values.name,

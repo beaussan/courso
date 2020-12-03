@@ -4,7 +4,7 @@ import {
   Practice_Yield_Type_Enum,
 } from '../../../generated/graphql';
 import { useFormikContext } from 'formik';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export const shouldShowLangInput: (
   yieldLinked: GradeMetricInputYieldFragment,
@@ -63,9 +63,11 @@ export const useGradeMetricTypes = (
   const { value: langValue } = getFieldProps(langFormName);
   const yieldMethod = yieldLinked?.method;
 
-  const possibleMethods: Practice_Yield_Expected_Output_Types_Enum[] = yieldMethod
-    ? mapper[yieldMethod]
-    : [];
+  const possibleMethods = useMemo<
+    Practice_Yield_Expected_Output_Types_Enum[]
+  >(() => {
+    return yieldMethod ? mapper[yieldMethod] : [];
+  }, [yieldMethod]);
 
   useEffect(() => {
     if (!yieldMethod) {

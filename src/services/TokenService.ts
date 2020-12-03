@@ -9,22 +9,22 @@ import {
   catchError,
   distinctUntilChanged,
 } from 'rxjs/operators';
-import { User } from 'firebase';
 import { user, authState } from 'rxfire/auth';
 import { docData } from 'rxfire/firestore';
 import { httpsCallable } from 'rxfire/functions';
 import { log } from '../utils/rxLog';
+import firebase from 'firebase';
 
 type StateTypes = 'in' | 'out';
 export type AuthState = StateTypes | 'loading';
 
 const refreshTokenFnRx = httpsCallable(fn, 'refreshToken');
 
-const getUserWithClaims = (user: User): Observable<User> =>
+const getUserWithClaims = (user: firebase.User): Observable<firebase.User> =>
   from(user.getIdToken()).pipe(
     switchMap(() => from(user.getIdTokenResult())),
     pluck('claims'),
-    // log('Claims :'),
+    log('Claims :'),
     switchMap((claims) =>
       claims['https://hasura.io/jwt/claims']
         ? of(user)
@@ -38,7 +38,7 @@ const getUserWithClaims = (user: User): Observable<User> =>
   );
 
 export const userWithCorrectToken$ = user(auth).pipe(
-  // log('User auth direct call'),
+  log('User auth direct call'),
   switchMap((user) => (user ? getUserWithClaims(user) : of(undefined))),
   shareReplay({
     bufferSize: 1,
@@ -70,7 +70,7 @@ export const authState$: Observable<AuthState> = combineLatest([
     ),
   ),
 ]).pipe(
-  // log('pre result'),
+  log('pre result'),
   map(([authStateRaw, withToken]: any) => {
     if (withToken?.value) {
       return 'in';
@@ -88,6 +88,7 @@ export const authState$: Observable<AuthState> = combineLatest([
 );
 
 export const userRole$ = userWithCorrectToken$.pipe(
+  log('user role pre'),
   switchMap((user) =>
     user
       ? combineLatest([
@@ -105,7 +106,7 @@ export const userRole$ = userWithCorrectToken$.pipe(
         ]).pipe(map(([a, b]) => a))
       : of(undefined),
   ),
-  // log('user role'),
+  log('user role'),
   shareReplay({
     bufferSize: 1,
     refCount: true,

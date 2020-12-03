@@ -96,14 +96,22 @@ gql`
 const TpIdHandouts: React.FC<{ data: PracticeToPromoDetailsFragment }> = ({
   data,
 }) => {
+  const navigate = useNavigate();
   const amountLeft = data.course.student_to_courses
     .filter((itm) => itm.student?.practice_to_students.length === 0)
     .reduce((a) => a + 1, 0);
   return (
     <CardBox key={data.id}>
-      <div className="leading-loose">
-        <span className="font-bold">{data.course.name}</span>
-        <span>{` - ${data.course.years}`}</span>
+      <div className="leading-loose flex justify-between">
+        <div>
+          <span className="font-bold">{data.course.name}</span>
+          <span>{` - ${data.course.years}`}</span>
+        </div>
+        <div>
+          <Button onClick={() => navigate(`./grading/${data.course.id}`)}>
+            Grade this promotion
+          </Button>
+        </div>
       </div>
       <div>
         <FormatDates
@@ -172,13 +180,13 @@ const FormatDates: React.FC<{ open: Date; close: Date }> = ({
 };
 
 export const TpId = () => {
-  const { id } = useParams();
+  const { tpId } = useParams();
   const navigate = useNavigate();
   const [{ data: promotions }] = useGetPromotionForTpAddQuery({
     pollInterval: 10000,
   });
   const [{ data, error, fetching }] = useGetPracticeDetailQuery({
-    variables: { id },
+    variables: { id: tpId },
     pollInterval: 10000,
   });
 
@@ -236,12 +244,12 @@ export const TpId = () => {
           {data?.practice_by_pk?.practice_to_courses_aggregate.aggregate?.count}{' '}
           promotion
         </div>
-        <NewTpToPromo tpId={id} promotions={promotionAvailable} />
+        <NewTpToPromo tpId={tpId} promotions={promotionAvailable} />
       </div>
       <div className="space-y-4">
         {data?.practice_by_pk?.practice_to_courses_aggregate?.nodes.map(
           (promo) => {
-            return <TpIdHandouts data={promo} />;
+            return <TpIdHandouts key={promo.id} data={promo} />;
           },
         )}
       </div>

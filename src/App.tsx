@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useMemo } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Error500 } from './pages/Error500';
 
@@ -10,14 +10,19 @@ import { Provider as UrqlProvider } from 'urql';
 import { createUrqlClient } from './services/urqlClient';
 import { BrowserRouter } from 'react-router-dom';
 import { LoadingFullScreen } from './pages/LoadingFullScreen';
-
+import { distinctUntilChanged } from 'rxjs/operators';
 const LinkPage = lazy(() => import('./pages/Link'));
 const Login = lazy(() => import('./pages/Login'));
 const AppShell = lazy(() => import('./pages/App'));
 
 function ClientProvider(props: React.PropsWithChildren<{}>) {
-  const token = useObservable(correctToken$);
-  const client = createUrqlClient(token);
+  const token = useObservable(
+    correctToken$.pipe(distinctUntilChanged((prev, curr) => prev === curr)),
+  );
+  const client = useMemo(() => {
+    console.log('Memo create client with new token ', token);
+    return createUrqlClient(token);
+  }, [token]);
   /*
   //useWhyDidYouUpdate('ClientProvider', props);
   const shouldRebuildClient = useMemoCompare(
@@ -60,7 +65,9 @@ function App() {
   return (
     <ClientProvider>
       <ToastProvider autoDismiss={true}>
-        <Suspense fallback={<LoadingFullScreen />}>
+        <Suspense
+          fallback={<LoadingFullScreen debugName="app global suspence" />}
+        >
           <BrowserRouter>
             <Routes>
               <Navigate to="/app" />

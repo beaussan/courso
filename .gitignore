@@ -36,3 +36,9 @@ graphql.schema.graphql
 
 
 functions/lib/
+
+scripts/oldAnswers.js
+
+*.csv
+
+.eslintcache

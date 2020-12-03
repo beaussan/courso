@@ -17,14 +17,14 @@ export const RouteWithRule: React.FC<RouteProps> = ({ ...rest }) => {
   }, [authState, navigate]);
 
   if (authState === 'loading' || userLoading) {
-    return <LoadingFullScreen />;
+    return <LoadingFullScreen debugName="RouteWithAuth loading" />;
   }
 
   if (authState === 'out') {
-    return <LoadingFullScreen />;
+    return <LoadingFullScreen debugName="RouteWithAuth out" />;
   }
   if (!user) {
-    return <LoadingFullScreen />;
+    return <LoadingFullScreen debugName="RouteWithAuth no user" />;
   }
   return <Route {...rest} />;
 };

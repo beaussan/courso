@@ -18,7 +18,7 @@ import { DebugJson } from '../../components/DebugJson';
 import { CardBox } from '../../components/CardBox';
 import { ArrayInput } from '../../components/ArrayInput';
 import * as yup from 'yup';
-import { useFormikMutationSubmit } from '../../hooks/useFormikMutationSubmit';
+import { useFormikMutationSubmitWithNavigate } from '../../hooks/useFormikMutationSubmit';
 
 gql`
   query getYieldsForNewGradeTp($tpId: uuid!) {
@@ -124,7 +124,7 @@ export const NewGradeMetricInput: React.FC<NewGradeMetricInputProps> = ({
     variables: { tpId },
   });
   const [, mutateNewGradeMetric] = useInsertYieldGradeMetricNewDataMutation();
-  const onSubmit = useFormikMutationSubmit({
+  const onSubmit = useFormikMutationSubmitWithNavigate({
     mutation: mutateNewGradeMetric,
     mapFormData: (values: NewGradeMetricInputForm) => ({
       data: mapToSave(values, tpId),
