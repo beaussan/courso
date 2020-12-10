@@ -240,9 +240,9 @@ export const GradeMetricDefinitionInput = ({
   onRemove,
 }: GradeMetricInputProps) => {
   const { methodFormName, langFormName } = makeFormName(name);
-  const methodValue = useFormikFieldValue<
-    Practice_Yield_Expected_Output_Types_Enum
-  >(methodFormName);
+  const methodValue = useFormikFieldValue<Practice_Yield_Expected_Output_Types_Enum>(
+    methodFormName,
+  );
   const possibleMethods = useGradeMetricTypes(yieldLinked, name);
   const shouldInputLang = hasLangInput(yieldLinked, methodValue);
   const Extra = extraInput[methodValue];

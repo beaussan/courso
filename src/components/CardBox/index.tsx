@@ -1,10 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-export const CardBox: React.FC<React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->> = ({ children, className, ...rest }) => {
+export const CardBox: React.FC<
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+> = ({ children, className, ...rest }) => {
   const classes = clsx(
     'bg-white p-5 shadow-md transition duration-100 rounded-lg',
     {
