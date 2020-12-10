@@ -3,7 +3,7 @@ import { Button } from '../../../components/Button';
 import { Modal } from '../../../components/Modal';
 import {
   Course,
-  useInsertNewPracticeToPromotionMutation,
+  useInsertNewPracticeToCourseMutation,
 } from '../../../generated/graphql';
 import gql from 'graphql-tag';
 import { Form, Formik } from 'formik';
@@ -28,11 +28,11 @@ export interface NewTpToPromoProps {
 }
 
 gql`
-  mutation insertNewPracticeToPromotion(
+  mutation insertNewPracticeToCourse(
     $close_date: timestamptz!
     $open_date: timestamptz!
     $practice_id: uuid!
-    $promotion_id: uuid!
+    $courseId: uuid!
   ) {
     insert_practice_to_course(
       objects: {
@@ -41,7 +41,7 @@ gql`
         close_date: $close_date
         open_date: $open_date
         practice_id: $practice_id
-        course_id: $promotion_id
+        course_id: $courseId
       }
     ) {
       returning {
@@ -52,7 +52,7 @@ gql`
 `;
 
 interface NewTpToPromoForm {
-  promotion: promoItem;
+  course: promoItem;
   start: Date;
   end: Date;
 }
@@ -71,7 +71,7 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
   promotions,
   tpId,
 }) => {
-  const [, insertNewTpToPromo] = useInsertNewPracticeToPromotionMutation();
+  const [, insertNewTpToPromo] = useInsertNewPracticeToCourseMutation();
   const [isModalOpen, setModalOpen] = useState(false);
   const onCloseModal = () => setModalOpen(false);
   const onSubmit = useFormikMutationSubmitWithNavigate({
@@ -79,7 +79,7 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
     successMessage: 'Successfully link',
     navigateDestination: null,
     mapFormData: (values: NewTpToPromoForm) => ({
-      promotion_id: values.promotion.id,
+      courseId: values.course.id,
       practice_id: tpId,
       close_date: formatRFC3339(values.end),
       open_date: formatRFC3339(values.start),
@@ -100,10 +100,10 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
           initialValues={{
             end: addDays(getInitDate(), 1),
             start: getInitDate(),
-            promotion: promotions[0],
+            course: promotions[0],
           }}
           validationSchema={yup.object().shape({
-            promotion: yup.object().required(),
+            course: yup.object().required(),
             start: yup.date().required(),
             end: yup.date().required(),
           })}
@@ -123,8 +123,8 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
                     <Modal.Title>New promotion for TP</Modal.Title>
                     <div className=" mt-4 mb-2">
                       <DropList
-                        label="Promotion to link"
-                        name="promotion"
+                        label="Course to link"
+                        name="course"
                         values={promotions}
                         itemToString={(it) => `${it?.name} - ${it?.years}`}
                       />

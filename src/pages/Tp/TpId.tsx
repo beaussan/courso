@@ -109,7 +109,7 @@ const TpIdHandouts: React.FC<{ data: PracticeToPromoDetailsFragment }> = ({
         </div>
         <div>
           <Button onClick={() => navigate(`./grading/${data.course.id}`)}>
-            Grade this promotion
+            Grade this course
           </Button>
         </div>
       </div>
@@ -242,7 +242,7 @@ export const TpId = () => {
       <div className="my-4 flex content-between justify-between items-baseline">
         <div className="text-xl font-bold">
           {data?.practice_by_pk?.practice_to_courses_aggregate.aggregate?.count}{' '}
-          promotion
+          course
         </div>
         <NewTpToPromo tpId={tpId} promotions={promotionAvailable} />
       </div>

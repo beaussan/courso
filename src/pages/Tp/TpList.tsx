@@ -66,7 +66,7 @@ const TpCard: React.FC<{ data: PracticeListItemFragment }> = ({ data }) => {
         <div className="pt-4">
           <Table>
             <Table.TableHead
-              items={['Promotion', 'Open date', 'Close date', 'State']}
+              items={['Course', 'Open date', 'Close date', 'State']}
             />
             <Table.TBody items={data.practice_to_courses}>
               {({

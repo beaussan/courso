@@ -11,7 +11,7 @@ import { RouteWithRule } from '../../components/RouteWithRule';
 import { Loader } from '../../components/Loader';
 
 const Tp = lazy(() => import('../Tp'));
-const Promotions = lazy(() => import('../Promotions'));
+const Course = lazy(() => import('../Courses'));
 const HandOff = lazy(() => import('../HandOff'));
 
 const links = [
@@ -24,8 +24,8 @@ const links = [
   { icon: Book, label: 'TPs', url: '/app/tp', roles: ['teacher'] },
   {
     icon: Library,
-    label: 'Promotions',
-    url: '/app/promos',
+    label: 'Course',
+    url: '/app/course',
     roles: ['teacher'],
   },
   // { icon: Book, label: 'Students', url: '/app/students', roles: ['teacher'] },
@@ -51,7 +51,7 @@ export const AppShel = () => {
           <RouteWithRule
             roles={['teacher']}
             path="promos/*"
-            element={<Promotions />}
+            element={<Course />}
           />
         </Routes>
         <Outlet />

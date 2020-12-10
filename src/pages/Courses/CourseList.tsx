@@ -5,7 +5,7 @@ import { Button } from '../../components/Button';
 import gql from 'graphql-tag';
 import {
   CourseCardFragment,
-  useListPromotionsQuery,
+  useListCoursesQuery,
 } from '../../generated/graphql';
 import { CardBox } from '../../components/CardBox';
 
@@ -20,7 +20,7 @@ gql`
       }
     }
   }
-  query ListPromotions {
+  query ListCourses {
     course {
       ...CourseCard
     }
@@ -43,16 +43,16 @@ const PromoCard: React.FC<{ data: CourseCardFragment }> = ({ data }) => {
   );
 };
 
-export const PromotionIndex = () => {
+export const CourseIndex = () => {
   const navigate = useNavigate();
-  const [{ data }] = useListPromotionsQuery();
+  const [{ data }] = useListCoursesQuery();
 
   return (
     <>
       <PageHead className="mb-4">
         <div className="flex content-between justify-between items-center">
-          <span>Promotions</span>
-          <Button onClick={() => navigate('./new')}>Add new promotion</Button>
+          <span>Course</span>
+          <Button onClick={() => navigate('./new')}>Add new course</Button>
         </div>
       </PageHead>
 

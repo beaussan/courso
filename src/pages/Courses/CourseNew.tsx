@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { useCreatePromotionMutation } from '../../generated/graphql';
+import { useCreateCourseMutation } from '../../generated/graphql';
 import { PageHead } from '../../components/PageHead';
 import { BackButton } from '../../components/BackButton';
 import { Form, Formik } from 'formik';
@@ -11,7 +11,7 @@ import { CardBox } from '../../components/CardBox';
 import { useFormikMutationSubmitWithNavigate } from '../../hooks/useFormikMutationSubmit';
 
 gql`
-  mutation CreatePromotion(
+  mutation CreateCourse(
     $name: String!
     $years: String!
     $students: [student_to_course_insert_input!]!
@@ -58,8 +58,8 @@ const validateData = async (values: Partial<NewPromo>) => {
   return errors;
 };
 
-export const PromotionNew = () => {
-  const [, createPromo] = useCreatePromotionMutation();
+export const CourseNew = () => {
+  const [, createPromo] = useCreateCourseMutation();
   const onSubmit = useFormikMutationSubmitWithNavigate({
     mapFormData: (values: NewPromo) => {
       return {
@@ -81,7 +81,7 @@ export const PromotionNew = () => {
     <>
       <PageHead className="">
         <div className="flex items-center">
-          <BackButton className="mr-2" /> New promotion
+          <BackButton className="mr-2" /> New course
         </div>
       </PageHead>
       <CardBox>
@@ -92,9 +92,7 @@ export const PromotionNew = () => {
         >
           {({ isValid, isValidating }) => (
             <Form className="flex flex-col">
-              <div className="text-xl font-bold pt-2 pb-4">
-                Promotion details
-              </div>
+              <div className="text-xl font-bold pt-2 pb-4">Course details</div>
               <div className="flex flex-col space-y-8 md:space-y-0 md:space-x-8 md:flex-row">
                 <Input label="Name" type="text" name="name" />
                 <Input label="Years" type="text" name="year" />

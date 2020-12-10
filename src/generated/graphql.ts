@@ -5482,6 +5482,82 @@ export type ListTpYieldTypesQuery = { __typename?: 'query_root' } & {
   >;
 };
 
+export type CourseDetailsQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+export type CourseDetailsQuery = { __typename?: 'query_root' } & {
+  course_by_pk?: Maybe<
+    { __typename?: 'course' } & Pick<Course, 'name' | 'years'> & {
+        student_to_courses_aggregate: {
+          __typename?: 'student_to_course_aggregate';
+        } & {
+          nodes: Array<
+            { __typename?: 'student_to_course' } & {
+              student: { __typename?: 'student' } & Pick<
+                Student,
+                'id' | 'email' | 'full_name' | 'user_id'
+              >;
+            }
+          >;
+          aggregate?: Maybe<
+            { __typename?: 'student_to_course_aggregate_fields' } & Pick<
+              Student_To_Course_Aggregate_Fields,
+              'count'
+            >
+          >;
+        };
+      }
+  >;
+};
+
+export type SendStudentClaimMailMutationVariables = Exact<{
+  studentsIds: Array<Maybe<Scalars['uuid']>>;
+}>;
+
+export type SendStudentClaimMailMutation = { __typename?: 'mutation_root' } & {
+  sendStudentClaimMail?: Maybe<
+    { __typename?: 'SendStudentClaimMailOutput' } & Pick<
+      SendStudentClaimMailOutput,
+      'nmbMailSent'
+    >
+  >;
+};
+
+export type CourseCardFragment = { __typename?: 'course' } & Pick<
+  Course,
+  'id' | 'name' | 'years'
+> & {
+    student_to_courses_aggregate: {
+      __typename?: 'student_to_course_aggregate';
+    } & {
+      aggregate?: Maybe<
+        { __typename?: 'student_to_course_aggregate_fields' } & Pick<
+          Student_To_Course_Aggregate_Fields,
+          'count'
+        >
+      >;
+    };
+  };
+
+export type ListCoursesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ListCoursesQuery = { __typename?: 'query_root' } & {
+  course: Array<{ __typename?: 'course' } & CourseCardFragment>;
+};
+
+export type CreateCourseMutationVariables = Exact<{
+  name: Scalars['String'];
+  years: Scalars['String'];
+  students: Array<Student_To_Course_Insert_Input>;
+}>;
+
+export type CreateCourseMutation = { __typename?: 'mutation_root' } & {
+  insert_course_one?: Maybe<
+    { __typename?: 'course' } & Pick<Course, 'created_at' | 'id'>
+  >;
+};
+
 export type YieldPracticeInputFragment = {
   __typename?: 'practice_yield';
 } & Pick<Practice_Yield, 'id' | 'meta' | 'method' | 'name' | 'description'>;
@@ -5561,82 +5637,6 @@ export type LinkStudentToUserMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type PromotionDetailsQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
-
-export type PromotionDetailsQuery = { __typename?: 'query_root' } & {
-  course_by_pk?: Maybe<
-    { __typename?: 'course' } & Pick<Course, 'name' | 'years'> & {
-        student_to_courses_aggregate: {
-          __typename?: 'student_to_course_aggregate';
-        } & {
-          nodes: Array<
-            { __typename?: 'student_to_course' } & {
-              student: { __typename?: 'student' } & Pick<
-                Student,
-                'id' | 'email' | 'full_name' | 'user_id'
-              >;
-            }
-          >;
-          aggregate?: Maybe<
-            { __typename?: 'student_to_course_aggregate_fields' } & Pick<
-              Student_To_Course_Aggregate_Fields,
-              'count'
-            >
-          >;
-        };
-      }
-  >;
-};
-
-export type SendStudentClaimMailMutationVariables = Exact<{
-  studentsIds: Array<Maybe<Scalars['uuid']>>;
-}>;
-
-export type SendStudentClaimMailMutation = { __typename?: 'mutation_root' } & {
-  sendStudentClaimMail?: Maybe<
-    { __typename?: 'SendStudentClaimMailOutput' } & Pick<
-      SendStudentClaimMailOutput,
-      'nmbMailSent'
-    >
-  >;
-};
-
-export type CourseCardFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'id' | 'name' | 'years'
-> & {
-    student_to_courses_aggregate: {
-      __typename?: 'student_to_course_aggregate';
-    } & {
-      aggregate?: Maybe<
-        { __typename?: 'student_to_course_aggregate_fields' } & Pick<
-          Student_To_Course_Aggregate_Fields,
-          'count'
-        >
-      >;
-    };
-  };
-
-export type ListPromotionsQueryVariables = Exact<{ [key: string]: never }>;
-
-export type ListPromotionsQuery = { __typename?: 'query_root' } & {
-  course: Array<{ __typename?: 'course' } & CourseCardFragment>;
-};
-
-export type CreatePromotionMutationVariables = Exact<{
-  name: Scalars['String'];
-  years: Scalars['String'];
-  students: Array<Student_To_Course_Insert_Input>;
-}>;
-
-export type CreatePromotionMutation = { __typename?: 'mutation_root' } & {
-  insert_course_one?: Maybe<
-    { __typename?: 'course' } & Pick<Course, 'created_at' | 'id'>
-  >;
-};
-
 export type GradeMetricInputYieldFragment = {
   __typename?: 'practice_yield';
 } & Pick<Practice_Yield, 'id' | 'meta' | 'method' | 'name' | 'description'>;
@@ -5687,14 +5687,14 @@ export type GetPracticeForGradeMetricQuery = { __typename?: 'query_root' } & {
   >;
 };
 
-export type InsertNewPracticeToPromotionMutationVariables = Exact<{
+export type InsertNewPracticeToCourseMutationVariables = Exact<{
   close_date: Scalars['timestamptz'];
   open_date: Scalars['timestamptz'];
   practice_id: Scalars['uuid'];
-  promotion_id: Scalars['uuid'];
+  courseId: Scalars['uuid'];
 }>;
 
-export type InsertNewPracticeToPromotionMutation = {
+export type InsertNewPracticeToCourseMutation = {
   __typename?: 'mutation_root';
 } & {
   insert_practice_to_course?: Maybe<
@@ -5937,15 +5937,6 @@ export type ParacticeToStudentGradeMetricForGradingFragment = {
   | 'updated_at'
 >;
 
-export const YieldPracticeInputFragmentDoc = gql`
-  fragment YieldPracticeInput on practice_yield {
-    id
-    meta
-    method
-    name
-    description
-  }
-`;
 export const CourseCardFragmentDoc = gql`
   fragment CourseCard on course {
     id
@@ -5956,6 +5947,15 @@ export const CourseCardFragmentDoc = gql`
         count
       }
     }
+  }
+`;
+export const YieldPracticeInputFragmentDoc = gql`
+  fragment YieldPracticeInput on practice_yield {
+    id
+    meta
+    method
+    name
+    description
   }
 `;
 export const GradeMetricInputYieldFragmentDoc = gql`
@@ -6069,6 +6069,91 @@ export function useListTpYieldTypesQuery(
     ...options,
   });
 }
+export const CourseDetailsDocument = gql`
+  query courseDetails($id: uuid!) {
+    course_by_pk(id: $id) {
+      name
+      years
+      student_to_courses_aggregate {
+        nodes {
+          student {
+            id
+            email
+            full_name
+            user_id
+          }
+        }
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+`;
+
+export function useCourseDetailsQuery(
+  options: Omit<Urql.UseQueryArgs<CourseDetailsQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<CourseDetailsQuery>({
+    query: CourseDetailsDocument,
+    ...options,
+  });
+}
+export const SendStudentClaimMailDocument = gql`
+  mutation sendStudentClaimMail($studentsIds: [uuid]!) {
+    sendStudentClaimMail(studentsIds: $studentsIds) {
+      nmbMailSent
+    }
+  }
+`;
+
+export function useSendStudentClaimMailMutation() {
+  return Urql.useMutation<
+    SendStudentClaimMailMutation,
+    SendStudentClaimMailMutationVariables
+  >(SendStudentClaimMailDocument);
+}
+export const ListCoursesDocument = gql`
+  query ListCourses {
+    course {
+      ...CourseCard
+    }
+  }
+  ${CourseCardFragmentDoc}
+`;
+
+export function useListCoursesQuery(
+  options: Omit<Urql.UseQueryArgs<ListCoursesQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<ListCoursesQuery>({
+    query: ListCoursesDocument,
+    ...options,
+  });
+}
+export const CreateCourseDocument = gql`
+  mutation CreateCourse(
+    $name: String!
+    $years: String!
+    $students: [student_to_course_insert_input!]!
+  ) {
+    insert_course_one(
+      object: {
+        name: $name
+        years: $years
+        student_to_courses: { data: $students }
+      }
+    ) {
+      created_at
+      id
+    }
+  }
+`;
+
+export function useCreateCourseMutation() {
+  return Urql.useMutation<CreateCourseMutation, CreateCourseMutationVariables>(
+    CreateCourseDocument,
+  );
+}
 export const HandOffByIdDocument = gql`
   query HandOffById($id: uuid!) {
     practice_to_course_by_pk(id: $id) {
@@ -6172,95 +6257,6 @@ export function useLinkStudentToUserMutation() {
     LinkStudentToUserMutationVariables
   >(LinkStudentToUserDocument);
 }
-export const PromotionDetailsDocument = gql`
-  query promotionDetails($id: uuid!) {
-    course_by_pk(id: $id) {
-      name
-      years
-      student_to_courses_aggregate {
-        nodes {
-          student {
-            id
-            email
-            full_name
-            user_id
-          }
-        }
-        aggregate {
-          count
-        }
-      }
-    }
-  }
-`;
-
-export function usePromotionDetailsQuery(
-  options: Omit<
-    Urql.UseQueryArgs<PromotionDetailsQueryVariables>,
-    'query'
-  > = {},
-) {
-  return Urql.useQuery<PromotionDetailsQuery>({
-    query: PromotionDetailsDocument,
-    ...options,
-  });
-}
-export const SendStudentClaimMailDocument = gql`
-  mutation sendStudentClaimMail($studentsIds: [uuid]!) {
-    sendStudentClaimMail(studentsIds: $studentsIds) {
-      nmbMailSent
-    }
-  }
-`;
-
-export function useSendStudentClaimMailMutation() {
-  return Urql.useMutation<
-    SendStudentClaimMailMutation,
-    SendStudentClaimMailMutationVariables
-  >(SendStudentClaimMailDocument);
-}
-export const ListPromotionsDocument = gql`
-  query ListPromotions {
-    course {
-      ...CourseCard
-    }
-  }
-  ${CourseCardFragmentDoc}
-`;
-
-export function useListPromotionsQuery(
-  options: Omit<Urql.UseQueryArgs<ListPromotionsQueryVariables>, 'query'> = {},
-) {
-  return Urql.useQuery<ListPromotionsQuery>({
-    query: ListPromotionsDocument,
-    ...options,
-  });
-}
-export const CreatePromotionDocument = gql`
-  mutation CreatePromotion(
-    $name: String!
-    $years: String!
-    $students: [student_to_course_insert_input!]!
-  ) {
-    insert_course_one(
-      object: {
-        name: $name
-        years: $years
-        student_to_courses: { data: $students }
-      }
-    ) {
-      created_at
-      id
-    }
-  }
-`;
-
-export function useCreatePromotionMutation() {
-  return Urql.useMutation<
-    CreatePromotionMutation,
-    CreatePromotionMutationVariables
-  >(CreatePromotionDocument);
-}
 export const GetYieldsForNewGradeTpDocument = gql`
   query getYieldsForNewGradeTp($tpId: uuid!) {
     practice_by_pk(id: $tpId) {
@@ -6324,12 +6320,12 @@ export function useGetPracticeForGradeMetricQuery(
     ...options,
   });
 }
-export const InsertNewPracticeToPromotionDocument = gql`
-  mutation insertNewPracticeToPromotion(
+export const InsertNewPracticeToCourseDocument = gql`
+  mutation insertNewPracticeToCourse(
     $close_date: timestamptz!
     $open_date: timestamptz!
     $practice_id: uuid!
-    $promotion_id: uuid!
+    $courseId: uuid!
   ) {
     insert_practice_to_course(
       objects: {
@@ -6338,7 +6334,7 @@ export const InsertNewPracticeToPromotionDocument = gql`
         close_date: $close_date
         open_date: $open_date
         practice_id: $practice_id
-        course_id: $promotion_id
+        course_id: $courseId
       }
     ) {
       returning {
@@ -6348,11 +6344,11 @@ export const InsertNewPracticeToPromotionDocument = gql`
   }
 `;
 
-export function useInsertNewPracticeToPromotionMutation() {
+export function useInsertNewPracticeToCourseMutation() {
   return Urql.useMutation<
-    InsertNewPracticeToPromotionMutation,
-    InsertNewPracticeToPromotionMutationVariables
-  >(InsertNewPracticeToPromotionDocument);
+    InsertNewPracticeToCourseMutation,
+    InsertNewPracticeToCourseMutationVariables
+  >(InsertNewPracticeToCourseDocument);
 }
 export const GetPracticeDetailDocument = gql`
   query getPracticeDetail($id: uuid!) {

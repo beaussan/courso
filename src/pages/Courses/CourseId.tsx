@@ -4,7 +4,7 @@ import { BackButton } from '../../components/BackButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import gql from 'graphql-tag';
 import {
-  usePromotionDetailsQuery,
+  useCourseDetailsQuery,
   useSendStudentClaimMailMutation,
 } from '../../generated/graphql';
 import { Loader } from '../../components/Loader';
@@ -15,7 +15,7 @@ import { Chip } from '../../components/Chip';
 import { useToasts } from 'react-toast-notifications';
 
 gql`
-  query promotionDetails($id: uuid!) {
+  query courseDetails($id: uuid!) {
     course_by_pk(id: $id) {
       name
       years
@@ -46,10 +46,10 @@ const LinkIndicator: React.FC<{ isLinked: boolean }> = ({ isLinked }) => {
   return <Chip variant={isLinked ? 'success' : 'error'}>{label}</Chip>;
 };
 
-export const PromotionId = () => {
+export const CourseId = () => {
   const { id } = useParams();
 
-  const [{ data, error, fetching }] = usePromotionDetailsQuery({
+  const [{ data, error, fetching }] = useCourseDetailsQuery({
     variables: { id: id },
   });
   const navigate = useNavigate();
