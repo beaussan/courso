@@ -50,7 +50,7 @@ export const AppShel = () => {
           <RouteWithRule roles={['teacher']} path="tp/*" element={<Tp />} />
           <RouteWithRule
             roles={['teacher']}
-            path="promos/*"
+            path="course/*"
             element={<Course />}
           />
         </Routes>
