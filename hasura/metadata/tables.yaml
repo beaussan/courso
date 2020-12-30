@@ -184,6 +184,8 @@
           - practice_id
           - course_id
           - updated_at
+        computed_fields:
+          - is_open
         filter:
           course:
             student_to_courses:
@@ -204,6 +206,8 @@
           - practice_id
           - course_id
           - updated_at
+        computed_fields:
+          - is_open
         filter: {}
         allow_aggregations: true
   update_permissions:
@@ -654,6 +658,20 @@
           - last_name
         backend_only: false
   select_permissions:
+    - role: student
+      permission:
+        columns:
+          - email
+          - first_name
+          - last_name
+          - user_id
+        computed_fields:
+          - full_name
+        filter:
+          user:
+            id:
+              _eq: X-Hasura-User-Id
+        limit: 1
     - role: teacher
       permission:
         columns:
@@ -664,6 +682,8 @@
           - updated_at
           - id
           - user_id
+        computed_fields:
+          - full_name
         filter: {}
         allow_aggregations: true
   update_permissions:

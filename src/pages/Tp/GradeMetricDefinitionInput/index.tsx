@@ -41,12 +41,10 @@ export const yupGradeMetricDefSchema = yup.object().shape({
 const makeFormName = (name: string) => {
   const methodFormName = `${name}.method`;
   const expectedFormName = `${name}.expected`;
-  const nameFormName = `${name}.name`;
   const langFormName = `${name}.lang`;
   const gitPathFormName = `${name}.gitPath`;
   return {
     methodFormName,
-    nameFormName,
     langFormName,
     expectedFormName,
     gitPathFormName,
