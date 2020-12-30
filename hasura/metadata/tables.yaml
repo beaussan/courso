@@ -284,29 +284,25 @@
     - role: teacher
       permission:
         columns:
-          - id
-          - created_at
-          - updated_at
-          - student_id
           - course_practice_id
-          - grade
+          - created_at
           - feedback
+          - grade
+          - grade_detail
           - graded
+          - id
+          - student_id
+          - submited
+          - updated_at
         filter: {}
         allow_aggregations: true
-  update_permissions:
-    - role: teacher
-      permission:
-        columns:
-          - feedback
-          - grade
-          - graded
-        filter: {}
-        check: null
 - table:
     schema: public
     name: practice_to_student_grade_metric
   object_relationships:
+    - name: practice_to_student_yield
+      using:
+        foreign_key_constraint_on: practice_to_student_yield_id
     - name: practice_yield_grade_metric
       using:
         foreign_key_constraint_on: practice_yield_grade_metric_id
@@ -314,13 +310,15 @@
     - role: teacher
       permission:
         columns:
-          - feedback
-          - percent_grade
           - created_at
-          - updated_at
+          - feedback
           - id
+          - percent_grade
+          - practice_to_student_yield_id
           - practice_yield_grade_metric_id
+          - updated_at
         filter: {}
+        allow_aggregations: true
 - table:
     schema: public
     name: practice_to_student_yield
@@ -331,6 +329,14 @@
     - name: practice_yield
       using:
         foreign_key_constraint_on: practice_yield_id
+  array_relationships:
+    - name: practice_to_student_grade_metrics
+      using:
+        foreign_key_constraint_on:
+          column: practice_to_student_yield_id
+          table:
+            schema: public
+            name: practice_to_student_grade_metric
   select_permissions:
     - role: student
       permission:
@@ -350,13 +356,14 @@
     - role: teacher
       permission:
         columns:
-          - gitea_org_and_repo
-          - value
           - created_at
-          - updated_at
+          - gitea_org_and_repo
           - id
           - practice_to_student_id
           - practice_yield_id
+          - submited
+          - updated_at
+          - value
         filter: {}
   event_triggers:
     - name: onStudentYieldCreated
