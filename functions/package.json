@@ -16,6 +16,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "apisauce": "1.1.2",
+    "date-fns": "2.16.1",
     "express": "4.17.1",
     "express-async-errors": "3.1.1",
     "firebase-admin": "^8.10.0",

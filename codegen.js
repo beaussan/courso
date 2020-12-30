@@ -11,18 +11,18 @@ module.exports = {
   documents: ['./src/**/*.tsx', './src/**/*.ts'],
   overwrite: true,
   generates: {
+    './graphql.schema.json': {
+      plugins: ['introspection'],
+    },
+    './graphql.schema.graphql': {
+      plugins: ['schema-ast'],
+    },
     './src/generated/graphql.ts': {
       plugins: ['typescript', 'typescript-operations', 'typescript-urql'],
       config: {
         skipTypename: false,
         withHooks: true,
       },
-    },
-    './graphql.schema.json': {
-      plugins: ['introspection'],
-    },
-    './graphql.schema.graphql': {
-      plugins: ['schema-ast'],
     },
   },
 };

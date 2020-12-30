@@ -1,11 +1,11 @@
 import React, { ReactNode, useCallback, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { Transition } from '@headlessui/react';
 import { ReactComponent as Exclamation } from '../../icons/outline/exclamation.svg';
 import { ReactComponent as EditIcon } from '../../icons/outline/pencil.svg';
 import { ReactComponent as InfoIcon } from '../../icons/outline/information-circle.svg';
 import { ReactComponent as AddIcon } from '../../icons/solid/plus.svg';
 import { CloseButton } from '../CloseButton';
+import { Portal } from 'react-portal';
 
 const Warn = () => (
   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
@@ -108,44 +108,45 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     };
   }, [escFunction]);
 
-  return createPortal(
-    <Transition show={isOpen} className="fixed inset-0 z-30 overflow-y-auto">
-      <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <Transition.Child
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 transition-opacity">
-            <div
-              className="absolute inset-0 bg-gray-500 opacity-75"
-              onClick={() => onClose()}
-            />
-          </div>
-        </Transition.Child>
-        {/* This element is to trick the browser into centering the modal contents. */}
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" />
-        &#8203;
-        <Transition.Child
-          className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-headline"
-          enter="ease-out duration-300"
-          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          enterTo="opacity-100 translate-y-0 sm:scale-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        >
-          {children}
-        </Transition.Child>
-      </div>
-    </Transition>,
-    document.body,
+  return (
+    <Portal node={document && document.getElementById('modal-container')}>
+      <Transition show={isOpen} className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <Transition.Child
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 transition-opacity">
+              <div
+                className="absolute inset-0 bg-gray-500 opacity-75"
+                onClick={() => onClose()}
+              />
+            </div>
+          </Transition.Child>
+          {/* This element is to trick the browser into centering the modal contents. */}
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" />
+          &#8203;
+          <Transition.Child
+            className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-headline"
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            enterTo="opacity-100 translate-y-0 sm:scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          >
+            {children}
+          </Transition.Child>
+        </div>
+      </Transition>
+    </Portal>
   );
 };
 

@@ -6,6 +6,8 @@ import { sendStudentClaimMail } from './sendStudentClaimMail';
 import { expressFireErrorHandler } from '../expressErrorHandler';
 import { linkStudentToUser } from './linkStudentToUser';
 import { submitHandoff } from './submitHandoff';
+import { refreshGrades } from './refreshGrades';
+import { fillEmptyYields } from './fillEmptyYields';
 
 const app = express();
 app.use(express.json());
@@ -23,6 +25,8 @@ const actionMap: ActionMap = {
   sendStudentClaimMail,
   linkStudentToUser,
   submitHandoff,
+  refreshGrades,
+  fillEmptyYields,
 };
 
 app.post('/', async (req, res) => {

@@ -11,3 +11,7 @@
 /* Stop purging. */
 
 /* Your own custom utilities */
+
+body .react-datepicker-popper {
+  z-index: 40;
+}

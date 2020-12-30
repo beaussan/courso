@@ -98,7 +98,7 @@ export const Nav: React.FC<NavProps> = ({ links, children }) => {
         enter="transition-opacity ease-linear duration-500"
         leave="transition-opacity ease-linear duration-500"
       >
-        {(ref) => (
+        {(ref: React.MutableRefObject<HTMLDivElement>) => (
           <div ref={ref} className="md:hidden">
             <div className="fixed inset-0 flex z-40">
               <Transition.Child
@@ -109,7 +109,7 @@ export const Nav: React.FC<NavProps> = ({ links, children }) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                {(ref) => (
+                {(ref: React.MutableRefObject<HTMLDivElement>) => (
                   <div ref={ref} className="fixed inset-0">
                     <div className="absolute inset-0 bg-gray-600 opacity-75" />
                   </div>
@@ -123,7 +123,7 @@ export const Nav: React.FC<NavProps> = ({ links, children }) => {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                {(ref) => (
+                {(ref: React.MutableRefObject<HTMLDivElement>) => (
                   <div
                     ref={ref}
                     className="relative flex-1 flex flex-col max-w-xs w-full bg-indigo-700"

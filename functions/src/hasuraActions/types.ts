@@ -21,19 +21,39 @@ export type SubmitHandoffOutput = {
   status: string;
 };
 
+export type RefreshGradesOutput = {
+  affected_rows: number;
+};
+
+export type FillEmptyYieldsOutput = {
+  affected_rows: number;
+};
+
 export type YieldForHandoff = {
   yieldId: uuid;
   value: string;
 };
 
 export type Mutation = {
+  fillEmptyYields?: Maybe<FillEmptyYieldsOutput>;
   linkStudentToUser?: Maybe<linkStudentToUserOutput>;
+  refreshGrades?: Maybe<RefreshGradesOutput>;
   sendStudentClaimMail?: Maybe<SendStudentClaimMailOutput>;
   submitHandoff?: Maybe<SubmitHandoffOutput>;
 };
 
+export type fillEmptyYieldsArgs = {
+  course_id: uuid;
+  practice_id: uuid;
+};
+
 export type linkStudentToUserArgs = {
   linkId: uuid;
+};
+
+export type refreshGradesArgs = {
+  course_id: uuid;
+  practice_id: uuid;
 };
 
 export type sendStudentClaimMailArgs = {
@@ -53,7 +73,7 @@ export type SessionVars = {
 
 export type PayloadRequest<T> = {
   action: {
-    name: string;
+    name: keyof Mutation;
   };
   input: T;
   session_variables: SessionVars;
@@ -64,4 +84,5 @@ export type ActionFn<Input, Output> = (
   sessionVars: SessionVars,
 ) => Promise<Output>;
 
-export type ActionMap = { [key: string]: ActionFn<any, any> };
+// export type ActionMap = { [key: string]: ActionFn<any, any> };
+export type ActionMap = Record<keyof Mutation, ActionFn<any, any>>;

@@ -104,7 +104,7 @@ export const DateTimeInputField: React.FC<DateTimeInputFieldProps> = ({
               error={touched && error}
             />
           }
-          portalId="date-picker-portal"
+          portalId="date-picker-container"
           showTimeSelect
           locale={enGB}
           dateFormat="dd/MM/yyyy HH:mm"

@@ -36,6 +36,11 @@ export type Boolean_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['Boolean']>>;
 };
 
+export type FillEmptyYieldsOutput = {
+  __typename?: 'FillEmptyYieldsOutput';
+  affected_rows: Scalars['Int'];
+};
+
 export type InsertStudentAnswerOutput = {
   __typename?: 'InsertStudentAnswerOutput';
   id: Scalars['uuid'];
@@ -53,6 +58,11 @@ export type Int_Comparison_Exp = {
   _lte?: Maybe<Scalars['Int']>;
   _neq?: Maybe<Scalars['Int']>;
   _nin?: Maybe<Array<Scalars['Int']>>;
+};
+
+export type RefreshGradesOutput = {
+  __typename?: 'RefreshGradesOutput';
+  affected_rows: Scalars['Int'];
 };
 
 export type SendStudentClaimMailOutput = {
@@ -423,6 +433,8 @@ export type Mutation_Root = {
   delete_student_to_course?: Maybe<Student_To_Course_Mutation_Response>;
   /** delete single row from the table: "student_to_course" */
   delete_student_to_course_by_pk?: Maybe<Student_To_Course>;
+  /** perform the action: "fillEmptyYields" */
+  fillEmptyYields?: Maybe<FillEmptyYieldsOutput>;
   /** insert data into the table: "user" */
   insertUser?: Maybe<User_Mutation_Response>;
   /** insert a single row into the table: "user" */
@@ -481,6 +493,8 @@ export type Mutation_Root = {
   insert_student_to_course_one?: Maybe<Student_To_Course>;
   /** perform the action: "linkStudentToUser" */
   linkStudentToUser?: Maybe<LinkStudentToUserOutput>;
+  /** perform the action: "refreshGrades" */
+  refreshGrades?: Maybe<RefreshGradesOutput>;
   /** perform the action: "sendStudentClaimMail" */
   sendStudentClaimMail?: Maybe<SendStudentClaimMailOutput>;
   /** perform the action: "submitHandoff" */
@@ -685,6 +699,12 @@ export type Mutation_RootDelete_Student_To_Course_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootFillEmptyYieldsArgs = {
+  course_id: Scalars['uuid'];
+  practice_id: Scalars['uuid'];
+};
+
+/** mutation root */
 export type Mutation_RootInsertUserArgs = {
   objects: Array<User_Insert_Input>;
   on_conflict?: Maybe<User_On_Conflict>;
@@ -858,6 +878,12 @@ export type Mutation_RootLinkStudentToUserArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootRefreshGradesArgs = {
+  course_id: Scalars['uuid'];
+  practice_id: Scalars['uuid'];
+};
+
+/** mutation root */
 export type Mutation_RootSendStudentClaimMailArgs = {
   studentsIds: Array<Maybe<Scalars['uuid']>>;
 };
@@ -918,14 +944,24 @@ export type Mutation_RootUpdate_Practice_To_Course_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Practice_To_StudentArgs = {
+  _append?: Maybe<Practice_To_Student_Append_Input>;
+  _delete_at_path?: Maybe<Practice_To_Student_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Practice_To_Student_Delete_Elem_Input>;
+  _delete_key?: Maybe<Practice_To_Student_Delete_Key_Input>;
   _inc?: Maybe<Practice_To_Student_Inc_Input>;
+  _prepend?: Maybe<Practice_To_Student_Prepend_Input>;
   _set?: Maybe<Practice_To_Student_Set_Input>;
   where: Practice_To_Student_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Practice_To_Student_By_PkArgs = {
+  _append?: Maybe<Practice_To_Student_Append_Input>;
+  _delete_at_path?: Maybe<Practice_To_Student_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Practice_To_Student_Delete_Elem_Input>;
+  _delete_key?: Maybe<Practice_To_Student_Delete_Key_Input>;
   _inc?: Maybe<Practice_To_Student_Inc_Input>;
+  _prepend?: Maybe<Practice_To_Student_Prepend_Input>;
   _set?: Maybe<Practice_To_Student_Set_Input>;
   pk_columns: Practice_To_Student_Pk_Columns_Input;
 };
@@ -1112,10 +1148,6 @@ export type Practice = {
   /** An aggregated array relationship */
   practice_to_courses_aggregate: Practice_To_Course_Aggregate;
   /** An array relationship */
-  practice_yield_expected_outputs: Array<Practice_Yield_Expected_Output>;
-  /** An aggregated array relationship */
-  practice_yield_expected_outputs_aggregate: Practice_Yield_Expected_Output_Aggregate;
-  /** An array relationship */
   practice_yields: Array<Practice_Yield>;
   /** An aggregated array relationship */
   practice_yields_aggregate: Practice_Yield_Aggregate;
@@ -1139,24 +1171,6 @@ export type PracticePractice_To_Courses_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Practice_To_Course_Order_By>>;
   where?: Maybe<Practice_To_Course_Bool_Exp>;
-};
-
-/** columns and relationships of "practice" */
-export type PracticePractice_Yield_Expected_OutputsArgs = {
-  distinct_on?: Maybe<Array<Practice_Yield_Expected_Output_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_Yield_Expected_Output_Order_By>>;
-  where?: Maybe<Practice_Yield_Expected_Output_Bool_Exp>;
-};
-
-/** columns and relationships of "practice" */
-export type PracticePractice_Yield_Expected_Outputs_AggregateArgs = {
-  distinct_on?: Maybe<Array<Practice_Yield_Expected_Output_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_Yield_Expected_Output_Order_By>>;
-  where?: Maybe<Practice_Yield_Expected_Output_Bool_Exp>;
 };
 
 /** columns and relationships of "practice" */
@@ -1220,7 +1234,6 @@ export type Practice_Bool_Exp = {
   description?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   practice_to_courses?: Maybe<Practice_To_Course_Bool_Exp>;
-  practice_yield_expected_outputs?: Maybe<Practice_Yield_Expected_Output_Bool_Exp>;
   practice_yields?: Maybe<Practice_Yield_Bool_Exp>;
   title?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -1240,7 +1253,6 @@ export type Practice_Insert_Input = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_courses?: Maybe<Practice_To_Course_Arr_Rel_Insert_Input>;
-  practice_yield_expected_outputs?: Maybe<Practice_Yield_Expected_Output_Arr_Rel_Insert_Input>;
   practice_yields?: Maybe<Practice_Yield_Arr_Rel_Insert_Input>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -1312,7 +1324,6 @@ export type Practice_Order_By = {
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   practice_to_courses_aggregate?: Maybe<Practice_To_Course_Aggregate_Order_By>;
-  practice_yield_expected_outputs_aggregate?: Maybe<Practice_Yield_Expected_Output_Aggregate_Order_By>;
   practice_yields_aggregate?: Maybe<Practice_Yield_Aggregate_Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -1629,16 +1640,13 @@ export type Practice_To_Student = {
   __typename?: 'practice_to_student';
   course_practice_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
-  feedback?: Maybe<Scalars['String']>;
+  feedback?: Maybe<Scalars['jsonb']>;
   grade?: Maybe<Scalars['Int']>;
+  grade_detail?: Maybe<Scalars['jsonb']>;
   graded: Scalars['Boolean'];
   id: Scalars['uuid'];
   /** An object relationship */
   practice_to_course: Practice_To_Course;
-  /** An array relationship */
-  practice_to_student_grade_metrics: Array<Practice_To_Student_Grade_Metric>;
-  /** An aggregated array relationship */
-  practice_to_student_grade_metrics_aggregate: Practice_To_Student_Grade_Metric_Aggregate;
   /** An array relationship */
   practice_to_student_yields: Array<Practice_To_Student_Yield>;
   /** An aggregated array relationship */
@@ -1651,21 +1659,13 @@ export type Practice_To_Student = {
 };
 
 /** columns and relationships of "practice_to_student" */
-export type Practice_To_StudentPractice_To_Student_Grade_MetricsArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
-  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+export type Practice_To_StudentFeedbackArgs = {
+  path?: Maybe<Scalars['String']>;
 };
 
 /** columns and relationships of "practice_to_student" */
-export type Practice_To_StudentPractice_To_Student_Grade_Metrics_AggregateArgs = {
-  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
-  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+export type Practice_To_StudentGrade_DetailArgs = {
+  path?: Maybe<Scalars['String']>;
 };
 
 /** columns and relationships of "practice_to_student" */
@@ -1730,6 +1730,12 @@ export type Practice_To_Student_Aggregate_Order_By = {
   variance?: Maybe<Practice_To_Student_Variance_Order_By>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Practice_To_Student_Append_Input = {
+  feedback?: Maybe<Scalars['jsonb']>;
+  grade_detail?: Maybe<Scalars['jsonb']>;
+};
+
 /** input type for inserting array relation for remote table "practice_to_student" */
 export type Practice_To_Student_Arr_Rel_Insert_Input = {
   data: Array<Practice_To_Student_Insert_Input>;
@@ -1754,12 +1760,12 @@ export type Practice_To_Student_Bool_Exp = {
   _or?: Maybe<Array<Maybe<Practice_To_Student_Bool_Exp>>>;
   course_practice_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  feedback?: Maybe<String_Comparison_Exp>;
+  feedback?: Maybe<Jsonb_Comparison_Exp>;
   grade?: Maybe<Int_Comparison_Exp>;
+  grade_detail?: Maybe<Jsonb_Comparison_Exp>;
   graded?: Maybe<Boolean_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   practice_to_course?: Maybe<Practice_To_Course_Bool_Exp>;
-  practice_to_student_grade_metrics?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
   practice_to_student_yields?: Maybe<Practice_To_Student_Yield_Bool_Exp>;
   student?: Maybe<Student_Bool_Exp>;
   student_id?: Maybe<Uuid_Comparison_Exp>;
@@ -1775,6 +1781,24 @@ export enum Practice_To_Student_Constraint {
   PracticeToStudentStudentIdPromotionPracticeIdKey = 'practice_to_student_student_id_promotion_practice_id_key',
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Practice_To_Student_Delete_At_Path_Input = {
+  feedback?: Maybe<Array<Maybe<Scalars['String']>>>;
+  grade_detail?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Practice_To_Student_Delete_Elem_Input = {
+  feedback?: Maybe<Scalars['Int']>;
+  grade_detail?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Practice_To_Student_Delete_Key_Input = {
+  feedback?: Maybe<Scalars['String']>;
+  grade_detail?: Maybe<Scalars['String']>;
+};
+
 /** columns and relationships of "practice_to_student_grade_metric" */
 export type Practice_To_Student_Grade_Metric = {
   __typename?: 'practice_to_student_grade_metric';
@@ -1783,11 +1807,11 @@ export type Practice_To_Student_Grade_Metric = {
   id: Scalars['uuid'];
   percent_grade: Scalars['numeric'];
   /** An object relationship */
-  practice_to_student: Practice_To_Student;
-  practice_to_student_id: Scalars['uuid'];
+  practice_to_student_yield: Practice_To_Student_Yield;
+  practice_to_student_yield_id: Scalars['uuid'];
   /** An object relationship */
-  practice_yield_grade_metric?: Maybe<Practice_Yield_Grade_Metric>;
-  practice_yield_grade_metric_id?: Maybe<Scalars['uuid']>;
+  practice_yield_grade_metric: Practice_Yield_Grade_Metric;
+  practice_yield_grade_metric_id: Scalars['uuid'];
   updated_at: Scalars['timestamptz'];
 };
 
@@ -1871,8 +1895,8 @@ export type Practice_To_Student_Grade_Metric_Bool_Exp = {
   feedback?: Maybe<Jsonb_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   percent_grade?: Maybe<Numeric_Comparison_Exp>;
-  practice_to_student?: Maybe<Practice_To_Student_Bool_Exp>;
-  practice_to_student_id?: Maybe<Uuid_Comparison_Exp>;
+  practice_to_student_yield?: Maybe<Practice_To_Student_Yield_Bool_Exp>;
+  practice_to_student_yield_id?: Maybe<Uuid_Comparison_Exp>;
   practice_yield_grade_metric?: Maybe<Practice_Yield_Grade_Metric_Bool_Exp>;
   practice_yield_grade_metric_id?: Maybe<Uuid_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -1883,7 +1907,7 @@ export enum Practice_To_Student_Grade_Metric_Constraint {
   /** unique or primary key constraint */
   PracticeToStudentGradeMetricPkey = 'practice_to_student_grade_metric_pkey',
   /** unique or primary key constraint */
-  PracticeToStudentGradeMetricPracticeToStudentIdPractic = 'practice_to_student_grade_metric_practice_to_student_id_practic',
+  PracticeToStudentGradeMetricPracticeYieldGradeMetricId = 'practice_to_student_grade_metric_practice_yield_grade_metric_id',
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -1912,8 +1936,8 @@ export type Practice_To_Student_Grade_Metric_Insert_Input = {
   feedback?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['uuid']>;
   percent_grade?: Maybe<Scalars['numeric']>;
-  practice_to_student?: Maybe<Practice_To_Student_Obj_Rel_Insert_Input>;
-  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_yield?: Maybe<Practice_To_Student_Yield_Obj_Rel_Insert_Input>;
+  practice_to_student_yield_id?: Maybe<Scalars['uuid']>;
   practice_yield_grade_metric?: Maybe<Practice_Yield_Grade_Metric_Obj_Rel_Insert_Input>;
   practice_yield_grade_metric_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -1925,7 +1949,7 @@ export type Practice_To_Student_Grade_Metric_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   percent_grade?: Maybe<Scalars['numeric']>;
-  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_yield_id?: Maybe<Scalars['uuid']>;
   practice_yield_grade_metric_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -1935,7 +1959,7 @@ export type Practice_To_Student_Grade_Metric_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   percent_grade?: Maybe<Order_By>;
-  practice_to_student_id?: Maybe<Order_By>;
+  practice_to_student_yield_id?: Maybe<Order_By>;
   practice_yield_grade_metric_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -1946,7 +1970,7 @@ export type Practice_To_Student_Grade_Metric_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   percent_grade?: Maybe<Scalars['numeric']>;
-  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_yield_id?: Maybe<Scalars['uuid']>;
   practice_yield_grade_metric_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -1956,7 +1980,7 @@ export type Practice_To_Student_Grade_Metric_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   percent_grade?: Maybe<Order_By>;
-  practice_to_student_id?: Maybe<Order_By>;
+  practice_to_student_yield_id?: Maybe<Order_By>;
   practice_yield_grade_metric_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -1989,8 +2013,8 @@ export type Practice_To_Student_Grade_Metric_Order_By = {
   feedback?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   percent_grade?: Maybe<Order_By>;
-  practice_to_student?: Maybe<Practice_To_Student_Order_By>;
-  practice_to_student_id?: Maybe<Order_By>;
+  practice_to_student_yield?: Maybe<Practice_To_Student_Yield_Order_By>;
+  practice_to_student_yield_id?: Maybe<Order_By>;
   practice_yield_grade_metric?: Maybe<Practice_Yield_Grade_Metric_Order_By>;
   practice_yield_grade_metric_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -2017,7 +2041,7 @@ export enum Practice_To_Student_Grade_Metric_Select_Column {
   /** column name */
   PercentGrade = 'percent_grade',
   /** column name */
-  PracticeToStudentId = 'practice_to_student_id',
+  PracticeToStudentYieldId = 'practice_to_student_yield_id',
   /** column name */
   PracticeYieldGradeMetricId = 'practice_yield_grade_metric_id',
   /** column name */
@@ -2030,7 +2054,7 @@ export type Practice_To_Student_Grade_Metric_Set_Input = {
   feedback?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['uuid']>;
   percent_grade?: Maybe<Scalars['numeric']>;
-  practice_to_student_id?: Maybe<Scalars['uuid']>;
+  practice_to_student_yield_id?: Maybe<Scalars['uuid']>;
   practice_yield_grade_metric_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -2090,7 +2114,7 @@ export enum Practice_To_Student_Grade_Metric_Update_Column {
   /** column name */
   PercentGrade = 'percent_grade',
   /** column name */
-  PracticeToStudentId = 'practice_to_student_id',
+  PracticeToStudentYieldId = 'practice_to_student_yield_id',
   /** column name */
   PracticeYieldGradeMetricId = 'practice_yield_grade_metric_id',
   /** column name */
@@ -2139,12 +2163,12 @@ export type Practice_To_Student_Inc_Input = {
 export type Practice_To_Student_Insert_Input = {
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  feedback?: Maybe<Scalars['String']>;
+  feedback?: Maybe<Scalars['jsonb']>;
   grade?: Maybe<Scalars['Int']>;
+  grade_detail?: Maybe<Scalars['jsonb']>;
   graded?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_course?: Maybe<Practice_To_Course_Obj_Rel_Insert_Input>;
-  practice_to_student_grade_metrics?: Maybe<Practice_To_Student_Grade_Metric_Arr_Rel_Insert_Input>;
   practice_to_student_yields?: Maybe<Practice_To_Student_Yield_Arr_Rel_Insert_Input>;
   student?: Maybe<Student_Obj_Rel_Insert_Input>;
   student_id?: Maybe<Scalars['uuid']>;
@@ -2157,7 +2181,6 @@ export type Practice_To_Student_Max_Fields = {
   __typename?: 'practice_to_student_max_fields';
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  feedback?: Maybe<Scalars['String']>;
   grade?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
@@ -2168,7 +2191,6 @@ export type Practice_To_Student_Max_Fields = {
 export type Practice_To_Student_Max_Order_By = {
   course_practice_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
-  feedback?: Maybe<Order_By>;
   grade?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   student_id?: Maybe<Order_By>;
@@ -2180,7 +2202,6 @@ export type Practice_To_Student_Min_Fields = {
   __typename?: 'practice_to_student_min_fields';
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  feedback?: Maybe<Scalars['String']>;
   grade?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
@@ -2191,7 +2212,6 @@ export type Practice_To_Student_Min_Fields = {
 export type Practice_To_Student_Min_Order_By = {
   course_practice_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
-  feedback?: Maybe<Order_By>;
   grade?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   student_id?: Maybe<Order_By>;
@@ -2226,10 +2246,10 @@ export type Practice_To_Student_Order_By = {
   created_at?: Maybe<Order_By>;
   feedback?: Maybe<Order_By>;
   grade?: Maybe<Order_By>;
+  grade_detail?: Maybe<Order_By>;
   graded?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   practice_to_course?: Maybe<Practice_To_Course_Order_By>;
-  practice_to_student_grade_metrics_aggregate?: Maybe<Practice_To_Student_Grade_Metric_Aggregate_Order_By>;
   practice_to_student_yields_aggregate?: Maybe<Practice_To_Student_Yield_Aggregate_Order_By>;
   student?: Maybe<Student_Order_By>;
   student_id?: Maybe<Order_By>;
@@ -2242,6 +2262,12 @@ export type Practice_To_Student_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Practice_To_Student_Prepend_Input = {
+  feedback?: Maybe<Scalars['jsonb']>;
+  grade_detail?: Maybe<Scalars['jsonb']>;
+};
+
 /** select columns of table "practice_to_student" */
 export enum Practice_To_Student_Select_Column {
   /** column name */
@@ -2252,6 +2278,8 @@ export enum Practice_To_Student_Select_Column {
   Feedback = 'feedback',
   /** column name */
   Grade = 'grade',
+  /** column name */
+  GradeDetail = 'grade_detail',
   /** column name */
   Graded = 'graded',
   /** column name */
@@ -2268,8 +2296,9 @@ export enum Practice_To_Student_Select_Column {
 export type Practice_To_Student_Set_Input = {
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  feedback?: Maybe<Scalars['String']>;
+  feedback?: Maybe<Scalars['jsonb']>;
   grade?: Maybe<Scalars['Int']>;
+  grade_detail?: Maybe<Scalars['jsonb']>;
   graded?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
@@ -2332,6 +2361,8 @@ export enum Practice_To_Student_Update_Column {
   /** column name */
   Grade = 'grade',
   /** column name */
+  GradeDetail = 'grade_detail',
+  /** column name */
   Graded = 'graded',
   /** column name */
   Id = 'id',
@@ -2384,12 +2415,35 @@ export type Practice_To_Student_Yield = {
   id: Scalars['uuid'];
   /** An object relationship */
   practice_to_student: Practice_To_Student;
+  /** An array relationship */
+  practice_to_student_grade_metrics: Array<Practice_To_Student_Grade_Metric>;
+  /** An aggregated array relationship */
+  practice_to_student_grade_metrics_aggregate: Practice_To_Student_Grade_Metric_Aggregate;
   practice_to_student_id: Scalars['uuid'];
   /** An object relationship */
   practice_yield: Practice_Yield;
   practice_yield_id: Scalars['uuid'];
+  submited: Scalars['Boolean'];
   updated_at: Scalars['timestamptz'];
   value: Scalars['String'];
+};
+
+/** columns and relationships of "practice_to_student_yield" */
+export type Practice_To_Student_YieldPractice_To_Student_Grade_MetricsArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
+};
+
+/** columns and relationships of "practice_to_student_yield" */
+export type Practice_To_Student_YieldPractice_To_Student_Grade_Metrics_AggregateArgs = {
+  distinct_on?: Maybe<Array<Practice_To_Student_Grade_Metric_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Practice_To_Student_Grade_Metric_Order_By>>;
+  where?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
 };
 
 /** aggregated selection of "practice_to_student_yield" */
@@ -2435,9 +2489,11 @@ export type Practice_To_Student_Yield_Bool_Exp = {
   gitea_org_and_repo?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   practice_to_student?: Maybe<Practice_To_Student_Bool_Exp>;
+  practice_to_student_grade_metrics?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
   practice_to_student_id?: Maybe<Uuid_Comparison_Exp>;
   practice_yield?: Maybe<Practice_Yield_Bool_Exp>;
   practice_yield_id?: Maybe<Uuid_Comparison_Exp>;
+  submited?: Maybe<Boolean_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   value?: Maybe<String_Comparison_Exp>;
 };
@@ -2456,9 +2512,11 @@ export type Practice_To_Student_Yield_Insert_Input = {
   gitea_org_and_repo?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   practice_to_student?: Maybe<Practice_To_Student_Obj_Rel_Insert_Input>;
+  practice_to_student_grade_metrics?: Maybe<Practice_To_Student_Grade_Metric_Arr_Rel_Insert_Input>;
   practice_to_student_id?: Maybe<Scalars['uuid']>;
   practice_yield?: Maybe<Practice_Yield_Obj_Rel_Insert_Input>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
+  submited?: Maybe<Scalars['Boolean']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['String']>;
 };
@@ -2537,9 +2595,11 @@ export type Practice_To_Student_Yield_Order_By = {
   gitea_org_and_repo?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   practice_to_student?: Maybe<Practice_To_Student_Order_By>;
+  practice_to_student_grade_metrics_aggregate?: Maybe<Practice_To_Student_Grade_Metric_Aggregate_Order_By>;
   practice_to_student_id?: Maybe<Order_By>;
   practice_yield?: Maybe<Practice_Yield_Order_By>;
   practice_yield_id?: Maybe<Order_By>;
+  submited?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -2562,6 +2622,8 @@ export enum Practice_To_Student_Yield_Select_Column {
   /** column name */
   PracticeYieldId = 'practice_yield_id',
   /** column name */
+  Submited = 'submited',
+  /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
   Value = 'value',
@@ -2574,6 +2636,7 @@ export type Practice_To_Student_Yield_Set_Input = {
   id?: Maybe<Scalars['uuid']>;
   practice_to_student_id?: Maybe<Scalars['uuid']>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
+  submited?: Maybe<Scalars['Boolean']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['String']>;
 };
@@ -2590,6 +2653,8 @@ export enum Practice_To_Student_Yield_Update_Column {
   PracticeToStudentId = 'practice_to_student_id',
   /** column name */
   PracticeYieldId = 'practice_yield_id',
+  /** column name */
+  Submited = 'submited',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
@@ -2765,9 +2830,6 @@ export type Practice_Yield_Expected_Output = {
   id: Scalars['uuid'];
   method: Practice_Yield_Expected_Output_Types_Enum;
   /** An object relationship */
-  practice: Practice;
-  practice_id: Scalars['uuid'];
-  /** An object relationship */
   practice_yield: Practice_Yield;
   /** An object relationship */
   practice_yield_expected_output_type: Practice_Yield_Expected_Output_Types;
@@ -2842,8 +2904,6 @@ export type Practice_Yield_Expected_Output_Bool_Exp = {
   git_path?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   method?: Maybe<Practice_Yield_Expected_Output_Types_Enum_Comparison_Exp>;
-  practice?: Maybe<Practice_Bool_Exp>;
-  practice_id?: Maybe<Uuid_Comparison_Exp>;
   practice_yield?: Maybe<Practice_Yield_Bool_Exp>;
   practice_yield_expected_output_type?: Maybe<Practice_Yield_Expected_Output_Types_Bool_Exp>;
   practice_yield_grade_metrics?: Maybe<Practice_Yield_Grade_Metric_Bool_Exp>;
@@ -2867,8 +2927,6 @@ export type Practice_Yield_Expected_Output_Insert_Input = {
   git_path?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   method?: Maybe<Practice_Yield_Expected_Output_Types_Enum>;
-  practice?: Maybe<Practice_Obj_Rel_Insert_Input>;
-  practice_id?: Maybe<Scalars['uuid']>;
   practice_yield?: Maybe<Practice_Yield_Obj_Rel_Insert_Input>;
   practice_yield_expected_output_type?: Maybe<Practice_Yield_Expected_Output_Types_Obj_Rel_Insert_Input>;
   practice_yield_grade_metrics?: Maybe<Practice_Yield_Grade_Metric_Arr_Rel_Insert_Input>;
@@ -2884,7 +2942,6 @@ export type Practice_Yield_Expected_Output_Max_Fields = {
   expected?: Maybe<Scalars['String']>;
   git_path?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  practice_id?: Maybe<Scalars['uuid']>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -2896,7 +2953,6 @@ export type Practice_Yield_Expected_Output_Max_Order_By = {
   expected?: Maybe<Order_By>;
   git_path?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
-  practice_id?: Maybe<Order_By>;
   practice_yield_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -2909,7 +2965,6 @@ export type Practice_Yield_Expected_Output_Min_Fields = {
   expected?: Maybe<Scalars['String']>;
   git_path?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  practice_id?: Maybe<Scalars['uuid']>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -2921,7 +2976,6 @@ export type Practice_Yield_Expected_Output_Min_Order_By = {
   expected?: Maybe<Order_By>;
   git_path?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
-  practice_id?: Maybe<Order_By>;
   practice_yield_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -2956,8 +3010,6 @@ export type Practice_Yield_Expected_Output_Order_By = {
   git_path?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   method?: Maybe<Order_By>;
-  practice?: Maybe<Practice_Order_By>;
-  practice_id?: Maybe<Order_By>;
   practice_yield?: Maybe<Practice_Yield_Order_By>;
   practice_yield_expected_output_type?: Maybe<Practice_Yield_Expected_Output_Types_Order_By>;
   practice_yield_grade_metrics_aggregate?: Maybe<Practice_Yield_Grade_Metric_Aggregate_Order_By>;
@@ -2985,8 +3037,6 @@ export enum Practice_Yield_Expected_Output_Select_Column {
   /** column name */
   Method = 'method',
   /** column name */
-  PracticeId = 'practice_id',
-  /** column name */
   PracticeYieldId = 'practice_yield_id',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -3000,7 +3050,6 @@ export type Practice_Yield_Expected_Output_Set_Input = {
   git_path?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   method?: Maybe<Practice_Yield_Expected_Output_Types_Enum>;
-  practice_id?: Maybe<Scalars['uuid']>;
   practice_yield_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -3194,8 +3243,6 @@ export enum Practice_Yield_Expected_Output_Update_Column {
   /** column name */
   Method = 'method',
   /** column name */
-  PracticeId = 'practice_id',
-  /** column name */
   PracticeYieldId = 'practice_yield_id',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -3210,7 +3257,6 @@ export type Practice_Yield_Grade_Metric = {
   id: Scalars['uuid'];
   name: Scalars['String'];
   points: Scalars['Int'];
-  practice_id: Scalars['String'];
   /** An array relationship */
   practice_to_student_grade_metrics: Array<Practice_To_Student_Grade_Metric>;
   /** An aggregated array relationship */
@@ -3320,7 +3366,6 @@ export type Practice_Yield_Grade_Metric_Bool_Exp = {
   id?: Maybe<Uuid_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   points?: Maybe<Int_Comparison_Exp>;
-  practice_id?: Maybe<String_Comparison_Exp>;
   practice_to_student_grade_metrics?: Maybe<Practice_To_Student_Grade_Metric_Bool_Exp>;
   practice_yield_expected_output?: Maybe<Practice_Yield_Expected_Output_Bool_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -3360,7 +3405,6 @@ export type Practice_Yield_Grade_Metric_Insert_Input = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   points?: Maybe<Scalars['Int']>;
-  practice_id?: Maybe<Scalars['String']>;
   practice_to_student_grade_metrics?: Maybe<Practice_To_Student_Grade_Metric_Arr_Rel_Insert_Input>;
   practice_yield_expected_output?: Maybe<Practice_Yield_Expected_Output_Obj_Rel_Insert_Input>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -3374,7 +3418,6 @@ export type Practice_Yield_Grade_Metric_Max_Fields = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   points?: Maybe<Scalars['Int']>;
-  practice_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -3385,7 +3428,6 @@ export type Practice_Yield_Grade_Metric_Max_Order_By = {
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   points?: Maybe<Order_By>;
-  practice_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -3397,7 +3439,6 @@ export type Practice_Yield_Grade_Metric_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   points?: Maybe<Scalars['Int']>;
-  practice_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -3408,7 +3449,6 @@ export type Practice_Yield_Grade_Metric_Min_Order_By = {
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   points?: Maybe<Order_By>;
-  practice_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -3442,7 +3482,6 @@ export type Practice_Yield_Grade_Metric_Order_By = {
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   points?: Maybe<Order_By>;
-  practice_id?: Maybe<Order_By>;
   practice_to_student_grade_metrics_aggregate?: Maybe<Practice_To_Student_Grade_Metric_Aggregate_Order_By>;
   practice_yield_expected_output?: Maybe<Practice_Yield_Expected_Output_Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -3473,8 +3512,6 @@ export enum Practice_Yield_Grade_Metric_Select_Column {
   /** column name */
   Points = 'points',
   /** column name */
-  PracticeId = 'practice_id',
-  /** column name */
   UpdatedAt = 'updated_at',
 }
 
@@ -3486,7 +3523,6 @@ export type Practice_Yield_Grade_Metric_Set_Input = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   points?: Maybe<Scalars['Int']>;
-  practice_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -3548,8 +3584,6 @@ export enum Practice_Yield_Grade_Metric_Update_Column {
   Name = 'name',
   /** column name */
   Points = 'points',
-  /** column name */
-  PracticeId = 'practice_id',
   /** column name */
   UpdatedAt = 'updated_at',
 }
@@ -5736,7 +5770,7 @@ export type PracticeToPromoDetailsFragment = {
                   practice_to_students: Array<
                     { __typename?: 'practice_to_student' } & Pick<
                       Practice_To_Student,
-                      'created_at' | 'grade'
+                      'created_at' | 'grade' | 'submited'
                     >
                   >;
                 };
@@ -5871,7 +5905,7 @@ export type InsertPracticeToStudentGradeMetricMutation = {
             | 'feedback'
             | 'percent_grade'
             | 'id'
-            | 'practice_to_student_id'
+            | 'practice_to_student_yield_id'
             | 'practice_yield_grade_metric_id'
           >
         >;
@@ -5887,36 +5921,66 @@ export type GetPracticeToStudentForGradingQueryVariables = Exact<{
 export type GetPracticeToStudentForGradingQuery = {
   __typename?: 'query_root';
 } & {
-  practice_yield_expected_output: Array<
-    { __typename?: 'practice_yield_expected_output' } & Pick<
-      Practice_Yield_Expected_Output,
-      'expected' | 'git_path' | 'method' | 'practice_id' | 'code_lang' | 'id'
-    > & {
-        practice_yield: { __typename?: 'practice_yield' } & Pick<
-          Practice_Yield,
-          'created_at' | 'description' | 'id' | 'meta' | 'method' | 'name'
-        > & {
-            practice_to_student_yields: Array<
-              { __typename?: 'practice_to_student_yield' } & Pick<
-                Practice_To_Student_Yield,
-                | 'gitea_org_and_repo'
-                | 'value'
-                | 'id'
-                | 'practice_to_student_id'
-                | 'practice_yield_id'
-                | 'created_at'
-              >
-            >;
-          };
-        practice_yield_grade_metrics: Array<
-          { __typename?: 'practice_yield_grade_metric' } & Pick<
-            Practice_Yield_Grade_Metric,
-            'feedbacks' | 'id' | 'name' | 'points'
+  practice_to_course: Array<
+    { __typename?: 'practice_to_course' } & {
+      course: { __typename?: 'course' } & {
+        student_to_courses_aggregate: {
+          __typename?: 'student_to_course_aggregate';
+        } & {
+          aggregate?: Maybe<
+            { __typename?: 'student_to_course_aggregate_fields' } & Pick<
+              Student_To_Course_Aggregate_Fields,
+              'count'
+            >
+          >;
+        };
+      };
+    }
+  >;
+  practice_yield: Array<
+    { __typename?: 'practice_yield' } & Pick<Practice_Yield, 'id' | 'name'> & {
+        practice_to_student_yields: Array<
+          {
+            __typename?: 'practice_to_student_yield';
+          } & PracticeToStudentYieldForGradingFragment
+        >;
+        practice_yield_expected_outputs: Array<
+          { __typename?: 'practice_yield_expected_output' } & Pick<
+            Practice_Yield_Expected_Output,
+            | 'id'
+            | 'code_lang'
+            | 'expected'
+            | 'git_path'
+            | 'method'
+            | 'practice_yield_id'
           > & {
-              practice_to_student_grade_metrics: Array<
-                {
-                  __typename?: 'practice_to_student_grade_metric';
-                } & ParacticeToStudentGradeMetricForGradingFragment
+              practice_yield_grade_metrics: Array<
+                { __typename?: 'practice_yield_grade_metric' } & Pick<
+                  Practice_Yield_Grade_Metric,
+                  'id' | 'name' | 'points' | 'feedbacks'
+                > & {
+                    practice_to_student_grade_metrics_aggregate: {
+                      __typename?: 'practice_to_student_grade_metric_aggregate';
+                    } & {
+                      aggregate?: Maybe<
+                        {
+                          __typename?: 'practice_to_student_grade_metric_aggregate_fields';
+                        } & Pick<
+                          Practice_To_Student_Grade_Metric_Aggregate_Fields,
+                          'count'
+                        >
+                      >;
+                      nodes: Array<
+                        {
+                          __typename?: 'practice_to_student_grade_metric';
+                        } & Pick<
+                          Practice_To_Student_Grade_Metric,
+                          | 'practice_to_student_yield_id'
+                          | 'practice_yield_grade_metric_id'
+                        >
+                      >;
+                    };
+                  }
               >;
             }
         >;
@@ -5924,7 +5988,20 @@ export type GetPracticeToStudentForGradingQuery = {
   >;
 };
 
-export type ParacticeToStudentGradeMetricForGradingFragment = {
+export type PracticeToStudentYieldForGradingFragment = {
+  __typename?: 'practice_to_student_yield';
+} & Pick<
+  Practice_To_Student_Yield,
+  'gitea_org_and_repo' | 'value' | 'practice_yield_id'
+> & { practiceToStudentYieldId: Practice_To_Student_Yield['id'] } & {
+    practice_to_student_grade_metrics: Array<
+      {
+        __typename?: 'practice_to_student_grade_metric';
+      } & PracticeToStudentGradeMetricForGradingFragment
+    >;
+  };
+
+export type PracticeToStudentGradeMetricForGradingFragment = {
   __typename?: 'practice_to_student_grade_metric';
 } & Pick<
   Practice_To_Student_Grade_Metric,
@@ -5932,10 +6009,23 @@ export type ParacticeToStudentGradeMetricForGradingFragment = {
   | 'feedback'
   | 'created_at'
   | 'percent_grade'
-  | 'practice_to_student_id'
   | 'practice_yield_grade_metric_id'
   | 'updated_at'
 >;
+
+export type TriggerRefreshGradesMutationVariables = Exact<{
+  practice_id: Scalars['uuid'];
+  course_id: Scalars['uuid'];
+}>;
+
+export type TriggerRefreshGradesMutation = { __typename?: 'mutation_root' } & {
+  refreshGrades?: Maybe<
+    { __typename?: 'RefreshGradesOutput' } & Pick<
+      RefreshGradesOutput,
+      'affected_rows'
+    >
+  >;
+};
 
 export const CourseCardFragmentDoc = gql`
   fragment CourseCard on course {
@@ -5985,6 +6075,7 @@ export const PracticeToPromoDetailsFragmentDoc = gql`
           ) {
             created_at
             grade
+            submited
           }
         }
       }
@@ -6017,16 +6108,27 @@ export const PracticeListItemFragmentDoc = gql`
     }
   }
 `;
-export const ParacticeToStudentGradeMetricForGradingFragmentDoc = gql`
-  fragment ParacticeToStudentGradeMetricForGrading on practice_to_student_grade_metric {
+export const PracticeToStudentGradeMetricForGradingFragmentDoc = gql`
+  fragment PracticeToStudentGradeMetricForGrading on practice_to_student_grade_metric {
     id
     feedback
     created_at
     percent_grade
-    practice_to_student_id
     practice_yield_grade_metric_id
     updated_at
   }
+`;
+export const PracticeToStudentYieldForGradingFragmentDoc = gql`
+  fragment PracticeToStudentYieldForGrading on practice_to_student_yield {
+    practiceToStudentYieldId: id
+    gitea_org_and_repo
+    value
+    practice_yield_id
+    practice_to_student_grade_metrics {
+      ...PracticeToStudentGradeMetricForGrading
+    }
+  }
+  ${PracticeToStudentGradeMetricForGradingFragmentDoc}
 `;
 export const CurrentUserDocument = gql`
   query currentUser($firebaseId: String!) {
@@ -6482,7 +6584,7 @@ export const InsertPracticeToStudentGradeMetricDocument = gql`
     insert_practice_to_student_grade_metric(
       objects: $objects
       on_conflict: {
-        constraint: practice_to_student_grade_metric_practice_to_student_id_practic
+        constraint: practice_to_student_grade_metric_practice_yield_grade_metric_id
         update_columns: [percent_grade, feedback]
       }
     ) {
@@ -6492,7 +6594,7 @@ export const InsertPracticeToStudentGradeMetricDocument = gql`
         feedback
         percent_grade
         id
-        practice_to_student_id
+        practice_to_student_yield_id
         practice_yield_grade_metric_id
       }
     }
@@ -6507,69 +6609,84 @@ export function useInsertPracticeToStudentGradeMetricMutation() {
 }
 export const GetPracticeToStudentForGradingDocument = gql`
   query getPracticeToStudentForGrading($courseId: uuid!, $practiceId: uuid!) {
-    practice_yield_expected_output(
+    practice_to_course(
+      where: {
+        course_id: { _eq: $courseId }
+        _and: { practice_id: { _eq: $practiceId } }
+      }
+    ) {
+      course {
+        student_to_courses_aggregate {
+          aggregate {
+            count
+          }
+        }
+      }
+    }
+    practice_yield(
       where: {
         practice: {
           practice_to_courses: {
             course_id: { _eq: $courseId }
-            practice_id: { _eq: $practiceId }
+            _and: { practice_id: { _eq: $practiceId } }
           }
         }
       }
     ) {
-      expected
-      git_path
-      method
-      practice_id
-      code_lang
       id
-      practice_yield {
-        created_at
-        description
-        id
-        meta
-        method
-        name
-        practice_to_student_yields(
-          where: {
+      name
+      practice_to_student_yields(
+        where: {
+          submited: { _eq: true }
+          _and: {
             practice_to_student: {
               practice_to_course: {
-                practice_id: { _eq: $practiceId }
                 course_id: { _eq: $courseId }
+                _and: { practice_id: { _eq: $practiceId } }
               }
             }
           }
-        ) {
-          gitea_org_and_repo
-          value
-          id
-          practice_to_student_id
-          practice_yield_id
-          created_at
-          practice_to_student_id
         }
+      ) {
+        ...PracticeToStudentYieldForGrading
       }
-      practice_yield_grade_metrics {
-        feedbacks
+      practice_yield_expected_outputs {
         id
-        name
-        points
-        practice_to_student_grade_metrics(
-          where: {
-            practice_to_student: {
-              practice_to_course: {
-                course_id: { _eq: $courseId }
-                practice_id: { _eq: $practiceId }
+        code_lang
+        expected
+        git_path
+        method
+        practice_yield_id
+        practice_yield_grade_metrics(order_by: { created_at: desc }) {
+          id
+          name
+          points
+          feedbacks
+          practice_to_student_grade_metrics_aggregate(
+            where: {
+              practice_to_student_yield: {
+                practice_to_student: {
+                  practice_to_course: {
+                    course_id: { _eq: $courseId }
+                    _and: { practice_id: { _eq: $practiceId } }
+                  }
+                }
               }
             }
+          ) {
+            aggregate {
+              count
+            }
+            nodes {
+              practice_to_student_yield_id
+              practice_yield_grade_metric_id
+            }
           }
-        ) {
-          ...ParacticeToStudentGradeMetricForGrading
         }
       }
     }
   }
-  ${ParacticeToStudentGradeMetricForGradingFragmentDoc}
+  ${PracticeToStudentYieldForGradingFragmentDoc}
 `;
 
 export function useGetPracticeToStudentForGradingQuery(
@@ -6582,4 +6699,18 @@ export function useGetPracticeToStudentForGradingQuery(
     query: GetPracticeToStudentForGradingDocument,
     ...options,
   });
+}
+export const TriggerRefreshGradesDocument = gql`
+  mutation triggerRefreshGrades($practice_id: uuid!, $course_id: uuid!) {
+    refreshGrades(course_id: $course_id, practice_id: $practice_id) {
+      affected_rows
+    }
+  }
+`;
+
+export function useTriggerRefreshGradesMutation() {
+  return Urql.useMutation<
+    TriggerRefreshGradesMutation,
+    TriggerRefreshGradesMutationVariables
+  >(TriggerRefreshGradesDocument);
 }

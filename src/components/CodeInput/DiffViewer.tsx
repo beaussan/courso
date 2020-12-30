@@ -22,7 +22,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
     <div>
       <Split
         {...makeSplitProps({
-          readOnly: true,
+          // readOnly: true,
           mode: (lang as unknown) as string,
           value: [expected ?? '', got ?? ''],
           splits: 2,

@@ -1,5 +1,5 @@
 import {
-  GetPracticeToStudentForGradingQuery,
+  // GetPracticeToStudentForGradingQuery,
   Practice_Yield_Expected_Output_Types_Enum,
 } from '../../../../generated/graphql';
 import React from 'react';
@@ -12,10 +12,35 @@ import { FeedbackInputField } from './FeedbackInputField';
 import { GradePercentInputField } from './GradePercentInputField';
 import { Chip } from '../../../../components/Chip';
 import { useGradeItemDataSetup } from './useGradeItemDataSetup';
+import { PracticeToStudentForGradingFrontEdit } from './Mapper';
 
-type ItemGrading = GetPracticeToStudentForGradingQuery['practice_yield_expected_output'][0];
-type ItemMetric = ItemGrading['practice_yield_grade_metrics'][0];
-type ItemToLook = ItemGrading['practice_yield']['practice_to_student_yields'][0];
+gql`
+  mutation insertPracticeToStudentGradeMetric(
+    $objects: [practice_to_student_grade_metric_insert_input!]!
+  ) {
+    insert_practice_to_student_grade_metric(
+      objects: $objects
+      on_conflict: {
+        constraint: practice_to_student_grade_metric_practice_yield_grade_metric_id
+        update_columns: [percent_grade, feedback]
+      }
+    ) {
+      affected_rows
+      returning {
+        created_at
+        feedback
+        percent_grade
+        id
+        practice_to_student_yield_id
+        practice_yield_grade_metric_id
+      }
+    }
+  }
+`;
+
+type ItemGrading = PracticeToStudentForGradingFrontEdit;
+type ItemMetric = ItemGrading['gradeMetrics'][0];
+type ItemToLook = ItemGrading['studentYields'][0];
 
 type DisplayItem = React.FC<{ expected: ItemGrading; value: ItemToLook }>;
 
@@ -28,8 +53,8 @@ const Dummy: DisplayItem = (props) => (
 const CompareCodeFile: DisplayItem = ({ value, expected }) => (
   <DiffViewerLazy
     className="h-1/2"
-    lang={expected.code_lang as any}
-    expected={expected.expected ?? ''}
+    lang={expected.expectedOutput.code_lang as any}
+    expected={expected.expectedOutput.expected ?? ''}
     got={value?.value}
   />
 );
@@ -38,11 +63,21 @@ const ManualCompare: DisplayItem = ({ value, expected }) => (
   <div className="flex">
     <div className="flex-1 flex">
       <div>Expected</div>
-      <div>{expected.expected}</div>
+      <div>{expected.expectedOutput.expected}</div>
     </div>
     <div className="flex-1 flex">
       <div>Got</div>
       <div>{value?.value}</div>
+    </div>
+  </div>
+);
+
+const UrlCompare: DisplayItem = ({ value, expected }) => (
+  <div className="flex">
+    <div className="flex-1 flex">
+      <a rel="noopener noreferrer" href={value.value}>
+        Target link : {value.value}
+      </a>
     </div>
   </div>
 );
@@ -57,33 +92,9 @@ const mapToShow: Record<
   SHOW_GIT_FILE: Dummy,
   MANUAL_GIT_FILE_REVIEW: Dummy,
   MANUAL: ManualCompare,
-  LINK_OPEN: Dummy,
+  LINK_OPEN: UrlCompare,
 };
 // practice_to_student_grade_metric
-
-gql`
-  mutation insertPracticeToStudentGradeMetric(
-    $objects: [practice_to_student_grade_metric_insert_input!]!
-  ) {
-    insert_practice_to_student_grade_metric(
-      objects: $objects
-      on_conflict: {
-        constraint: practice_to_student_grade_metric_practice_to_student_id_practic
-        update_columns: [percent_grade, feedback]
-      }
-    ) {
-      affected_rows
-      returning {
-        created_at
-        feedback
-        percent_grade
-        id
-        practice_to_student_id
-        practice_yield_grade_metric_id
-      }
-    }
-  }
-`;
 
 const GradeAndFeedbackItem: React.FC<{
   metric: ItemMetric;
@@ -108,7 +119,7 @@ const GradeAndFeedbackItem: React.FC<{
 };
 
 export const GradeItem: React.FC<{
-  data: ItemGrading;
+  data: PracticeToStudentForGradingFrontEdit;
   goNext?: () => void;
   goPrev?: () => void;
   isFirstBlock: boolean;
@@ -132,16 +143,14 @@ export const GradeItem: React.FC<{
     isLastBlock,
   });
 
-  const ToCompare = mapToShow[data.method];
+  const ToCompare = mapToShow[data.expectedOutput.method];
   if (!item) {
     return <div />;
   }
   return (
     <div className="flex h-full">
       <div className="w-3/4">
-        <div className="font-semibold text-lg mb-2">
-          {data.practice_yield.name}
-        </div>
+        <div className="font-semibold text-lg mb-2">{data.yieldName}</div>
         <ToCompare value={item} expected={data} />
       </div>
       <div className="w-1/4 px-2 h-full overflow-y-scroll space-y-4">
@@ -153,10 +162,9 @@ export const GradeItem: React.FC<{
           {({ values, isSubmitting }) => (
             <Form className="space-y-4">
               <div className="font-semibold text-lg -mb-2">
-                Student {position} over{' '}
-                {data.practice_yield.practice_to_student_yields.length}
+                Student {position + 1} over {data.studentYields.length}
               </div>
-              {data.practice_yield_grade_metrics.map((metric) => (
+              {data.gradeMetrics.map((metric) => (
                 <GradeAndFeedbackItem
                   metric={metric}
                   key={metric.id}
@@ -189,10 +197,7 @@ export const GradeItem: React.FC<{
                 </Button>
               </div>
               <DebugJson json={values} title="values" />
-              <DebugJson
-                json={data.practice_yield_grade_metrics}
-                title="practice_yield_grade_metrics"
-              />
+              <DebugJson json={data.gradeMetrics} title="gradeMetrics" />
               <DebugJson json={data} />
             </Form>
           )}

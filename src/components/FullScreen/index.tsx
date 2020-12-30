@@ -3,6 +3,7 @@ import React, {
   ReactElement,
   ReactNode,
   useContext,
+  useEffect,
 } from 'react';
 import { CloseButton } from '../CloseButton';
 
@@ -16,7 +17,7 @@ const FullScreenContext = createContext<FullScreenContextType>({
   toggle: () => {},
 });
 
-function useFullScreenContext() {
+export function useFullScreenContext() {
   const context = useContext(FullScreenContext);
   if (!context) {
     throw new Error(
@@ -68,11 +69,16 @@ const Body: React.FC = ({ children }) => {
 
 export const FullScreen = ({
   children,
+  onStateChange,
 }: {
   children: ReactNode;
+  onStateChange?: (newValue: boolean) => void;
 }): ReactElement => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const toggle = React.useCallback(() => setIsOpen((oldOn) => !oldOn), []);
+  const toggle = React.useCallback(() => {
+    setIsOpen((oldOn) => !oldOn);
+    onStateChange?.(isOpen);
+  }, [isOpen, onStateChange]);
   const value = React.useMemo(() => ({ isOpen, toggle }), [isOpen, toggle]);
 
   return (

@@ -37,6 +37,7 @@ const fragments = {
             ) {
               created_at
               grade
+              submited
             }
           }
         }
@@ -97,9 +98,11 @@ const TpIdHandouts: React.FC<{ data: PracticeToPromoDetailsFragment }> = ({
   data,
 }) => {
   const navigate = useNavigate();
-  const amountLeft = data.course.student_to_courses
-    .filter((itm) => itm.student?.practice_to_students.length === 0)
-    .reduce((a) => a + 1, 0);
+  const amountLeft = data.course.student_to_courses.filter(
+    (itm) =>
+      itm.student?.practice_to_students.length === 0 ||
+      itm.student?.practice_to_students?.[0].submited === false,
+  ).length;
   return (
     <CardBox key={data.id}>
       <div className="leading-loose flex justify-between">
@@ -121,13 +124,16 @@ const TpIdHandouts: React.FC<{ data: PracticeToPromoDetailsFragment }> = ({
       </div>
       <pre>{data.can_student_see_feedback}</pre>
       <div>
-        Missing {amountLeft} handouts of {data.course.student_to_courses.length}
+        Got {data.course.student_to_courses.length - amountLeft}/
+        {data.course.student_to_courses.length} handouts
       </div>
       <Table>
         <Table.TableHead items={['Name', 'Email', 'Has handout']} />
         <Table.TBody items={data.course.student_to_courses}>
           {({ student }) => {
-            const hasStudentHandout = student.practice_to_students.length > 0;
+            const hasStudentHandout =
+              student.practice_to_students.length > 0 &&
+              student.practice_to_students[0].submited;
             return (
               <>
                 <Table.Td isMainInfo>{student?.full_name}</Table.Td>

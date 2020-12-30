@@ -13,7 +13,10 @@ export const expressFireErrorHandler: ErrorRequestHandler = (
   functions.logger.info('Error handler triggered', err);
   if (err instanceof functions.https.HttpsError) {
     functions.logger.debug('Error HttpsError found', err);
-    const { status } = err.httpErrorCode;
+    const { status, canonicalName } = err.httpErrorCode;
+    if (canonicalName === 'INTERNAL') {
+      functions.logger.error('Error in function', err);
+    }
     res.status(status).json({
       message: err.message,
       code: JSON.stringify(err.toJSON()),
@@ -25,8 +28,9 @@ export const expressFireErrorHandler: ErrorRequestHandler = (
       code: JSON.stringify(err.errors),
     });
   } else {
-    functions.logger.debug(
-      'Error HttpsError not found found, returning 400 with hasura codes',
+    functions.logger.error(
+      'Error while executing function, returning 400 with hasura codes',
+      err,
     );
     res.status(400).json({
       message: err.message,

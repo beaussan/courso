@@ -96,7 +96,6 @@ const mapToSave = (
           method: data.method,
           code_lang: data.lang,
           git_path: data.gitPath,
-          practice_id: practiceId,
           expected: data.expected,
           practice_yield_grade_metrics: {
             data: data.metrics.map(
@@ -104,7 +103,6 @@ const mapToSave = (
                 name: metricData.name,
                 feedbacks: metricData.feedbacks,
                 points: metricData.points,
-                practice_id: practiceId,
               }),
             ),
           },

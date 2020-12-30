@@ -3,6 +3,8 @@ import { Listbox, Transition } from '@headlessui/react';
 import { Field } from 'formik';
 import { FieldProps } from 'formik/dist/Field';
 import clsx from 'clsx';
+import { usePopper } from 'react-popper';
+import { Portal } from 'react-portal';
 
 const FirstSvg = () => (
   <svg
@@ -58,6 +60,25 @@ export const DropList = <T extends unknown>({
   values,
   itemToString = defaultItemToString,
 }: DropListProps<T>) => {
+  const popperElRef = React.useRef(null);
+  const [targetElement, setTargetElement] = React.useState<HTMLElement | null>(
+    null,
+  );
+  const [popperElement, setPopperElement] = React.useState<HTMLElement | null>(
+    null,
+  );
+  const { styles, attributes } = usePopper(targetElement, popperElement, {
+    placement: 'bottom',
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 4],
+        },
+      },
+    ],
+  });
+
   return (
     <Field name={name} type="string">
       {({
@@ -79,13 +100,13 @@ export const DropList = <T extends unknown>({
               >
                 {({ open }) => (
                   <>
-                    {}
                     <Listbox.Label className="block text-sm leading-5 font-semibold text-gray-700">
                       {label}
                     </Listbox.Label>
-                    <div className="relative min-w-32">
+                    <div className="min-w-32">
                       <span className="inline-block w-full rounded-md shadow-sm cursor-pointer min-w-32">
                         <Listbox.Button
+                          ref={setTargetElement}
                           className={clsx(
                             'cursor-default relative w-full rounded-md cursor-pointer border border-gray-300 bg-white pl-3 pr-10 py-3 text-left focus:outline-none focus:ring-blue focus:border-blue-300 transition ease-in-out duration-150 min-w-32',
                             {
@@ -118,52 +139,69 @@ export const DropList = <T extends unknown>({
                         ) : null}
                       </span>
 
-                      <Transition
-                        show={open}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                        className="z-30 absolute mt-1 w-full rounded-md bg-white shadow-lg"
-                      >
-                        <Listbox.Options
-                          static
-                          className="z-30 max-h-60 rounded-md py-1 text-base leading-6 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm sm:leading-5"
+                      <Portal>
+                        <div
+                          className="z-50"
+                          ref={popperElRef}
+                          style={styles.popper}
+                          {...attributes.popper}
                         >
-                          {values.map((value) => (
-                            <Listbox.Option<any, T>
-                              key={itemToString(value)}
-                              value={value}
+                          <Transition
+                            show={open}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                            className="z-50 w-full rounded-md bg-white shadow-lg"
+                            beforeEnter={() =>
+                              setPopperElement(popperElRef.current)
+                            }
+                            afterLeave={() => setPopperElement(null)}
+                          >
+                            <Listbox.Options
+                              static
+                              className="z-50 max-h-60 rounded-md py-1 text-base leading-6 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm sm:leading-5"
                             >
-                              {({ selected, active }) => (
-                                <div
-                                  className={`${
-                                    active
-                                      ? 'text-white bg-blue-600'
-                                      : 'text-gray-900'
-                                  } cursor-default select-none relative py-2 pl-8 pr-4`}
+                              {values.map((value, index) => (
+                                <Listbox.Option<any, T>
+                                  key={index}
+                                  value={value}
                                 >
-                                  <span
-                                    className={`${
-                                      selected ? 'font-semibold' : 'font-normal'
-                                    } block truncate`}
-                                  >
-                                    {itemToString(value)}
-                                  </span>
-                                  {selected && (
-                                    <span
+                                  {({ selected, active }) => (
+                                    <div
                                       className={`${
-                                        active ? 'text-white' : 'text-blue-600'
-                                      } absolute inset-y-0 left-0 flex items-center pl-1.5`}
+                                        active
+                                          ? 'text-white bg-blue-600'
+                                          : 'text-gray-900'
+                                      } cursor-default select-none relative py-2 pl-8 pr-4`}
                                     >
-                                      <CheckSvg />
-                                    </span>
+                                      <span
+                                        className={`${
+                                          selected
+                                            ? 'font-semibold'
+                                            : 'font-normal'
+                                        } block truncate`}
+                                      >
+                                        {itemToString(value)}
+                                      </span>
+                                      {selected && (
+                                        <span
+                                          className={`${
+                                            active
+                                              ? 'text-white'
+                                              : 'text-blue-600'
+                                          } absolute inset-y-0 left-0 flex items-center pl-1.5`}
+                                        >
+                                          <CheckSvg />
+                                        </span>
+                                      )}
+                                    </div>
                                   )}
-                                </div>
-                              )}
-                            </Listbox.Option>
-                          ))}
-                        </Listbox.Options>
-                      </Transition>
+                                </Listbox.Option>
+                              ))}
+                            </Listbox.Options>
+                          </Transition>
+                        </div>
+                      </Portal>
                     </div>
                   </>
                 )}

@@ -5,6 +5,7 @@ import { HandlerMap, webHookModel, WebhookPayload } from './types';
 import { expressFireErrorHandler } from '../expressErrorHandler';
 import { handlersPracticeToPromoToGitea } from './practiceToPromoToGitea';
 import { yieldToGiteaHandler } from './yieldToGitea';
+import { onStudentYieldCreatedWithNoValue } from './onStudentYieldCreatedWithNoValue';
 
 const app = express();
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 const handlers: HandlerMap = {
   ...handlersPracticeToPromoToGitea,
   ...yieldToGiteaHandler,
+  onStudentYieldCreatedWithNoValue,
 };
 
 app.post('/', async (req, res) => {

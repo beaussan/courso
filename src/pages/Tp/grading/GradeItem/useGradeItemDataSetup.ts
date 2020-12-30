@@ -1,16 +1,15 @@
 import { useArrayNavigator } from '../../../../hooks/useArrayNavigator';
 import { useCallback, useMemo } from 'react';
 import {
-  GetPracticeToStudentForGradingQuery,
-  ParacticeToStudentGradeMetricForGradingFragment,
   Practice_To_Student_Grade_Metric_Insert_Input,
+  PracticeToStudentGradeMetricForGradingFragment,
+  PracticeToStudentYieldForGradingFragment,
   useInsertPracticeToStudentGradeMetricMutation,
 } from '../../../../generated/graphql';
 import { useFormikMutationSubmit } from '../../../../hooks/useFormikMutationSubmit';
 import { FormikHelpers } from 'formik';
-
-type ItemGrading = GetPracticeToStudentForGradingQuery['practice_yield_expected_output'][0];
-type ItemToLook = ItemGrading['practice_yield']['practice_to_student_yields'][0];
+import { useFullScreenContext } from '../../../../components/FullScreen';
+import { PracticeToStudentForGradingFrontEdit } from './Mapper';
 
 interface GradeItemFormType {
   [key: string]: {
@@ -20,7 +19,7 @@ interface GradeItemFormType {
 }
 
 type useGradeItemDataType = (props: {
-  data: ItemGrading;
+  data: PracticeToStudentForGradingFrontEdit;
   goNext?: () => void;
   goPrev?: () => void;
   isFirstBlock: boolean;
@@ -31,7 +30,7 @@ type useGradeItemDataType = (props: {
     values: GradeItemFormType,
     formikHelpers: FormikHelpers<GradeItemFormType>,
   ) => Promise<void>;
-  item?: ItemToLook;
+  item?: PracticeToStudentYieldForGradingFragment;
   goNextStep: () => void;
   goPreviousStep: () => void;
   isLastInGroup: boolean;
@@ -40,7 +39,7 @@ type useGradeItemDataType = (props: {
   isLastItemEver: boolean;
   position: number;
   maybeGradeForStudents: {
-    [key: string]: ParacticeToStudentGradeMetricForGradingFragment | undefined;
+    [key: string]: PracticeToStudentGradeMetricForGradingFragment | undefined;
   };
 };
 
@@ -60,7 +59,8 @@ export const useGradeItemDataSetup: useGradeItemDataType = ({
     goFirst,
     goLast,
     position,
-  } = useArrayNavigator(data.practice_yield.practice_to_student_yields);
+  } = useArrayNavigator(data.studentYields);
+  const { toggle } = useFullScreenContext();
 
   const isLastItemEver = useMemo(() => isLast && isLastBlock, [
     isLast,
@@ -71,17 +71,21 @@ export const useGradeItemDataSetup: useGradeItemDataType = ({
     isFirstBlock,
   ]);
 
-  const goNextStep = useCallback(() => {
-    if (isLast) {
-      if (isLastBlock) {
-        return;
+  const goNextStep = useCallback(
+    (whenOnLastStep?: () => void) => {
+      if (isLast) {
+        if (isLastBlock) {
+          whenOnLastStep && whenOnLastStep();
+          return;
+        }
+        goNext?.();
+        goFirst();
+      } else {
+        nextItem();
       }
-      goNext?.();
-      goFirst();
-    } else {
-      nextItem();
-    }
-  }, [goFirst, goNext, isLast, isLastBlock, nextItem]);
+    },
+    [goFirst, goNext, isLast, isLastBlock, nextItem],
+  );
 
   const goPreviousStep = useCallback(() => {
     if (isFirst) {
@@ -96,24 +100,27 @@ export const useGradeItemDataSetup: useGradeItemDataType = ({
   }, [goLast, goPrev, isFirst, isFirstBlock, prevItem]);
 
   const maybeGradeForStudents = useMemo<{
-    [key: string]: ParacticeToStudentGradeMetricForGradingFragment | undefined;
+    [key: string]: PracticeToStudentGradeMetricForGradingFragment | undefined;
   }>(() => {
-    return data.practice_yield_grade_metrics
+    return data.gradeMetrics
       .map((tm) => ({
-        [tm.id]: tm.practice_to_student_grade_metrics.find(
-          ({ practice_to_student_id }) =>
-            practice_to_student_id === item?.practice_to_student_id,
+        [tm.id]: item?.practice_to_student_grade_metrics.find(
+          ({ practice_yield_grade_metric_id }) =>
+            practice_yield_grade_metric_id === tm.id,
         ),
       }))
       .reduce((prev, curr) => ({ ...prev, ...curr }), {});
   }, [data, item]);
 
   const [, insertNewGrade] = useInsertPracticeToStudentGradeMetricMutation();
+
   const onSubmit = useFormikMutationSubmit({
     mutation: insertNewGrade,
     onSuccess: (data) => {
       data.resetForm();
-      goNextStep();
+      goNextStep(() => {
+        toggle();
+      });
     },
     mapFormData: (values: GradeItemFormType) => ({
       objects: Object.entries(values).map(
@@ -121,18 +128,19 @@ export const useGradeItemDataSetup: useGradeItemDataType = ({
           practice_yield_grade_metric_id: key,
           feedback: toSave.feedbacks,
           percent_grade: parseInt(toSave.grade),
-          practice_to_student_id: item?.practice_to_student_id,
+          practice_to_student_yield_id: item?.practiceToStudentYieldId,
         }),
       ),
     }),
   });
+
   const initialFormValue = useMemo<GradeItemFormType>(
     () =>
-      data.practice_yield_grade_metrics
+      data.gradeMetrics
         .map(({ id }) => ({
           [id]: {
             feedbacks: maybeGradeForStudents?.[id]?.feedback ?? [],
-            grade: `${maybeGradeForStudents?.[id]?.percent_grade}` ?? '1',
+            grade: `${maybeGradeForStudents?.[id]?.percent_grade ?? 1}`,
           },
         }))
         .reduce((prev, curr) => ({ ...prev, ...curr }), {}),
