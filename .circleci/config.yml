@@ -40,7 +40,6 @@ jobs:
   check-format:
     <<: *shared-config
     steps:
-      - checkout
       - setup_deps
       - run: yarn format:check
 
@@ -101,21 +100,20 @@ jobs:
           command: yarn add netlify-cli && yarn netlify deploy -d /tmp/<< parameters.deploy-folder >> -a $NETLIFY_TOKEN -s << parameters.site-id >> -p
 
   apply-hasura-migrations-and-metadata:
+    <<: *shared-config
     parameters:
       hasura-endpoint:
         type: env_var_name
       hasura-admin-secret:
         type: env_var_name
-    docker:
-      - image: hasura/graphql-engine:v1.3.0.cli-migrations-v2
     steps:
-      - checkout
+      - setup_deps
       - run:
           name: Apply Hasura migrations and metadata
           working_directory: hasura
           command: |
-            hasura-cli migrate apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>}
-            hasura-cli metadata apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>}
+            yarn hasura migrate apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>}
+            yarn hasura metadata apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>}
 
 workflows:
   version: 2

@@ -3,7 +3,6 @@ import React, {
   ReactElement,
   ReactNode,
   useContext,
-  useEffect,
 } from 'react';
 import { CloseButton } from '../CloseButton';
 
