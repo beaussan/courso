@@ -74,13 +74,6 @@
           table:
             schema: public
             name: practice_to_course
-    - name: practice_yield_expected_outputs
-      using:
-        foreign_key_constraint_on:
-          column: practice_id
-          table:
-            schema: public
-            name: practice_yield_expected_output
     - name: practice_yields
       using:
         foreign_key_constraint_on:
@@ -268,13 +261,6 @@
       using:
         foreign_key_constraint_on: student_id
   array_relationships:
-    - name: practice_to_student_grade_metrics
-      using:
-        foreign_key_constraint_on:
-          column: practice_to_student_id
-          table:
-            schema: public
-            name: practice_to_student_grade_metric
     - name: practice_to_student_yields
       using:
         foreign_key_constraint_on:
@@ -321,9 +307,6 @@
     schema: public
     name: practice_to_student_grade_metric
   object_relationships:
-    - name: practice_to_student
-      using:
-        foreign_key_constraint_on: practice_to_student_id
     - name: practice_yield_grade_metric
       using:
         foreign_key_constraint_on: practice_yield_grade_metric_id
@@ -336,7 +319,6 @@
           - created_at
           - updated_at
           - id
-          - practice_to_student_id
           - practice_yield_grade_metric_id
         filter: {}
 - table:
@@ -500,9 +482,6 @@
     schema: public
     name: practice_yield_expected_output
   object_relationships:
-    - name: practice
-      using:
-        foreign_key_constraint_on: practice_id
     - name: practice_yield
       using:
         foreign_key_constraint_on: practice_yield_id
@@ -525,7 +504,6 @@
           - id
           - created_at
           - updated_at
-          - practice_id
           - practice_yield_id
           - git_path
           - code_lang
@@ -543,7 +521,6 @@
           - created_at
           - updated_at
           - id
-          - practice_id
           - practice_yield_id
         filter: {}
 - table:
@@ -588,7 +565,6 @@
           - created_at
           - updated_at
           - name
-          - practice_id
           - expected_yield_id
           - feedbacks
           - points
@@ -600,7 +576,6 @@
           - points
           - feedbacks
           - name
-          - practice_id
           - created_at
           - updated_at
           - expected_yield_id
