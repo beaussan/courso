@@ -112,8 +112,8 @@ jobs:
           name: Apply Hasura migrations and metadata
           working_directory: hasura
           command: |
-            yarn hasura migrate apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>}
-            yarn hasura metadata apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>}
+            yarn hasura migrate apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>} --project hasura
+            yarn hasura metadata apply --skip-update-check --admin-secret ${<< parameters.hasura-admin-secret >>} --endpoint https://${<< parameters.hasura-endpoint >>} --project hasura
 
 workflows:
   version: 2
