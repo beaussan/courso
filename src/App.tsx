@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useMemo } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Error500 } from './pages/Error500';
 
@@ -7,7 +7,7 @@ import { correctToken$ } from './services/TokenService';
 import { RouteWithRule } from './components/RouteWithAuth';
 import { ToastProvider } from 'react-toast-notifications';
 import { Provider as UrqlProvider } from 'urql';
-import { createUrqlClient } from './services/urqlClient';
+import { createAnonymousClient, createAuthClient } from './services/urqlClient';
 import { BrowserRouter } from 'react-router-dom';
 import { LoadingFullScreen } from './pages/LoadingFullScreen';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -19,34 +19,24 @@ function ClientProvider(props: React.PropsWithChildren<{}>) {
   const token = useObservable(
     correctToken$.pipe(distinctUntilChanged((prev, curr) => prev === curr)),
   );
-  const client = useMemo(() => {
-    console.log('Memo create client with new token ', token);
-    return createUrqlClient(token);
-  }, [token]);
-  /*
-  //useWhyDidYouUpdate('ClientProvider', props);
-  const shouldRebuildClient = useMemoCompare(
-    token,
-    (prev, next) => prev !== next,
-  );
-  const [client, setClient] = React.useState(createUrqlClient(token));
 
+  const [urqlClient, setUrqlClient] = useState(createAnonymousClient());
+  const [isAnonymousClient, setIsAnonymousClient] = useState(true);
+
+  console.log('TOKEN CLIENT PROVIDER : ', token);
   useEffect(() => {
-    if (shouldRebuildClient) {
-      console.log('REBUILDING CLIENT');
-      setClient(createUrqlClient(token));
+    const hasNoToken = token === undefined || token === null;
+    if (!hasNoToken && isAnonymousClient) {
+      setUrqlClient(createAuthClient());
+      setIsAnonymousClient(false);
     }
-  }, [token, shouldRebuildClient]);
+    if (hasNoToken && !isAnonymousClient) {
+      setUrqlClient(createAnonymousClient());
+      setIsAnonymousClient(true);
+    }
+  }, [isAnonymousClient, token]);
 
-   */
-  /*
-  if (!token) {
-    return <>{props.children}</>;
-  }
-
- */
-
-  return <UrqlProvider value={client}>{props.children}</UrqlProvider>;
+  return <UrqlProvider value={urqlClient}>{props.children}</UrqlProvider>;
 }
 
 function App() {

@@ -61,13 +61,15 @@ jobs:
         type: env_var_name
       firebase-config:
         type: env_var_name
+      sentry-key:
+        type: env_var_name
       bulild-dest:
         type: string
     steps:
       - setup_deps
       - run:
           name: Build front end
-          command: REACT_APP_FIREBASE_CONFIG=${<< parameters.firebase-config >>} REACT_APP_HASURA_ENDPOINT=${<< parameters.hasura-endpoint >>} yarn build
+          command: REACT_APP_SENTRY_KEY=${<< parameters.sentry-key >>} REACT_APP_FIREBASE_CONFIG=${<< parameters.firebase-config >>} REACT_APP_HASURA_ENDPOINT=${<< parameters.hasura-endpoint >>} yarn build
       - run:
           name: Copy deployment artifacts to workspace
           command: cp build/ /tmp/<< parameters.bulild-dest >> -r
@@ -125,6 +127,7 @@ workflows:
           name: build-frontend-dev
           hasura-endpoint: HASURA_URL_DEV
           firebase-config: FIREBASE_APP_CONFIG_DEV
+          sentry-key: SENTRY_DEV_KEY
           bulild-dest: dev
           requires:
             - check-format
@@ -166,6 +169,7 @@ workflows:
           name: build-frontend-prod
           hasura-endpoint: HASURA_URL_PROD
           firebase-config: FIREBASE_APP_CONFIG_PROD
+          sentry-key: SENTRY_PROD_KEY
           filters: *deploy-staging-filters
           bulild-dest: prod
           requires:

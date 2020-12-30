@@ -2,7 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './tailwind.css';
 import App from './App';
+import * as Sentry from '@sentry/react';
 import * as serviceWorker from './serviceWorker';
+
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_KEY,
+  });
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
