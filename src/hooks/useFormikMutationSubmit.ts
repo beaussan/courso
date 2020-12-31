@@ -22,11 +22,13 @@ export function useFormikMutationSubmit<TFormData, TData, TVariables>({
   onSuccess,
 }: UseFormikMutationSubmitType<TFormData, TData, TVariables>) {
   const { addToast } = useToasts();
-
+  console.log('Init !');
   return async (values: TFormData, formikHelpers: FormikHelpers<TFormData>) => {
+    console.log('async !');
     try {
       formikHelpers.setSubmitting(true);
       const dataForMutation = await mapFormData(values);
+
       const { error } = await mutation(dataForMutation, extraParamsMutation);
       if (error) {
         throw error;

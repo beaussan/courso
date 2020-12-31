@@ -124,9 +124,13 @@ export const NewGradeMetricInput: React.FC<NewGradeMetricInputProps> = ({
   const [, mutateNewGradeMetric] = useInsertYieldGradeMetricNewDataMutation();
   const onSubmit = useFormikMutationSubmitWithNavigate({
     mutation: mutateNewGradeMetric,
-    mapFormData: (values: NewGradeMetricInputForm) => ({
-      data: mapToSave(values, tpId),
-    }),
+    mapFormData: (values: NewGradeMetricInputForm) => {
+      let newVar = {
+        data: mapToSave(values, tpId),
+      };
+      console.log('DATA : ', { newVar });
+      return newVar;
+    },
     successMessage: 'Successfully saved ',
   });
   if (fetching || !data) {
@@ -170,7 +174,7 @@ export const NewGradeMetricInput: React.FC<NewGradeMetricInputProps> = ({
                 {
                   metrics: [
                     {
-                      points: 0,
+                      points: 1,
                       name: '',
                       feedbacks: [],
                     },
@@ -220,14 +224,15 @@ export const NewGradeMetricInput: React.FC<NewGradeMetricInputProps> = ({
                           )}
                         </ArrayInput>
                       </div>
-                      <div>
-                        <Button>Submit</Button>
-                      </div>
                     </CardBox>
                   );
                 })}
               </div>
+              <div>
+                <Button type="submit">Submit</Button>
+              </div>
               <DebugJson json={values} />
+              <DebugJson json={{ isValid, isSubmitting, isValidating }} />
             </Form>
           );
         }}

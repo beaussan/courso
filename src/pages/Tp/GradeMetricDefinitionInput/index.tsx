@@ -29,7 +29,7 @@ export const yupGradeMetricDefSchema = yup.object().shape({
         .shape({
           name: yup.string().required(),
           points: yup.number().required(),
-          feedbacks: yup.array().of(yup.string()).min(1).required(),
+          feedbacks: yup.array().of(yup.string()).required(),
         })
         .required(),
     )
@@ -189,7 +189,7 @@ const GradeInput: React.FC<{ name: string }> = ({ name }) => {
       name={name}
       labelAdd="Add a new metric"
       label="Metrics"
-      defaultNewItem={() => ({ points: 0, name: '', feedbacks: [''] })}
+      defaultNewItem={() => ({ points: 1, name: '', feedbacks: [] })}
     >
       {(itemName, removeSelf, t, index) => (
         <div className="shadow-lg ring-4 ring-teal-300 ring-inset ring-opacity-50 bg-white p-5 transition duration-100 rounded-lg space-y-4">
