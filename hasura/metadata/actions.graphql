@@ -1,5 +1,13 @@
 type Mutation {
+  fillEmptyYields(course_id: uuid!, practice_id: uuid!): FillEmptyYieldsOutput
+}
+
+type Mutation {
   linkStudentToUser(linkId: uuid!): linkStudentToUserOutput
+}
+
+type Mutation {
+  refreshGrades(course_id: uuid!, practice_id: uuid!): RefreshGradesOutput
 }
 
 type Mutation {
@@ -33,4 +41,12 @@ type linkStudentToUserOutput {
 
 type SubmitHandoffOutput {
   status: String!
+}
+
+type FillEmptyYieldsOutput {
+  affected_rows: Int!
+}
+
+type RefreshGradesOutput {
+  affected_rows: Int!
 }

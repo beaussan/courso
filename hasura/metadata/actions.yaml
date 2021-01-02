@@ -1,4 +1,11 @@
 actions:
+  - name: fillEmptyYields
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_MASTER_URL}}'
+      headers:
+        - name: token
+          value_from_env: ACTION_MASTER_TOKEN
   - name: linkStudentToUser
     definition:
       kind: synchronous
@@ -8,6 +15,15 @@ actions:
           value_from_env: ACTION_MASTER_TOKEN
     permissions:
       - role: student
+  - name: refreshGrades
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_MASTER_URL}}'
+      headers:
+        - name: token
+          value_from_env: ACTION_MASTER_TOKEN
+    permissions:
+      - role: teacher
   - name: sendStudentClaimMail
     definition:
       kind: synchronous
@@ -35,4 +51,6 @@ custom_types:
     - name: SendStudentClaimMailOutput
     - name: linkStudentToUserOutput
     - name: SubmitHandoffOutput
+    - name: FillEmptyYieldsOutput
+    - name: RefreshGradesOutput
   scalars: []

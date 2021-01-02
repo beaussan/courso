@@ -75,8 +75,14 @@ const ManualCompare: DisplayItem = ({ value, expected }) => (
 const UrlCompare: DisplayItem = ({ value, expected }) => (
   <div className="flex">
     <div className="flex-1 flex">
-      <a rel="noopener noreferrer" href={value.value}>
-        Target link : {value.value}
+      Target link :
+      <a
+        target="_blank"
+        className="text-blue-400 underline"
+        rel="noopener noreferrer"
+        href={value.value}
+      >
+        {value.value}
       </a>
     </div>
   </div>

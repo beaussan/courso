@@ -310,6 +310,16 @@
     - name: practice_yield_grade_metric
       using:
         foreign_key_constraint_on: practice_yield_grade_metric_id
+  insert_permissions:
+    - role: teacher
+      permission:
+        check: {}
+        columns:
+          - feedback
+          - percent_grade
+          - practice_to_student_yield_id
+          - practice_yield_grade_metric_id
+        backend_only: false
   select_permissions:
     - role: teacher
       permission:
@@ -323,6 +333,16 @@
           - updated_at
         filter: {}
         allow_aggregations: true
+  update_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - feedback
+          - percent_grade
+          - practice_to_student_yield_id
+          - practice_yield_grade_metric_id
+        filter: {}
+        check: null
 - table:
     schema: public
     name: practice_to_student_yield
@@ -592,6 +612,15 @@
           - expected_yield_id
           - id
         filter: {}
+  update_permissions:
+    - role: teacher
+      permission:
+        columns:
+          - feedbacks
+          - name
+          - points
+        filter: {}
+        check: {}
 - table:
     schema: public
     name: practice_yield_type
