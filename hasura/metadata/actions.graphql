@@ -2,6 +2,13 @@ type Mutation {
   fillEmptyYields(course_id: uuid!, practice_id: uuid!): FillEmptyYieldsOutput
 }
 
+type Query {
+  getGitFileData(
+    practice_yield_expected_output_id: uuid!
+    practice_to_student_yield_id: uuid!
+  ): GetGitFileDataOutput
+}
+
 type Mutation {
   linkStudentToUser(linkId: uuid!): linkStudentToUserOutput
 }
@@ -24,6 +31,11 @@ type Mutation {
 input YieldForHandoff {
   yieldId: uuid!
   value: String!
+}
+
+input GitFileInput {
+  practice_yield_expected_output_id: uuid!
+  practice_to_student_yield_id: uuid!
 }
 
 type InsertStudentAnswerOutput {
@@ -49,4 +61,22 @@ type FillEmptyYieldsOutput {
 
 type RefreshGradesOutput {
   affected_rows: Int!
+}
+
+type GetGitFileDataOutput {
+  practice_yield_expected_output_id: uuid!
+  practice_to_student_yield_id: uuid!
+  content: String!
+  download_url: String!
+  encoding: String!
+  git_url: String!
+  html_url: String!
+  name: String!
+  path: String!
+  sha: String!
+  size: Int!
+  submodule_git_url: String
+  target: String
+  type: String!
+  url: String!
 }

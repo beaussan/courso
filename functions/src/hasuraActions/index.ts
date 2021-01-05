@@ -8,6 +8,7 @@ import { linkStudentToUser } from './linkStudentToUser';
 import { submitHandoff } from './submitHandoff';
 import { refreshGrades } from './refreshGrades';
 import { fillEmptyYields } from './fillEmptyYields';
+import { getGitFileData } from './getGitFileData';
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ const actionMap: ActionMap = {
   submitHandoff,
   refreshGrades,
   fillEmptyYields,
+  getGitFileData,
 };
 
 app.post('/', async (req, res) => {

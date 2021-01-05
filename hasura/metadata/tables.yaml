@@ -554,6 +554,7 @@
           - id
           - practice_yield_id
         filter: {}
+        allow_aggregations: true
 - table:
     schema: public
     name: practice_yield_expected_output_types
@@ -612,6 +613,7 @@
           - expected_yield_id
           - id
         filter: {}
+        allow_aggregations: true
   update_permissions:
     - role: teacher
       permission:

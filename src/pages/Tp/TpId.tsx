@@ -69,6 +69,22 @@ gql`
           name
           method
           meta
+          practice_yield_expected_outputs_aggregate {
+            aggregate {
+              count
+            }
+            nodes {
+              id
+              practice_yield_grade_metrics_aggregate {
+                aggregate {
+                  count
+                  sum {
+                    points
+                  }
+                }
+              }
+            }
+          }
         }
       }
       practice_to_courses_aggregate {
@@ -220,7 +236,7 @@ export const TpId = () => {
           <BackButton className="mr-2" /> {data?.practice_by_pk?.title ?? ''}
         </div>
       </PageHead>
-      <CardBox>
+      <CardBox className="mb-4">
         <Button onClick={() => navigate('./newGradesMetrics')}>
           Add grading criteria
         </Button>
@@ -239,6 +255,29 @@ export const TpId = () => {
                 <li key={value.id}>
                   <span className="font-bold">{value.name}</span>
                   <span> using {value.method} as a way to handoff</span>
+                  <span>
+                    {' '}
+                    with{' '}
+                    {value.practice_yield_expected_outputs_aggregate.aggregate
+                      ?.count ?? 0}{' '}
+                    expected output with{' '}
+                    {value.practice_yield_expected_outputs_aggregate.nodes
+                      .map(
+                        (val) =>
+                          val.practice_yield_grade_metrics_aggregate.aggregate
+                            ?.count ?? 0,
+                      )
+                      .reduce((prev, curr) => prev + curr, 0)}{' '}
+                    metrics, for a total of{' '}
+                    {value.practice_yield_expected_outputs_aggregate.nodes
+                      .map(
+                        (val) =>
+                          val.practice_yield_grade_metrics_aggregate.aggregate
+                            ?.sum?.points ?? 0,
+                      )
+                      .reduce((prev, curr) => prev + curr, 0)}{' '}
+                    points
+                  </span>
                 </li>
               ),
             )}
@@ -270,6 +309,7 @@ export const TpId = () => {
           'Able to edit the yeilds',
           'Able to delete the practice',
           'Able to delete the practice to promotion',
+          'TO FIX : when a student handout one tp, do not mark all as done',
         ]}
       />
     </>

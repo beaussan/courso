@@ -35,7 +35,17 @@ export const ArrayInput = <T extends unknown>({
           <div className="space-y-4">
             <div className="flex content-between font-bold justify-between items-center">
               <div className="text-xl font-bold">{label}</div>
-
+            </div>
+            {(value || []).map((data, idx, array) =>
+              children(
+                `${name}.${idx}`,
+                () => arrayHelpers.remove(idx),
+                data,
+                idx,
+                array,
+              ),
+            )}
+            <div className="flex justify-end">
               <Button
                 onClick={() => {
                   arrayHelpers.push(defaultNewItem());
@@ -47,15 +57,6 @@ export const ArrayInput = <T extends unknown>({
                 {labelAdd}
               </Button>
             </div>
-            {(value || []).map((data, idx, array) =>
-              children(
-                `${name}.${idx}`,
-                () => arrayHelpers.remove(idx),
-                data,
-                idx,
-                array,
-              ),
-            )}
           </div>
         );
       }}

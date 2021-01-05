@@ -9,6 +9,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  float8: any;
   json: any;
   jsonb: any;
   numeric: any;
@@ -32,6 +33,30 @@ export type Boolean_Comparison_Exp = {
 export type FillEmptyYieldsOutput = {
   __typename?: 'FillEmptyYieldsOutput';
   affected_rows: Scalars['Int'];
+};
+
+export type GetGitFileDataOutput = {
+  __typename?: 'GetGitFileDataOutput';
+  content: Scalars['String'];
+  download_url: Scalars['String'];
+  encoding: Scalars['String'];
+  git_url: Scalars['String'];
+  html_url: Scalars['String'];
+  name: Scalars['String'];
+  path: Scalars['String'];
+  practice_to_student_yield_id: Scalars['uuid'];
+  practice_yield_expected_output_id: Scalars['uuid'];
+  sha: Scalars['String'];
+  size: Scalars['Int'];
+  submodule_git_url?: Maybe<Scalars['String']>;
+  target?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type GitFileInput = {
+  practice_to_student_yield_id: Scalars['uuid'];
+  practice_yield_expected_output_id: Scalars['uuid'];
 };
 
 export type InsertStudentAnswerOutput = {
@@ -325,6 +350,19 @@ export enum Course_Update_Column {
   /** column name */
   Years = 'years',
 }
+
+/** expression to compare columns of type float8. All fields are combined with logical 'AND'. */
+export type Float8_Comparison_Exp = {
+  _eq?: Maybe<Scalars['float8']>;
+  _gt?: Maybe<Scalars['float8']>;
+  _gte?: Maybe<Scalars['float8']>;
+  _in?: Maybe<Array<Scalars['float8']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['float8']>;
+  _lte?: Maybe<Scalars['float8']>;
+  _neq?: Maybe<Scalars['float8']>;
+  _nin?: Maybe<Array<Scalars['float8']>>;
+};
 
 /** expression to compare columns of type json. All fields are combined with logical 'AND'. */
 export type Json_Comparison_Exp = {
@@ -1634,7 +1672,7 @@ export type Practice_To_Student = {
   course_practice_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
   feedback?: Maybe<Scalars['jsonb']>;
-  grade?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['float8']>;
   grade_detail?: Maybe<Scalars['jsonb']>;
   graded: Scalars['Boolean'];
   id: Scalars['uuid'];
@@ -1754,7 +1792,7 @@ export type Practice_To_Student_Bool_Exp = {
   course_practice_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   feedback?: Maybe<Jsonb_Comparison_Exp>;
-  grade?: Maybe<Int_Comparison_Exp>;
+  grade?: Maybe<Float8_Comparison_Exp>;
   grade_detail?: Maybe<Jsonb_Comparison_Exp>;
   graded?: Maybe<Boolean_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
@@ -2149,7 +2187,7 @@ export type Practice_To_Student_Grade_Metric_Variance_Order_By = {
 
 /** input type for incrementing integer column in table "practice_to_student" */
 export type Practice_To_Student_Inc_Input = {
-  grade?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['float8']>;
 };
 
 /** input type for inserting data into table "practice_to_student" */
@@ -2157,7 +2195,7 @@ export type Practice_To_Student_Insert_Input = {
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   feedback?: Maybe<Scalars['jsonb']>;
-  grade?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['float8']>;
   grade_detail?: Maybe<Scalars['jsonb']>;
   graded?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
@@ -2174,7 +2212,7 @@ export type Practice_To_Student_Max_Fields = {
   __typename?: 'practice_to_student_max_fields';
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  grade?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['float8']>;
   id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2195,7 +2233,7 @@ export type Practice_To_Student_Min_Fields = {
   __typename?: 'practice_to_student_min_fields';
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  grade?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['float8']>;
   id?: Maybe<Scalars['uuid']>;
   student_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2290,7 +2328,7 @@ export type Practice_To_Student_Set_Input = {
   course_practice_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   feedback?: Maybe<Scalars['jsonb']>;
-  grade?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['float8']>;
   grade_detail?: Maybe<Scalars['jsonb']>;
   graded?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
@@ -2335,7 +2373,7 @@ export type Practice_To_Student_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Practice_To_Student_Sum_Fields = {
   __typename?: 'practice_to_student_sum_fields';
-  grade?: Maybe<Scalars['Int']>;
+  grade?: Maybe<Scalars['float8']>;
 };
 
 /** order by sum() on columns of table "practice_to_student" */
@@ -3952,6 +3990,8 @@ export type Query_Root = {
   course_aggregate: Course_Aggregate;
   /** fetch data from the table: "course" using primary key columns */
   course_by_pk?: Maybe<Course>;
+  /** perform the action: "getGitFileData" */
+  getGitFileData?: Maybe<GetGitFileDataOutput>;
   /** fetch data from the table: "practice" */
   practice: Array<Practice>;
   /** fetch aggregated fields from the table: "practice" */
@@ -4053,6 +4093,12 @@ export type Query_RootCourse_AggregateArgs = {
 /** query root */
 export type Query_RootCourse_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+/** query root */
+export type Query_RootGetGitFileDataArgs = {
+  practice_to_student_yield_id: Scalars['uuid'];
+  practice_yield_expected_output_id: Scalars['uuid'];
 };
 
 /** query root */
@@ -4834,6 +4880,8 @@ export type Subscription_Root = {
   course_aggregate: Course_Aggregate;
   /** fetch data from the table: "course" using primary key columns */
   course_by_pk?: Maybe<Course>;
+  /** perform the action: "getGitFileData" */
+  getGitFileData?: Maybe<GetGitFileDataOutput>;
   /** fetch data from the table: "practice" */
   practice: Array<Practice>;
   /** fetch aggregated fields from the table: "practice" */
@@ -4935,6 +4983,12 @@ export type Subscription_RootCourse_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootCourse_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+/** subscription root */
+export type Subscription_RootGetGitFileDataArgs = {
+  practice_to_student_yield_id: Scalars['uuid'];
+  practice_yield_expected_output_id: Scalars['uuid'];
 };
 
 /** subscription root */
@@ -5547,6 +5601,26 @@ export type UpdateFillEmptyHandoutsMutation = {
     { __typename?: 'practice_to_student_mutation_response' } & Pick<
       Practice_To_Student_Mutation_Response,
       'affected_rows'
+    >
+  >;
+};
+
+export type GetGitInfoForStudentYieldQueryVariables = Exact<{
+  practice_to_student_yield_id: Scalars['uuid'];
+  practice_yield_expected_output_id: Scalars['uuid'];
+}>;
+
+export type GetGitInfoForStudentYieldQuery = { __typename?: 'query_root' } & {
+  studentYield?: Maybe<
+    { __typename?: 'practice_to_student_yield' } & Pick<
+      Practice_To_Student_Yield,
+      'gitea_org_and_repo' | 'id' | 'practice_yield_id'
+    >
+  >;
+  expectedOutput?: Maybe<
+    { __typename?: 'practice_yield_expected_output' } & Pick<
+      Practice_Yield_Expected_Output,
+      'git_path' | 'method' | 'practice_yield_id'
     >
   >;
 };

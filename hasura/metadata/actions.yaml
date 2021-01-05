@@ -6,6 +6,15 @@ actions:
       headers:
         - name: token
           value_from_env: ACTION_MASTER_TOKEN
+  - name: getGitFileData
+    definition:
+      kind: ''
+      handler: '{{ACTION_MASTER_URL}}'
+      headers:
+        - name: token
+          value_from_env: ACTION_MASTER_TOKEN
+    permissions:
+      - role: teacher
   - name: linkStudentToUser
     definition:
       kind: synchronous
@@ -46,6 +55,7 @@ custom_types:
   enums: []
   input_objects:
     - name: YieldForHandoff
+    - name: GitFileInput
   objects:
     - name: InsertStudentAnswerOutput
     - name: SendStudentClaimMailOutput
@@ -53,4 +63,5 @@ custom_types:
     - name: SubmitHandoffOutput
     - name: FillEmptyYieldsOutput
     - name: RefreshGradesOutput
+    - name: GetGitFileDataOutput
   scalars: []

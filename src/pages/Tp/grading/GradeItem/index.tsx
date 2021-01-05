@@ -1,6 +1,7 @@
 import {
   // GetPracticeToStudentForGradingQuery,
   Practice_Yield_Expected_Output_Types_Enum,
+  useGetFileDataFromServerQuery,
 } from '../../../../generated/graphql';
 import React from 'react';
 import { DebugJson } from '../../../../components/DebugJson';
@@ -13,6 +14,7 @@ import { GradePercentInputField } from './GradePercentInputField';
 import { Chip } from '../../../../components/Chip';
 import { useGradeItemDataSetup } from './useGradeItemDataSetup';
 import { PracticeToStudentForGradingFrontEdit } from './Mapper';
+import { Loader } from '../../../../components/Loader';
 
 gql`
   mutation insertPracticeToStudentGradeMetric(
@@ -36,6 +38,18 @@ gql`
       }
     }
   }
+  query getFileDataFromServer(
+    $practice_to_student_yield_id: uuid!
+    $practice_yield_expected_output_id: uuid!
+  ) {
+    getGitFileData(
+      practice_to_student_yield_id: $practice_to_student_yield_id
+      practice_yield_expected_output_id: $practice_yield_expected_output_id
+    ) {
+      content
+      encoding
+    }
+  }
 `;
 
 type ItemGrading = PracticeToStudentForGradingFrontEdit;
@@ -43,11 +57,66 @@ type ItemMetric = ItemGrading['gradeMetrics'][0];
 type ItemToLook = ItemGrading['studentYields'][0];
 
 type DisplayItem = React.FC<{ expected: ItemGrading; value: ItemToLook }>;
+type DisplayGitItem = React.FC<{
+  expected: ItemGrading;
+  value: ItemToLook;
+  gitFileData: string;
+}>;
+
+const withGitFileData = (Component: DisplayGitItem): DisplayItem => {
+  function Comp(props: { expected: ItemGrading; value: ItemToLook }) {
+    const [{ data, fetching, error }, retry] = useGetFileDataFromServerQuery({
+      variables: {
+        practice_yield_expected_output_id: props.expected.expectedOutput.id,
+        practice_to_student_yield_id: props.value.practiceToStudentYieldId,
+      },
+    });
+    if (fetching) {
+      return <Loader />;
+    }
+    if (error) {
+      return (
+        <div>
+          <div>En error occured...</div>
+          <Button onClick={() => retry()}>Retry</Button>
+        </div>
+      );
+    }
+    if (!data || !data.getGitFileData) {
+      return <div>No data</div>;
+    }
+    if (data.getGitFileData.encoding !== 'base64') {
+      return <div>Unknown encoding : {data.getGitFileData.encoding}</div>;
+    }
+    const value = atob(data.getGitFileData.content);
+    return <Component {...props} gitFileData={value} />;
+  }
+  return Comp;
+};
 
 const Dummy: DisplayItem = (props) => (
   <div>
     TODO COMPARE :<DebugJson json={props} />{' '}
   </div>
+);
+
+const DummyGit: DisplayGitItem = (props) => (
+  <div>
+    TODO COMPARE :<DebugJson json={props} />{' '}
+  </div>
+);
+
+const CompareGitCodeFile: DisplayGitItem = ({
+  value,
+  expected,
+  gitFileData,
+}) => (
+  <DiffViewerLazy
+    className="h-1/2"
+    lang={expected.expectedOutput.code_lang as any}
+    expected={expected.expectedOutput.expected ?? ''}
+    got={gitFileData}
+  />
 );
 
 const CompareCodeFile: DisplayItem = ({ value, expected }) => (
@@ -93,10 +162,10 @@ const mapToShow: Record<
   DisplayItem
 > = {
   COMPARE_CODE_FILE: CompareCodeFile,
-  COMPARE_GIT_FILE: Dummy,
+  COMPARE_GIT_FILE: withGitFileData(CompareGitCodeFile),
   SHOW_GIT_LOG: Dummy,
-  SHOW_GIT_FILE: Dummy,
-  MANUAL_GIT_FILE_REVIEW: Dummy,
+  SHOW_GIT_FILE: withGitFileData(DummyGit),
+  MANUAL_GIT_FILE_REVIEW: withGitFileData(DummyGit),
   MANUAL: ManualCompare,
   LINK_OPEN: UrlCompare,
 };

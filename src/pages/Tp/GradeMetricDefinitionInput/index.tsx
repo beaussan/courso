@@ -205,6 +205,7 @@ const GradeInput: React.FC<{ name: string }> = ({ name }) => {
             <Button
               type="button"
               Icon={ArrayInput.RemoveIcon}
+              variant="secondary"
               onClick={removeSelf}
             />
           </div>
@@ -220,6 +221,7 @@ const GradeInput: React.FC<{ name: string }> = ({ name }) => {
                 <TextArea label="Feedback" name={name1} />
                 <Button
                   type="button"
+                  variant="secondary"
                   Icon={ArrayInput.RemoveIcon}
                   onClick={removeSelf}
                 />

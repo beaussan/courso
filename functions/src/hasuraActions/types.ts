@@ -21,17 +21,39 @@ export type SubmitHandoffOutput = {
   status: string;
 };
 
+export type FillEmptyYieldsOutput = {
+  affected_rows: number;
+};
+
 export type RefreshGradesOutput = {
   affected_rows: number;
 };
 
-export type FillEmptyYieldsOutput = {
-  affected_rows: number;
+export type GetGitFileDataOutput = {
+  practice_yield_expected_output_id: uuid;
+  practice_to_student_yield_id: uuid;
+  content: string;
+  download_url: string;
+  encoding: string;
+  git_url: string;
+  html_url: string;
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  submodule_git_url?: Maybe<string>;
+  target?: Maybe<string>;
+  type: string;
+  url: string;
 };
 
 export type YieldForHandoff = {
   yieldId: uuid;
   value: string;
+};
+
+export type Query = {
+  getGitFileData?: Maybe<GetGitFileDataOutput>;
 };
 
 export type Mutation = {
@@ -40,6 +62,11 @@ export type Mutation = {
   refreshGrades?: Maybe<RefreshGradesOutput>;
   sendStudentClaimMail?: Maybe<SendStudentClaimMailOutput>;
   submitHandoff?: Maybe<SubmitHandoffOutput>;
+};
+
+export type getGitFileDataArgs = {
+  practice_yield_expected_output_id: uuid;
+  practice_to_student_yield_id: uuid;
 };
 
 export type fillEmptyYieldsArgs = {
@@ -71,9 +98,11 @@ export type SessionVars = {
   'x-hasura-firebase-id': string;
 };
 
+type actionTypes = keyof Mutation | keyof Query;
+
 export type PayloadRequest<T> = {
   action: {
-    name: keyof Mutation;
+    name: actionTypes;
   };
   input: T;
   session_variables: SessionVars;
@@ -82,7 +111,7 @@ export type PayloadRequest<T> = {
 export type ActionFn<Input, Output> = (
   data: Input,
   sessionVars: SessionVars,
-) => Promise<Output>;
+) => Promise<Maybe<Output>>;
 
 // export type ActionMap = { [key: string]: ActionFn<any, any> };
-export type ActionMap = Record<keyof Mutation, ActionFn<any, any>>;
+export type ActionMap = Record<actionTypes, ActionFn<any, any>>;
