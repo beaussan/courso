@@ -6032,6 +6032,12 @@ export type GetPracticeToStudentForGradingQuery = {
 } & {
   practice_to_course: Array<
     { __typename?: 'practice_to_course' } & {
+      practice_to_students: Array<
+        { __typename?: 'practice_to_student' } & Pick<
+          Practice_To_Student,
+          'grade'
+        > & { student: { __typename?: 'student' } & Pick<Student, 'full_name'> }
+      >;
       course: { __typename?: 'course' } & {
         student_to_courses_aggregate: {
           __typename?: 'student_to_course_aggregate';
@@ -6766,6 +6772,12 @@ export const GetPracticeToStudentForGradingDocument = gql`
         _and: { practice_id: { _eq: $practiceId } }
       }
     ) {
+      practice_to_students {
+        grade
+        student {
+          full_name
+        }
+      }
       course {
         student_to_courses_aggregate {
           aggregate {

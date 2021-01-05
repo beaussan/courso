@@ -18,6 +18,15 @@ import {
   mapIntoFrontInterpretation,
   PracticeToStudentForGradingFrontEdit,
 } from './GradeItem/Mapper';
+import {
+  Bar,
+  Tooltip,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 gql`
   query getPracticeToStudentForGrading($courseId: uuid!, $practiceId: uuid!) {
@@ -27,6 +36,12 @@ gql`
         _and: { practice_id: { _eq: $practiceId } }
       }
     ) {
+      practice_to_students {
+        grade
+        student {
+          full_name
+        }
+      }
       course {
         student_to_courses_aggregate {
           aggregate {
@@ -125,6 +140,12 @@ gql`
   }
 `;
 
+interface GradeGraphItem {
+  grade: number;
+  amount: number;
+  students: string[];
+}
+
 export const Grading = () => {
   const { tpId, promoId } = useParams();
   const [
@@ -150,6 +171,54 @@ export const Grading = () => {
   const { item, goNext, isLast, isFirst, goPrev } = useArrayNavigator(
     mappedValuesForFront,
   );
+
+  const mappedForGraph = useMemo<GradeGraphItem[]>(() => {
+    if (!data) {
+      return [];
+    }
+    const practiceToStudents = data.practice_to_course[0].practice_to_students;
+    const pre = practiceToStudents
+      .map((item) => ({
+        grade: Math.round(item.grade),
+        fullName: item.student.full_name ?? '',
+      }))
+      .reduce<{ [key: number]: string[] }>(
+        (full, curr) => ({
+          ...full,
+          [curr.grade]: [...full[curr.grade], curr.fullName],
+        }),
+        {
+          0: [],
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+          6: [],
+          7: [],
+          8: [],
+          9: [],
+          10: [],
+          11: [],
+          12: [],
+          13: [],
+          14: [],
+          15: [],
+          16: [],
+          17: [],
+          18: [],
+          19: [],
+          20: [],
+        },
+      );
+    return Object.entries(pre).reduce<GradeGraphItem[]>(
+      (arr, [key, val]) => [
+        ...arr,
+        { grade: parseInt(key), amount: val.length, students: val },
+      ],
+      [],
+    );
+  }, [data]);
 
   const isAllDone = useMemo<boolean>(() => {
     if (!data) {
@@ -276,12 +345,22 @@ export const Grading = () => {
           );
         })}
       </div>
+
+      <div className="flex justify-center mt-4">
+        <BarChart width={730} height={250} data={mappedForGraph}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="grade" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="amount" fill="#8884d8" />
+        </BarChart>
+      </div>
     </div>
   );
 };
 
 /*
-
+ formatter={(value: GradeGraphItem) => `${value}/20`}
                 <div className="grid grid-cols-3">
 */
 /*
