@@ -352,6 +352,7 @@ export const Grading = () => {
           <XAxis dataKey="grade" />
           <YAxis />
           <Tooltip />
+          <Legend />
           <Bar dataKey="amount" fill="#8884d8" />
         </BarChart>
       </div>
