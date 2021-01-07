@@ -57,7 +57,6 @@ custom_types:
     - name: YieldForHandoff
     - name: GitFileInput
   objects:
-    - name: InsertStudentAnswerOutput
     - name: SendStudentClaimMailOutput
     - name: linkStudentToUserOutput
     - name: SubmitHandoffOutput
