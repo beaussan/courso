@@ -38,11 +38,6 @@ input GitFileInput {
   practice_to_student_yield_id: uuid!
 }
 
-type InsertStudentAnswerOutput {
-  id: uuid!
-  student_output: jsonb
-}
-
 type SendStudentClaimMailOutput {
   nmbMailSent: Int!
 }

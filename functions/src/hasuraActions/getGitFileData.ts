@@ -1,4 +1,4 @@
-import { ActionFn, getGitFileDataArgs, GetGitFileDataOutput } from './types';
+import { ActionMap } from './types';
 import { gql } from 'graphql-request';
 import { gqlClient } from '../config';
 import {
@@ -30,10 +30,7 @@ const GET_YIELD_INFO = gql`
   }
 `;
 
-export const getGitFileData: ActionFn<
-  getGitFileDataArgs,
-  GetGitFileDataOutput
-> = async ({
+export const getGitFileData: ActionMap['getGitFileData'] = async ({
   practice_to_student_yield_id,
   practice_yield_expected_output_id,
 }) => {

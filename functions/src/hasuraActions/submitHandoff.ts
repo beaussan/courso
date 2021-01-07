@@ -2,7 +2,7 @@ import { https } from 'firebase-functions';
 import { gql } from 'graphql-request';
 import { gqlClient } from '../config';
 import * as yup from 'yup';
-import { ActionFn, submitHandoffArgs, SubmitHandoffOutput } from './types';
+import { ActionMap } from './types';
 import {
   DataForSubmitHandoffQuery,
   DataForSubmitHandoffQueryVariables,
@@ -64,10 +64,10 @@ const argValidation = yup.object().shape({
   ),
 });
 
-export const submitHandoff: ActionFn<
-  submitHandoffArgs,
-  SubmitHandoffOutput
-> = async (args, sessionVars) => {
+export const submitHandoff: ActionMap['submitHandoff'] = async (
+  args,
+  sessionVars,
+) => {
   await argValidation.validate(args);
   const { practice_to_course_by_pk } = await gqlClient.request<
     DataForSubmitHandoffQuery,

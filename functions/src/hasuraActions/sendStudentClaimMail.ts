@@ -1,8 +1,4 @@
-import {
-  ActionFn,
-  sendStudentClaimMailArgs,
-  SendStudentClaimMailOutput,
-} from './types';
+import { ActionMap } from './types';
 import { gql } from 'graphql-request';
 import { db, gqlClient, webBaseUrl } from '../config';
 import {
@@ -27,10 +23,9 @@ const GET_STUDENT_FOR_MAIL_SEND = gql`
   }
 `;
 
-export const sendStudentClaimMail: ActionFn<
-  sendStudentClaimMailArgs,
-  SendStudentClaimMailOutput
-> = async (args) => {
+export const sendStudentClaimMail: ActionMap['sendStudentClaimMail'] = async (
+  args,
+) => {
   const { student } = await gqlClient.request<
     GetStudentForMailSendQuery,
     GetStudentForMailSendQueryVariables

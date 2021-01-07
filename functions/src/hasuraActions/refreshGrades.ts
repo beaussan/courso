@@ -1,4 +1,4 @@
-import { ActionFn, refreshGradesArgs, RefreshGradesOutput } from './types';
+import { ActionMap } from './types';
 import { gql } from 'graphql-request';
 import { gqlClient } from '../config';
 import {
@@ -293,10 +293,10 @@ const mapStudentForGradingToInput = (
   };
 };
 
-export const refreshGrades: ActionFn<
-  refreshGradesArgs,
-  RefreshGradesOutput
-> = async ({ course_id, practice_id }) => {
+export const refreshGrades: ActionMap['refreshGrades'] = async ({
+  course_id,
+  practice_id,
+}) => {
   const { practice_to_course: rawPractice } = await gqlClient.request<
     GetPracticeToGradeByCourseIdAndPracticeIdQuery,
     GetPracticeToGradeByCourseIdAndPracticeIdQueryVariables

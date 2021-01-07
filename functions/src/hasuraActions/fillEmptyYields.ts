@@ -1,4 +1,4 @@
-import { ActionFn, fillEmptyYieldsArgs, FillEmptyYieldsOutput } from './types';
+import { ActionMap } from './types';
 import { isBefore } from 'date-fns';
 import { gql } from 'graphql-request';
 import { gqlClient } from '../config';
@@ -74,10 +74,10 @@ const UPDATE_FILL_EMPTY_HANDOUTS = gql`
   }
 `;
 
-export const fillEmptyYields: ActionFn<
-  fillEmptyYieldsArgs,
-  FillEmptyYieldsOutput
-> = async ({ course_id, practice_id }) => {
+export const fillEmptyYields: ActionMap['fillEmptyYields'] = async ({
+  course_id,
+  practice_id,
+}) => {
   const { practice_to_course } = await gqlClient.request<
     DataForPracticeToGradeEmptyQuery,
     DataForPracticeToGradeEmptyQueryVariables

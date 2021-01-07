@@ -1,35 +1,28 @@
-export type Maybe<T> = T | null;
+type Maybe<T> = T | null;
 
-export type uuid = string;
+type uuid = string;
 
-export type jsonb = string;
-
-export type InsertStudentAnswerOutput = {
-  id: uuid;
-  student_output?: Maybe<jsonb>;
-};
-
-export type SendStudentClaimMailOutput = {
+type SendStudentClaimMailOutput = {
   nmbMailSent: number;
 };
 
-export type linkStudentToUserOutput = {
+type linkStudentToUserOutput = {
   ok: boolean;
 };
 
-export type SubmitHandoffOutput = {
+type SubmitHandoffOutput = {
   status: string;
 };
 
-export type FillEmptyYieldsOutput = {
+type FillEmptyYieldsOutput = {
   affected_rows: number;
 };
 
-export type RefreshGradesOutput = {
+type RefreshGradesOutput = {
   affected_rows: number;
 };
 
-export type GetGitFileDataOutput = {
+type GetGitFileDataOutput = {
   practice_yield_expected_output_id: uuid;
   practice_to_student_yield_id: uuid;
   content: string;
@@ -47,49 +40,67 @@ export type GetGitFileDataOutput = {
   url: string;
 };
 
-export type YieldForHandoff = {
+type YieldForHandoff = {
   yieldId: uuid;
   value: string;
 };
 
-export type Query = {
-  getGitFileData?: Maybe<GetGitFileDataOutput>;
-};
-
-export type Mutation = {
-  fillEmptyYields?: Maybe<FillEmptyYieldsOutput>;
-  linkStudentToUser?: Maybe<linkStudentToUserOutput>;
-  refreshGrades?: Maybe<RefreshGradesOutput>;
-  sendStudentClaimMail?: Maybe<SendStudentClaimMailOutput>;
-  submitHandoff?: Maybe<SubmitHandoffOutput>;
-};
-
-export type getGitFileDataArgs = {
+type getGitFileDataArgs = {
   practice_yield_expected_output_id: uuid;
   practice_to_student_yield_id: uuid;
 };
 
-export type fillEmptyYieldsArgs = {
+type fillEmptyYieldsArgs = {
   course_id: uuid;
   practice_id: uuid;
 };
 
-export type linkStudentToUserArgs = {
+type linkStudentToUserArgs = {
   linkId: uuid;
 };
 
-export type refreshGradesArgs = {
+type refreshGradesArgs = {
   course_id: uuid;
   practice_id: uuid;
 };
 
-export type sendStudentClaimMailArgs = {
+type sendStudentClaimMailArgs = {
   studentsIds: Array<uuid>;
 };
 
-export type submitHandoffArgs = {
+type submitHandoffArgs = {
   practiceToPromotionId: uuid;
   yields: Array<YieldForHandoff>;
+};
+
+type Mutation = {
+  fillEmptyYields?: {
+    output: Maybe<FillEmptyYieldsOutput>;
+    input: fillEmptyYieldsArgs;
+  };
+  linkStudentToUser?: {
+    output: Maybe<linkStudentToUserOutput>;
+    input: linkStudentToUserArgs;
+  };
+  refreshGrades?: {
+    output: Maybe<RefreshGradesOutput>;
+    input: refreshGradesArgs;
+  };
+  sendStudentClaimMail?: {
+    output: Maybe<SendStudentClaimMailOutput>;
+    input: sendStudentClaimMailArgs;
+  };
+  submitHandoff?: {
+    output: Maybe<SubmitHandoffOutput>;
+    input: submitHandoffArgs;
+  };
+};
+
+type Query = {
+  getGitFileData?: {
+    input: getGitFileDataArgs;
+    output: Maybe<GetGitFileDataOutput>;
+  };
 };
 
 export type SessionVars = {
@@ -111,7 +122,20 @@ export type PayloadRequest<T> = {
 export type ActionFn<Input, Output> = (
   data: Input,
   sessionVars: SessionVars,
-) => Promise<Maybe<Output>>;
+) => Promise<Output>;
 
-// export type ActionMap = { [key: string]: ActionFn<any, any> };
-export type ActionMap = Record<actionTypes, ActionFn<any, any>>;
+type MutationCallMap = {
+  [P in keyof Required<Mutation>]: ActionFn<
+    Required<Mutation>[P]['input'],
+    Required<Mutation>[P]['output']
+  >;
+};
+
+type QueryCallMap = {
+  [P in keyof Required<Query>]: ActionFn<
+    Required<Query>[P]['input'],
+    Required<Query>[P]['output']
+  >;
+};
+
+export type ActionMap = MutationCallMap & QueryCallMap;

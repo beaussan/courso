@@ -1,8 +1,4 @@
-import {
-  ActionFn,
-  linkStudentToUserArgs,
-  linkStudentToUserOutput,
-} from './types';
+import { ActionMap } from './types';
 import { https } from 'firebase-functions';
 import { gql } from 'graphql-request';
 import { gqlClient } from '../config';
@@ -53,10 +49,10 @@ const argValidation = yup
   })
   .required();
 
-export const linkStudentToUser: ActionFn<
-  linkStudentToUserArgs,
-  linkStudentToUserOutput
-> = async (args, env) => {
+export const linkStudentToUser: ActionMap['linkStudentToUser'] = async (
+  args,
+  env,
+) => {
   await argValidation.validate(args);
   const { maybeStudentWithUser, studentToSet } = await gqlClient.request<
     DataForUpdateToStudentLinkQuery,
