@@ -1,16 +1,10 @@
 import { gql } from 'graphql-request';
 import { handlerFn, HandlerMap } from './types';
 import * as functions from 'firebase-functions';
-import { giteaClient, gqlClient } from '../config';
+import { giteaClient, gqlSdk } from '../config';
 import * as slug from 'slug';
-import {
-  GetPracticeToPromotionMetaQuery,
-  GetPracticeToPromotionMetaQueryVariables,
-  UpdateGiteaOrgNameMutation,
-  UpdateGiteaOrgNameMutationVariables,
-} from '../generated/graphql';
 
-const GET_META_FOR_GITEA_ORG_NAME = gql`
+gql`
   query getPracticeToPromotionMeta($id: uuid!) {
     practice_to_course_by_pk(id: $id) {
       practice {
@@ -24,8 +18,8 @@ const GET_META_FOR_GITEA_ORG_NAME = gql`
   }
 `;
 
-const UPDATE_GITEA_ORG_NAME = gql`
-  mutation UpdateGiteaOrgName($id: uuid!, $gitea_org_name: String!) {
+gql`
+  mutation updateGiteaOrgName($id: uuid!, $gitea_org_name: String!) {
     update_practice_to_course_by_pk(
       pk_columns: { id: $id }
       _set: { gitea_org_name: $gitea_org_name }
@@ -36,10 +30,9 @@ const UPDATE_GITEA_ORG_NAME = gql`
 `;
 
 const generateSlugOrgName = async (id: string): Promise<string> => {
-  const data = await gqlClient.request<
-    GetPracticeToPromotionMetaQuery,
-    GetPracticeToPromotionMetaQueryVariables
-  >(GET_META_FOR_GITEA_ORG_NAME, { id });
+  const data = await gqlSdk.getPracticeToPromotionMeta({
+    id,
+  });
   if (
     !data ||
     !data.practice_to_course_by_pk ||
@@ -80,10 +73,11 @@ const onPracticeToPromoCreated: handlerFn<PracticeToPromo> = async (data) => {
   if (!ok) {
     throw originalError;
   }
-  await gqlClient.request<
-    UpdateGiteaOrgNameMutation,
-    UpdateGiteaOrgNameMutationVariables
-  >(UPDATE_GITEA_ORG_NAME, { id: after.id, gitea_org_name: orgName });
+
+  await gqlSdk.updateGiteaOrgName({
+    id: after.id,
+    gitea_org_name: orgName,
+  });
 
   return 'ok';
 };

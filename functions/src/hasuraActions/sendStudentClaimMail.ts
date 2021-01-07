@@ -1,13 +1,9 @@
 import { ActionMap } from './types';
 import { gql } from 'graphql-request';
-import { db, gqlClient, webBaseUrl } from '../config';
-import {
-  GetStudentForMailSendQuery,
-  GetStudentForMailSendQueryVariables,
-} from '../generated/graphql';
+import { db, gqlSdk, webBaseUrl } from '../config';
 import * as functions from 'firebase-functions';
 
-const GET_STUDENT_FOR_MAIL_SEND = gql`
+gql`
   query getStudentForMailSend($studentIds: [uuid!]) {
     student(
       where: {
@@ -26,10 +22,10 @@ const GET_STUDENT_FOR_MAIL_SEND = gql`
 export const sendStudentClaimMail: ActionMap['sendStudentClaimMail'] = async (
   args,
 ) => {
-  const { student } = await gqlClient.request<
-    GetStudentForMailSendQuery,
-    GetStudentForMailSendQueryVariables
-  >(GET_STUDENT_FOR_MAIL_SEND, { studentIds: args.studentsIds });
+  const { student } = await gqlSdk.getStudentForMailSend({
+    studentIds: args.studentsIds,
+  });
+
   if (!student || student.length === 0) {
     throw new functions.https.HttpsError(
       'invalid-argument',

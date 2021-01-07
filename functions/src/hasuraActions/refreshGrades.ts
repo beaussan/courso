@@ -1,31 +1,21 @@
 import { ActionMap } from './types';
 import { gql } from 'graphql-request';
-import { gqlClient } from '../config';
+import { gqlSdk } from '../config';
+import { https, logger } from 'firebase-functions';
+import { isBefore } from 'date-fns';
 import {
-  DataForPracticeToGradeQuery,
-  DataForPracticeToGradeQueryVariables,
-  FillEmptyForGradeMutation,
-  FillEmptyForGradeMutationVariables,
-  GetPracticeToGradeByCourseIdAndPracticeIdQuery,
-  GetPracticeToGradeByCourseIdAndPracticeIdQueryVariables,
-  InsertPracticeToStudentWithGradesMutation,
-  InsertPracticeToStudentWithGradesMutationVariables,
   Practice_To_Student_Insert_Input,
   PracticeForGradingFragment,
   PracticeToStudentForGradingFragment,
 } from '../generated/graphql';
-import { https, logger } from 'firebase-functions';
-import { isBefore } from 'date-fns';
 
-const FILL_EMPTY_GRADES = gql`
+gql`
   mutation fillEmptyForGrade($courseId: uuid!, $practiceId: uuid!) {
     fillEmptyYields(course_id: $courseId, practice_id: $practiceId) {
       affected_rows
     }
   }
-`;
 
-const GET_PRACTICE_TO_GRADE = gql`
   query getPracticeToGradeByCourseIdAndPracticeId(
     $course_id: uuid!
     $practice_id: uuid!
@@ -43,9 +33,7 @@ const GET_PRACTICE_TO_GRADE = gql`
       open_date
     }
   }
-`;
 
-const INSERT_PRACTICE_TO_STUDENTS = gql`
   mutation insertPracticeToStudentWithGrades(
     $objects: [practice_to_student_insert_input!]!
   ) {
@@ -59,9 +47,7 @@ const INSERT_PRACTICE_TO_STUDENTS = gql`
       affected_rows
     }
   }
-`;
 
-const GET_DATA_FOR_PRACTICE_TO_GRADE = gql`
   fragment PracticeForGrading on practice {
     practice_yields {
       id
@@ -101,7 +87,9 @@ const GET_DATA_FOR_PRACTICE_TO_GRADE = gql`
       ...PracticeToStudentYieldForGrading
     }
   }
-  query dataForPracticeToGrade($practice_to_grade_id: uuid!) {
+  query dataForPracticeToGradeByPracticeToCoursePk(
+    $practice_to_grade_id: uuid!
+  ) {
     practice_to_course_by_pk(id: $practice_to_grade_id) {
       id
       practice {
@@ -297,10 +285,9 @@ export const refreshGrades: ActionMap['refreshGrades'] = async ({
   course_id,
   practice_id,
 }) => {
-  const { practice_to_course: rawPractice } = await gqlClient.request<
-    GetPracticeToGradeByCourseIdAndPracticeIdQuery,
-    GetPracticeToGradeByCourseIdAndPracticeIdQueryVariables
-  >(GET_PRACTICE_TO_GRADE, {
+  const {
+    practice_to_course: rawPractice,
+  } = await gqlSdk.getPracticeToGradeByCourseIdAndPracticeId({
     course_id,
     practice_id,
   });
@@ -317,18 +304,14 @@ export const refreshGrades: ActionMap['refreshGrades'] = async ({
     throw new https.HttpsError('invalid-argument', 'Practice is not over yet');
   }
 
-  await gqlClient.request<
-    FillEmptyForGradeMutation,
-    FillEmptyForGradeMutationVariables
-  >(FILL_EMPTY_GRADES, {
+  await gqlSdk.fillEmptyForGrade({
     courseId: course_id,
     practiceId: practice_id,
   });
 
-  const { practice_to_course_by_pk } = await gqlClient.request<
-    DataForPracticeToGradeQuery,
-    DataForPracticeToGradeQueryVariables
-  >(GET_DATA_FOR_PRACTICE_TO_GRADE, {
+  const {
+    practice_to_course_by_pk,
+  } = await gqlSdk.dataForPracticeToGradeByPracticeToCoursePk({
     practice_to_grade_id: rawPracticeToCourse.practiceToCourseId,
   });
 
@@ -349,14 +332,13 @@ export const refreshGrades: ActionMap['refreshGrades'] = async ({
     mapStudentForGradingToInput(student, maxGrade, mappedData),
   );
 
-  const result = await gqlClient.request<
-    InsertPracticeToStudentWithGradesMutation,
-    InsertPracticeToStudentWithGradesMutationVariables
-  >(INSERT_PRACTICE_TO_STUDENTS, {
+  const {
+    insert_practice_to_student,
+  } = await gqlSdk.insertPracticeToStudentWithGrades({
     objects: toSave,
   });
 
   return {
-    affected_rows: result.insert_practice_to_student?.affected_rows || 0,
+    affected_rows: insert_practice_to_student?.affected_rows || 0,
   };
 };

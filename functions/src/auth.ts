@@ -1,11 +1,7 @@
 import * as functions from 'firebase-functions';
 import { getUID, updateClaims } from './utils';
-import { db, func, gqlClient } from './config';
+import { db, func, gqlSdk } from './config';
 import { gql } from 'graphql-request';
-import {
-  UpdateFirebaseIdMutation,
-  UpdateFirebaseIdMutationVariables,
-} from './generated/graphql';
 
 export const onClaimChange = func.firestore
   .document('/hasura/{userId}')
@@ -27,7 +23,7 @@ export const refreshToken = func.https.onCall(async (data, context) => {
   }
 });
 
-const UPDATE_FIREBASE_ID = gql`
+gql`
   mutation updateFirebaseId($firebaseId: String!) {
     updateUser(
       where: { firebaseId: { _eq: $firebaseId } }
@@ -40,8 +36,7 @@ const UPDATE_FIREBASE_ID = gql`
 
 export const onUserDelete = func.auth.user().onDelete(async (user) => {
   await db.doc(`/hasura/${user.uid}`).delete();
-  await gqlClient.request<
-    UpdateFirebaseIdMutation,
-    UpdateFirebaseIdMutationVariables
-  >(UPDATE_FIREBASE_ID, { firebaseId: user.uid });
+  await gqlSdk.updateFirebaseId({
+    firebaseId: user.uid,
+  });
 });

@@ -1,16 +1,10 @@
 import { https } from 'firebase-functions';
 import { gql } from 'graphql-request';
-import { gqlClient } from '../config';
+import { gqlSdk } from '../config';
 import * as yup from 'yup';
 import { ActionMap } from './types';
-import {
-  DataForSubmitHandoffQuery,
-  DataForSubmitHandoffQueryVariables,
-  MutationSubmitHandoffMutation,
-  MutationSubmitHandoffMutationVariables,
-} from '../generated/graphql';
 
-const DATA_FOR_SUBMIT_HANDOFF = gql`
+gql`
   query dataForSubmitHandoff($practiceToPromoId: uuid!, $userId: uuid!) {
     practice_to_course_by_pk(id: $practiceToPromoId) {
       is_open
@@ -33,9 +27,7 @@ const DATA_FOR_SUBMIT_HANDOFF = gql`
       }
     }
   }
-`;
 
-const MUTATION_SUBMIT_HANDOFF = gql`
   mutation mutationSubmitHandoff(
     $studentYields: [practice_to_student_yield_insert_input!]!
     $student_id: uuid!
@@ -69,10 +61,7 @@ export const submitHandoff: ActionMap['submitHandoff'] = async (
   sessionVars,
 ) => {
   await argValidation.validate(args);
-  const { practice_to_course_by_pk } = await gqlClient.request<
-    DataForSubmitHandoffQuery,
-    DataForSubmitHandoffQueryVariables
-  >(DATA_FOR_SUBMIT_HANDOFF, {
+  const { practice_to_course_by_pk } = await gqlSdk.dataForSubmitHandoff({
     practiceToPromoId: args.practiceToPromotionId,
     userId: sessionVars['x-hasura-user-id'],
   });
@@ -84,6 +73,9 @@ export const submitHandoff: ActionMap['submitHandoff'] = async (
     throw new https.HttpsError('not-found', 'Not found');
   }
   if (!practice_to_course_by_pk.practice?.id) {
+    throw new https.HttpsError('not-found', 'Not found');
+  }
+  if (!practice_to_course_by_pk.practice.practice_yields) {
     throw new https.HttpsError('not-found', 'Not found');
   }
   const userYieldsId = args.yields.map(({ yieldId }) => yieldId);
@@ -104,10 +96,7 @@ export const submitHandoff: ActionMap['submitHandoff'] = async (
     throw new https.HttpsError('invalid-argument', 'Submit is not open');
   }
 
-  await gqlClient.request<
-    MutationSubmitHandoffMutation,
-    MutationSubmitHandoffMutationVariables
-  >(MUTATION_SUBMIT_HANDOFF, {
+  await gqlSdk.mutationSubmitHandoff({
     student_id:
       practice_to_course_by_pk.course.student_to_courses[0].student_id,
     promotion_practice_id: args.practiceToPromotionId,

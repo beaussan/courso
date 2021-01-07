@@ -2,6 +2,7 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { GraphQLClient } from 'graphql-request';
 import { create } from 'apisauce';
+import { getSdk } from './generated/graphql';
 
 export const app = admin.initializeApp();
 
@@ -20,9 +21,11 @@ const hasuraAdminSecret = functions.config().hasura.admin_secret;
 export const hasuraWebhookToken = functions.config().hasura.webhook_token;
 export const hasuraActionToken = functions.config().hasura.action_token;
 
-export const gqlClient = new GraphQLClient(hasuraGraphqlUrl, {
+const gqlClient = new GraphQLClient(hasuraGraphqlUrl, {
   headers: { 'x-hasura-admin-secret': hasuraAdminSecret },
 });
+
+export const gqlSdk = getSdk(gqlClient);
 
 const giteaToken = functions.config().gitea.token;
 const giteaUrl = functions.config().gitea.url;

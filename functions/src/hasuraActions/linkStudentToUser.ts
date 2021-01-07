@@ -1,13 +1,7 @@
 import { ActionMap } from './types';
 import { https } from 'firebase-functions';
 import { gql } from 'graphql-request';
-import { gqlClient } from '../config';
-import {
-  DataForUpdateToStudentLinkQuery,
-  DataForUpdateToStudentLinkQueryVariables,
-  LinkStudentToUserMutation,
-  LinkStudentToUserMutationVariables,
-} from '../generated/graphql';
+import { gqlSdk } from '../config';
 import * as yup from 'yup';
 
 const LINK_ERRORS = {
@@ -15,7 +9,7 @@ const LINK_ERRORS = {
   linkNotFound: 'Link not found',
 };
 
-const GET_DATA_FOR_STUDENT_TO_USER = gql`
+gql`
   query dataForUpdateToStudentLink($tokenId: uuid!, $userId: uuid!) {
     studentToSet: student(where: { claim_token: { _eq: $tokenId } }) {
       claim_token
@@ -29,9 +23,7 @@ const GET_DATA_FOR_STUDENT_TO_USER = gql`
       id
     }
   }
-`;
 
-const LINK_USER_TOKEN = gql`
   mutation linkStudentToUser($id: uuid!, $user_id: uuid!) {
     update_student_by_pk(
       pk_columns: { id: $id }
@@ -54,13 +46,14 @@ export const linkStudentToUser: ActionMap['linkStudentToUser'] = async (
   env,
 ) => {
   await argValidation.validate(args);
-  const { maybeStudentWithUser, studentToSet } = await gqlClient.request<
-    DataForUpdateToStudentLinkQuery,
-    DataForUpdateToStudentLinkQueryVariables
-  >(GET_DATA_FOR_STUDENT_TO_USER, {
+  const {
+    maybeStudentWithUser,
+    studentToSet,
+  } = await gqlSdk.dataForUpdateToStudentLink({
     userId: env['x-hasura-user-id'],
     tokenId: args.linkId,
   });
+
   if (maybeStudentWithUser && maybeStudentWithUser.length > 0) {
     throw new https.HttpsError(
       'invalid-argument',
@@ -70,10 +63,8 @@ export const linkStudentToUser: ActionMap['linkStudentToUser'] = async (
   if (studentToSet?.length === 0) {
     throw new https.HttpsError('invalid-argument', LINK_ERRORS.linkNotFound);
   }
-  await gqlClient.request<
-    LinkStudentToUserMutation,
-    LinkStudentToUserMutationVariables
-  >(LINK_USER_TOKEN, {
+
+  await gqlSdk.linkStudentToUser({
     id: studentToSet[0].id,
     user_id: env['x-hasura-user-id'],
   });

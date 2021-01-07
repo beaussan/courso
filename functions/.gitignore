@@ -9,3 +9,4 @@ typings/
 node_modules/
 
 lib/
+!codegen.js

@@ -1,13 +1,7 @@
 import { handlerFn, HandlerMap } from './types';
 import { gql } from 'graphql-request';
 import * as functions from 'firebase-functions';
-import { giteaClient, gqlClient } from '../config';
-import {
-  OnStudentYieldCreatedDataQuery,
-  OnStudentYieldCreatedDataQueryVariables,
-  OnStudentYieldMutationMutation,
-  OnStudentYieldMutationMutationVariables,
-} from '../generated/graphql';
+import { giteaClient, gqlSdk } from '../config';
 import * as slug from 'slug';
 
 interface StudentPracticeYieldInput {
@@ -16,7 +10,7 @@ interface StudentPracticeYieldInput {
   gitea_org_and_repo?: string;
 }
 
-const ON_STUDENT_YIELD_CREATED_QUERY = gql`
+gql`
   query onStudentYieldCreatedData($id: uuid!) {
     practice_to_student_yield_by_pk(id: $id) {
       practice_to_student {
@@ -34,9 +28,7 @@ const ON_STUDENT_YIELD_CREATED_QUERY = gql`
       }
     }
   }
-`;
 
-const ON_STUDENT_YIELD_MUTATION = gql`
   mutation onStudentYieldMutation($id: uuid!, $gitea_org_and_repo: String!) {
     update_practice_to_student_yield_by_pk(
       pk_columns: { id: $id }
@@ -55,10 +47,9 @@ const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
     throw new functions.https.HttpsError('internal', 'No after found');
   }
 
-  const { practice_to_student_yield_by_pk } = await gqlClient.request<
-    OnStudentYieldCreatedDataQuery,
-    OnStudentYieldCreatedDataQueryVariables
-  >(ON_STUDENT_YIELD_CREATED_QUERY, {
+  const {
+    practice_to_student_yield_by_pk,
+  } = await gqlSdk.onStudentYieldCreatedData({
     id: after.id,
   });
 
@@ -85,22 +76,23 @@ const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
     practice_to_student_yield_by_pk.practice_to_student.practice_to_course
       .gitea_org_name;
 
-  const { ok, originalError, data } = await giteaClient.post('/repos/migrate', {
-    repo_owner: repoOwner,
-    repo_name: slugedName,
-    mirror: false,
-    clone_addr: after.value,
-    description: `Yield generated for ${after.id}`,
-  });
+  const { ok, originalError, data: giteaData } = await giteaClient.post(
+    '/repos/migrate',
+    {
+      repo_owner: repoOwner,
+      repo_name: slugedName,
+      mirror: false,
+      clone_addr: after.value,
+      description: `Yield generated for ${after.id}`,
+    },
+  );
   if (!ok) {
     functions.logger.error('Error migrating repo', originalError);
-    functions.logger.error('Error migrating repo', data);
+    functions.logger.error('Error migrating repo', giteaData);
     throw originalError;
   }
-  await gqlClient.request<
-    OnStudentYieldMutationMutation,
-    OnStudentYieldMutationMutationVariables
-  >(ON_STUDENT_YIELD_MUTATION, {
+
+  await gqlSdk.onStudentYieldMutation({
     id: after.id,
     gitea_org_and_repo: `${repoOwner}/${slugedName}`,
   });

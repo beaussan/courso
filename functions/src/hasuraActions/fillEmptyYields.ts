@@ -1,19 +1,15 @@
 import { ActionMap } from './types';
 import { isBefore } from 'date-fns';
 import { gql } from 'graphql-request';
-import { gqlClient } from '../config';
+import { gqlSdk } from '../config';
 import { https } from 'firebase-functions';
 import {
-  DataForPracticeToGradeEmptyQuery,
-  DataForPracticeToGradeEmptyQueryVariables,
   Practice_To_Student_Insert_Input,
   Practice_To_Student_Yield_Constraint,
   Practice_To_Student_Yield_Update_Column,
-  UpdateFillEmptyHandoutsMutation,
-  UpdateFillEmptyHandoutsMutationVariables,
 } from '../generated/graphql';
 
-const GET_DATA_TO_FILL_EMPTY_HANDOUTS = gql`
+gql`
   query dataForPracticeToGradeEmpty($course_id: uuid!, $practice_id: uuid!) {
     practice_to_course(
       where: {
@@ -56,9 +52,7 @@ const GET_DATA_TO_FILL_EMPTY_HANDOUTS = gql`
       }
     }
   }
-`;
 
-const UPDATE_FILL_EMPTY_HANDOUTS = gql`
   mutation updateFillEmptyHandouts(
     $data: [practice_to_student_insert_input!]!
   ) {
@@ -78,10 +72,7 @@ export const fillEmptyYields: ActionMap['fillEmptyYields'] = async ({
   course_id,
   practice_id,
 }) => {
-  const { practice_to_course } = await gqlClient.request<
-    DataForPracticeToGradeEmptyQuery,
-    DataForPracticeToGradeEmptyQueryVariables
-  >(GET_DATA_TO_FILL_EMPTY_HANDOUTS, {
+  const { practice_to_course } = await gqlSdk.dataForPracticeToGradeEmpty({
     practice_id,
     course_id,
   });
@@ -127,10 +118,9 @@ export const fillEmptyYields: ActionMap['fillEmptyYields'] = async ({
     },
   );
 
-  const { insert_practice_to_student } = await gqlClient.request<
-    UpdateFillEmptyHandoutsMutation,
-    UpdateFillEmptyHandoutsMutationVariables
-  >(UPDATE_FILL_EMPTY_HANDOUTS, { data: dataToSave });
+  const { insert_practice_to_student } = await gqlSdk.updateFillEmptyHandouts({
+    data: dataToSave,
+  });
 
   return { affected_rows: insert_practice_to_student?.affected_rows ?? 0 };
 };

@@ -1,12 +1,8 @@
 import * as functions from 'firebase-functions';
-import { gqlClient, auth, db } from './config';
+import { auth, db, gqlSdk } from './config';
 import { gql } from 'graphql-request';
-import {
-  CreateNewUserMutation,
-  CreateNewUserMutationVariables,
-} from './generated/graphql';
 
-const CREATE_USER_MUTATION = gql`
+gql`
   mutation createNewUser(
     $email: String
     $id: String
@@ -33,10 +29,7 @@ const CREATE_USER_MUTATION = gql`
 export const generateHasuraUserFromFirebaseUser = async (uid: string) => {
   const { photoURL, displayName, email } = await auth.getUser(uid);
   try {
-    const data = await gqlClient.request<
-      CreateNewUserMutation,
-      CreateNewUserMutationVariables
-    >(CREATE_USER_MUTATION, {
+    const data = await gqlSdk.createNewUser({
       displayName,
       email,
       photoURL,

@@ -1,14 +1,10 @@
 import { ActionMap } from './types';
 import { gql } from 'graphql-request';
-import { gqlClient } from '../config';
-import {
-  GetGitInfoForStudentYieldQuery,
-  GetGitInfoForStudentYieldQueryVariables,
-} from '../generated/graphql';
+import { gqlSdk } from '../config';
 import { https } from 'firebase-functions';
 import { getFileFromGitea } from '../giteaApi';
 
-const GET_YIELD_INFO = gql`
+gql`
   query getGitInfoForStudentYield(
     $practice_to_student_yield_id: uuid!
     $practice_yield_expected_output_id: uuid!
@@ -34,10 +30,10 @@ export const getGitFileData: ActionMap['getGitFileData'] = async ({
   practice_to_student_yield_id,
   practice_yield_expected_output_id,
 }) => {
-  const { expectedOutput, studentYield } = await gqlClient.request<
-    GetGitInfoForStudentYieldQuery,
-    GetGitInfoForStudentYieldQueryVariables
-  >(GET_YIELD_INFO, {
+  const {
+    expectedOutput,
+    studentYield,
+  } = await gqlSdk.getGitInfoForStudentYield({
     practice_to_student_yield_id,
     practice_yield_expected_output_id,
   });
