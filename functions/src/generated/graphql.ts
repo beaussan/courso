@@ -1,7 +1,14 @@
+import { GraphQLClient } from 'graphql-request';
+import { print } from 'graphql';
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -5591,7 +5598,9 @@ export type DataForPracticeToGradeEmptyQuery = { __typename?: 'query_root' } & {
 };
 
 export type UpdateFillEmptyHandoutsMutationVariables = Exact<{
-  data: Array<Practice_To_Student_Insert_Input>;
+  data:
+    | Array<Practice_To_Student_Insert_Input>
+    | Practice_To_Student_Insert_Input;
 }>;
 
 export type UpdateFillEmptyHandoutsMutation = {
@@ -5684,7 +5693,9 @@ export type GetPracticeToGradeByCourseIdAndPracticeIdQuery = {
 };
 
 export type InsertPracticeToStudentWithGradesMutationVariables = Exact<{
-  objects: Array<Practice_To_Student_Insert_Input>;
+  objects:
+    | Array<Practice_To_Student_Insert_Input>
+    | Practice_To_Student_Insert_Input;
 }>;
 
 export type InsertPracticeToStudentWithGradesMutation = {
@@ -5746,11 +5757,13 @@ export type PracticeToStudentForGradingFragment = {
     >;
   };
 
-export type DataForPracticeToGradeQueryVariables = Exact<{
+export type DataForPracticeToGradeByPracticeToCoursePkQueryVariables = Exact<{
   practice_to_grade_id: Scalars['uuid'];
 }>;
 
-export type DataForPracticeToGradeQuery = { __typename?: 'query_root' } & {
+export type DataForPracticeToGradeByPracticeToCoursePkQuery = {
+  __typename?: 'query_root';
+} & {
   practice_to_course_by_pk?: Maybe<
     { __typename?: 'practice_to_course' } & Pick<Practice_To_Course, 'id'> & {
         practice: { __typename?: 'practice' } & PracticeForGradingFragment;
@@ -5764,7 +5777,7 @@ export type DataForPracticeToGradeQuery = { __typename?: 'query_root' } & {
 };
 
 export type GetStudentForMailSendQueryVariables = Exact<{
-  studentIds?: Maybe<Array<Scalars['uuid']>>;
+  studentIds?: Maybe<Array<Scalars['uuid']> | Scalars['uuid']>;
 }>;
 
 export type GetStudentForMailSendQuery = { __typename?: 'query_root' } & {
@@ -5814,7 +5827,9 @@ export type DataForSubmitHandoffQuery = { __typename?: 'query_root' } & {
 };
 
 export type MutationSubmitHandoffMutationVariables = Exact<{
-  studentYields: Array<Practice_To_Student_Yield_Insert_Input>;
+  studentYields:
+    | Array<Practice_To_Student_Yield_Insert_Input>
+    | Practice_To_Student_Yield_Insert_Input;
   student_id: Scalars['uuid'];
   promotion_practice_id: Scalars['uuid'];
 }>;
@@ -5915,3 +5930,603 @@ export type CreateNewUserMutationVariables = Exact<{
 export type CreateNewUserMutation = { __typename?: 'mutation_root' } & {
   insertUserOne?: Maybe<{ __typename?: 'user' } & Pick<User, 'id'>>;
 };
+
+export const PracticeForGradingFragmentDoc = gql`
+  fragment PracticeForGrading on practice {
+    practice_yields {
+      id
+      name
+      practice_yield_expected_outputs {
+        id
+        practice_yield_grade_metrics {
+          id
+          name
+          points
+        }
+      }
+    }
+  }
+`;
+export const PracticeToStudentYieldForGradingFragmentDoc = gql`
+  fragment PracticeToStudentYieldForGrading on practice_to_student_yield {
+    id
+    submited
+    practice_yield_id
+    practice_to_student_grade_metrics {
+      id
+      feedback
+      percent_grade
+      practice_yield_grade_metric_id
+      practice_yield_grade_metric {
+        name
+        points
+      }
+    }
+  }
+`;
+export const PracticeToStudentForGradingFragmentDoc = gql`
+  fragment PracticeToStudentForGrading on practice_to_student {
+    id
+    course_practice_id
+    graded
+    grade
+    student_id
+    practice_to_student_yields {
+      ...PracticeToStudentYieldForGrading
+    }
+  }
+  ${PracticeToStudentYieldForGradingFragmentDoc}
+`;
+export const UpdateFirebaseIdDocument = gql`
+  mutation updateFirebaseId($firebaseId: String!) {
+    updateUser(
+      where: { firebaseId: { _eq: $firebaseId } }
+      _set: { firebaseId: null }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export const DataForPracticeToGradeEmptyDocument = gql`
+  query dataForPracticeToGradeEmpty($course_id: uuid!, $practice_id: uuid!) {
+    practice_to_course(
+      where: {
+        course_id: { _eq: $course_id }
+        practice_id: { _eq: $practice_id }
+      }
+    ) {
+      id
+      is_open
+      open_date
+      course {
+        id
+        student_to_courses {
+          student {
+            id
+            practice_to_students(
+              where: {
+                practice_to_course: {
+                  course_id: { _eq: $course_id }
+                  practice_id: { _eq: $practice_id }
+                }
+              }
+            ) {
+              id
+              student_id
+              created_at
+              practice_to_student_yields {
+                id
+                value
+                practice_yield_id
+              }
+            }
+          }
+        }
+      }
+      practice {
+        practice_yields {
+          id
+        }
+      }
+    }
+  }
+`;
+export const UpdateFillEmptyHandoutsDocument = gql`
+  mutation updateFillEmptyHandouts(
+    $data: [practice_to_student_insert_input!]!
+  ) {
+    insert_practice_to_student(
+      on_conflict: {
+        constraint: practice_to_student_student_id_promotion_practice_id_key
+        update_columns: course_practice_id
+      }
+      objects: $data
+    ) {
+      affected_rows
+    }
+  }
+`;
+export const GetGitInfoForStudentYieldDocument = gql`
+  query getGitInfoForStudentYield(
+    $practice_to_student_yield_id: uuid!
+    $practice_yield_expected_output_id: uuid!
+  ) {
+    studentYield: practice_to_student_yield_by_pk(
+      id: $practice_to_student_yield_id
+    ) {
+      gitea_org_and_repo
+      id
+      practice_yield_id
+    }
+    expectedOutput: practice_yield_expected_output_by_pk(
+      id: $practice_yield_expected_output_id
+    ) {
+      git_path
+      method
+      practice_yield_id
+    }
+  }
+`;
+export const DataForUpdateToStudentLinkDocument = gql`
+  query dataForUpdateToStudentLink($tokenId: uuid!, $userId: uuid!) {
+    studentToSet: student(where: { claim_token: { _eq: $tokenId } }) {
+      claim_token
+      user_id
+      id
+    }
+    maybeStudentWithUser: student(where: { user_id: { _eq: $userId } }) {
+      claim_token
+      user_id
+      id
+    }
+  }
+`;
+export const LinkStudentToUserDocument = gql`
+  mutation linkStudentToUser($id: uuid!, $user_id: uuid!) {
+    update_student_by_pk(
+      pk_columns: { id: $id }
+      _set: { user_id: $user_id, claim_token: null }
+    ) {
+      id
+    }
+  }
+`;
+export const FillEmptyForGradeDocument = gql`
+  mutation fillEmptyForGrade($courseId: uuid!, $practiceId: uuid!) {
+    fillEmptyYields(course_id: $courseId, practice_id: $practiceId) {
+      affected_rows
+    }
+  }
+`;
+export const GetPracticeToGradeByCourseIdAndPracticeIdDocument = gql`
+  query getPracticeToGradeByCourseIdAndPracticeId(
+    $course_id: uuid!
+    $practice_id: uuid!
+  ) {
+    practice_to_course(
+      where: {
+        course_id: { _eq: $course_id }
+        practice_id: { _eq: $practice_id }
+      }
+    ) {
+      practiceToCourseId: id
+      can_student_see_feedback
+      can_student_see_grade
+      is_open
+      open_date
+    }
+  }
+`;
+export const InsertPracticeToStudentWithGradesDocument = gql`
+  mutation insertPracticeToStudentWithGrades(
+    $objects: [practice_to_student_insert_input!]!
+  ) {
+    insert_practice_to_student(
+      objects: $objects
+      on_conflict: {
+        constraint: practice_to_student_pkey
+        update_columns: [grade, grade_detail, graded, feedback]
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export const DataForPracticeToGradeByPracticeToCoursePkDocument = gql`
+  query dataForPracticeToGradeByPracticeToCoursePk(
+    $practice_to_grade_id: uuid!
+  ) {
+    practice_to_course_by_pk(id: $practice_to_grade_id) {
+      id
+      practice {
+        ...PracticeForGrading
+      }
+      practice_to_students {
+        ...PracticeToStudentForGrading
+      }
+    }
+  }
+  ${PracticeForGradingFragmentDoc}
+  ${PracticeToStudentForGradingFragmentDoc}
+`;
+export const GetStudentForMailSendDocument = gql`
+  query getStudentForMailSend($studentIds: [uuid!]) {
+    student(
+      where: {
+        _and: { id: { _in: $studentIds } }
+        claim_token: { _is_null: false }
+      }
+    ) {
+      email
+      claim_token
+      full_name
+      id
+    }
+  }
+`;
+export const DataForSubmitHandoffDocument = gql`
+  query dataForSubmitHandoff($practiceToPromoId: uuid!, $userId: uuid!) {
+    practice_to_course_by_pk(id: $practiceToPromoId) {
+      is_open
+      practice {
+        practice_yields {
+          id
+          name
+        }
+        id
+      }
+      practice_to_students(where: { student: { user_id: { _eq: $userId } } }) {
+        submited
+        id
+      }
+      course {
+        student_to_courses(where: { student: { user_id: { _eq: $userId } } }) {
+          student_id
+        }
+      }
+    }
+  }
+`;
+export const MutationSubmitHandoffDocument = gql`
+  mutation mutationSubmitHandoff(
+    $studentYields: [practice_to_student_yield_insert_input!]!
+    $student_id: uuid!
+    $promotion_practice_id: uuid!
+  ) {
+    insert_practice_to_student(
+      objects: {
+        submited: true
+        practice_to_student_yields: { data: $studentYields }
+        student_id: $student_id
+        course_practice_id: $promotion_practice_id
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export const SetSubmitedFalseOnEmptyDocument = gql`
+  mutation setSubmitedFalseOnEmpty($id: uuid!) {
+    update_practice_to_student_yield_by_pk(
+      pk_columns: { id: $id }
+      _set: { submited: false }
+    ) {
+      gitea_org_and_repo
+    }
+  }
+`;
+export const GetPracticeToPromotionMetaDocument = gql`
+  query getPracticeToPromotionMeta($id: uuid!) {
+    practice_to_course_by_pk(id: $id) {
+      practice {
+        title
+      }
+      course {
+        name
+        years
+      }
+    }
+  }
+`;
+export const UpdateGiteaOrgNameDocument = gql`
+  mutation updateGiteaOrgName($id: uuid!, $gitea_org_name: String!) {
+    update_practice_to_course_by_pk(
+      pk_columns: { id: $id }
+      _set: { gitea_org_name: $gitea_org_name }
+    ) {
+      id
+    }
+  }
+`;
+export const OnStudentYieldCreatedDataDocument = gql`
+  query onStudentYieldCreatedData($id: uuid!) {
+    practice_to_student_yield_by_pk(id: $id) {
+      practice_to_student {
+        student {
+          full_name
+        }
+        practice_to_course {
+          gitea_org_name
+        }
+      }
+      practice_yield {
+        id
+        name
+        method
+      }
+    }
+  }
+`;
+export const OnStudentYieldMutationDocument = gql`
+  mutation onStudentYieldMutation($id: uuid!, $gitea_org_and_repo: String!) {
+    update_practice_to_student_yield_by_pk(
+      pk_columns: { id: $id }
+      _set: { gitea_org_and_repo: $gitea_org_and_repo }
+    ) {
+      gitea_org_and_repo
+    }
+  }
+`;
+export const CreateNewUserDocument = gql`
+  mutation createNewUser(
+    $email: String
+    $id: String
+    $photoURL: String
+    $displayName: String
+  ) {
+    insertUserOne(
+      object: {
+        email: $email
+        firebaseId: $id
+        photoUrl: $photoURL
+        displayName: $displayName
+      }
+      on_conflict: {
+        constraint: user_firebase_id_key
+        update_columns: updatedAt
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
+
+const defaultWrapper: SdkFunctionWrapper = (sdkFunction) => sdkFunction();
+export function getSdk(
+  client: GraphQLClient,
+  withWrapper: SdkFunctionWrapper = defaultWrapper,
+) {
+  return {
+    updateFirebaseId(
+      variables: UpdateFirebaseIdMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<UpdateFirebaseIdMutation> {
+      return withWrapper(() =>
+        client.request<UpdateFirebaseIdMutation>(
+          print(UpdateFirebaseIdDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    dataForPracticeToGradeEmpty(
+      variables: DataForPracticeToGradeEmptyQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<DataForPracticeToGradeEmptyQuery> {
+      return withWrapper(() =>
+        client.request<DataForPracticeToGradeEmptyQuery>(
+          print(DataForPracticeToGradeEmptyDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    updateFillEmptyHandouts(
+      variables: UpdateFillEmptyHandoutsMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<UpdateFillEmptyHandoutsMutation> {
+      return withWrapper(() =>
+        client.request<UpdateFillEmptyHandoutsMutation>(
+          print(UpdateFillEmptyHandoutsDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    getGitInfoForStudentYield(
+      variables: GetGitInfoForStudentYieldQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<GetGitInfoForStudentYieldQuery> {
+      return withWrapper(() =>
+        client.request<GetGitInfoForStudentYieldQuery>(
+          print(GetGitInfoForStudentYieldDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    dataForUpdateToStudentLink(
+      variables: DataForUpdateToStudentLinkQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<DataForUpdateToStudentLinkQuery> {
+      return withWrapper(() =>
+        client.request<DataForUpdateToStudentLinkQuery>(
+          print(DataForUpdateToStudentLinkDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    linkStudentToUser(
+      variables: LinkStudentToUserMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<LinkStudentToUserMutation> {
+      return withWrapper(() =>
+        client.request<LinkStudentToUserMutation>(
+          print(LinkStudentToUserDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    fillEmptyForGrade(
+      variables: FillEmptyForGradeMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<FillEmptyForGradeMutation> {
+      return withWrapper(() =>
+        client.request<FillEmptyForGradeMutation>(
+          print(FillEmptyForGradeDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    getPracticeToGradeByCourseIdAndPracticeId(
+      variables: GetPracticeToGradeByCourseIdAndPracticeIdQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<GetPracticeToGradeByCourseIdAndPracticeIdQuery> {
+      return withWrapper(() =>
+        client.request<GetPracticeToGradeByCourseIdAndPracticeIdQuery>(
+          print(GetPracticeToGradeByCourseIdAndPracticeIdDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    insertPracticeToStudentWithGrades(
+      variables: InsertPracticeToStudentWithGradesMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<InsertPracticeToStudentWithGradesMutation> {
+      return withWrapper(() =>
+        client.request<InsertPracticeToStudentWithGradesMutation>(
+          print(InsertPracticeToStudentWithGradesDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    dataForPracticeToGradeByPracticeToCoursePk(
+      variables: DataForPracticeToGradeByPracticeToCoursePkQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<DataForPracticeToGradeByPracticeToCoursePkQuery> {
+      return withWrapper(() =>
+        client.request<DataForPracticeToGradeByPracticeToCoursePkQuery>(
+          print(DataForPracticeToGradeByPracticeToCoursePkDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    getStudentForMailSend(
+      variables?: GetStudentForMailSendQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<GetStudentForMailSendQuery> {
+      return withWrapper(() =>
+        client.request<GetStudentForMailSendQuery>(
+          print(GetStudentForMailSendDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    dataForSubmitHandoff(
+      variables: DataForSubmitHandoffQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<DataForSubmitHandoffQuery> {
+      return withWrapper(() =>
+        client.request<DataForSubmitHandoffQuery>(
+          print(DataForSubmitHandoffDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    mutationSubmitHandoff(
+      variables: MutationSubmitHandoffMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<MutationSubmitHandoffMutation> {
+      return withWrapper(() =>
+        client.request<MutationSubmitHandoffMutation>(
+          print(MutationSubmitHandoffDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    setSubmitedFalseOnEmpty(
+      variables: SetSubmitedFalseOnEmptyMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<SetSubmitedFalseOnEmptyMutation> {
+      return withWrapper(() =>
+        client.request<SetSubmitedFalseOnEmptyMutation>(
+          print(SetSubmitedFalseOnEmptyDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    getPracticeToPromotionMeta(
+      variables: GetPracticeToPromotionMetaQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<GetPracticeToPromotionMetaQuery> {
+      return withWrapper(() =>
+        client.request<GetPracticeToPromotionMetaQuery>(
+          print(GetPracticeToPromotionMetaDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    updateGiteaOrgName(
+      variables: UpdateGiteaOrgNameMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<UpdateGiteaOrgNameMutation> {
+      return withWrapper(() =>
+        client.request<UpdateGiteaOrgNameMutation>(
+          print(UpdateGiteaOrgNameDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    onStudentYieldCreatedData(
+      variables: OnStudentYieldCreatedDataQueryVariables,
+      requestHeaders?: Headers,
+    ): Promise<OnStudentYieldCreatedDataQuery> {
+      return withWrapper(() =>
+        client.request<OnStudentYieldCreatedDataQuery>(
+          print(OnStudentYieldCreatedDataDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    onStudentYieldMutation(
+      variables: OnStudentYieldMutationMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<OnStudentYieldMutationMutation> {
+      return withWrapper(() =>
+        client.request<OnStudentYieldMutationMutation>(
+          print(OnStudentYieldMutationDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+    createNewUser(
+      variables?: CreateNewUserMutationVariables,
+      requestHeaders?: Headers,
+    ): Promise<CreateNewUserMutation> {
+      return withWrapper(() =>
+        client.request<CreateNewUserMutation>(
+          print(CreateNewUserDocument),
+          variables,
+          requestHeaders,
+        ),
+      );
+    },
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;
