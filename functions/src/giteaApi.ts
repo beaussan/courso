@@ -1,7 +1,33 @@
 import { giteaClient } from './config';
+import { CommitItem } from './hasuraActions/types';
 export type Maybe<T> = T | null;
-
+/*
 interface CommitItem {
+  commit_message: string;
+  commit_author_date: string;
+  commit_author_email: string;
+  commit_author_name: string;
+  commit_committer_date: string;
+  commit_committer_email: string;
+  commit_committer_name: string;
+  commit_tree_created: string;
+  commit_tree_sha: string;
+  commit_tree_url: string;
+  commit_url: string;
+  created: string;
+  html_url: string;
+  sha: string;
+  url: string;
+  parents: [
+    {
+      created: string;
+      sha: string;
+      url: string;
+    },
+  ];
+}
+*/
+interface CommitItemFromApi {
   author?: {
     avatar_url: string;
     created: string;
@@ -62,11 +88,33 @@ export const fetchAllCommits = async (
   return fetchAllCommitsWithPages(orgAndRepo);
 };
 
+const mapCommitItem = (item: CommitItemFromApi): CommitItem => {
+  const commit = item?.commit;
+  return {
+    commit_author_date: commit?.author?.date,
+    commit_author_email: commit?.author?.email,
+    commit_author_name: commit?.author?.name,
+    commit_committer_date: commit?.committer?.date,
+    commit_committer_email: commit?.committer?.email,
+    commit_committer_name: commit?.committer?.name,
+    commit_message: commit.message,
+    commit_url: commit.url,
+    commit_tree_created: commit.tree.created,
+    commit_tree_sha: commit.tree.sha,
+    commit_tree_url: commit.tree.url,
+    created: item.created,
+    html_url: item.html_url,
+    parents: JSON.stringify(item.parents),
+    sha: item.sha,
+    url: item.url,
+  };
+};
+
 const fetchAllCommitsWithPages = async (
   orgAndRepo: string,
   page = 1,
 ): Promise<CommitItem[]> => {
-  const currentPage = await giteaClient.get<CommitItem[]>(
+  const currentPage = await giteaClient.get<CommitItemFromApi[]>(
     `/repos/${orgAndRepo}/commits`,
     {
       page,
@@ -87,12 +135,13 @@ const fetchAllCommitsWithPages = async (
       ? headers['x-pagecount']
       : parseInt(headers?.['x-pagecount'] ?? '0');
   const hasMore = parsedPageCount > page;
+  const mappedData = data.map(mapCommitItem);
 
   if (hasMore) {
     const more = await fetchAllCommitsWithPages(orgAndRepo, page + 1);
-    return [...data, ...more];
+    return [...mappedData, ...more];
   }
-  return data;
+  return mappedData;
 };
 
 interface FileGetData {

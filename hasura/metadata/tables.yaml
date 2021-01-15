@@ -264,6 +264,22 @@
     - name: student
       using:
         foreign_key_constraint_on: student_id
+    - name: student_feedback
+      using:
+        manual_configuration:
+          remote_table:
+            schema: public
+            name: practice_to_student_feedback
+          column_mapping:
+            id: practice_to_student_id
+    - name: student_grade
+      using:
+        manual_configuration:
+          remote_table:
+            schema: public
+            name: practice_to_student_grade
+          column_mapping:
+            id: practice_to_student_id
   array_relationships:
     - name: practice_to_student_yields
       using:
@@ -276,10 +292,11 @@
     - role: student
       permission:
         columns:
+          - course_practice_id
           - created_at
           - id
-          - course_practice_id
           - student_id
+          - submited
           - updated_at
         filter:
           student:
@@ -300,6 +317,63 @@
           - updated_at
         filter: {}
         allow_aggregations: true
+- table:
+    schema: public
+    name: practice_to_student_feedback
+  object_relationships:
+    - name: practice_to_student
+      using:
+        manual_configuration:
+          remote_table:
+            schema: public
+            name: practice_to_student
+          column_mapping:
+            practice_to_student_id: id
+  select_permissions:
+    - role: student
+      permission:
+        columns:
+          - feedback
+          - practice_to_student_id
+        filter:
+          _and:
+            - practice_to_student:
+                practice_to_course:
+                  can_student_see_feedback:
+                    _eq: true
+            - practice_to_student:
+                student:
+                  user_id:
+                    _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: practice_to_student_grade
+  object_relationships:
+    - name: practice_to_student
+      using:
+        manual_configuration:
+          remote_table:
+            schema: public
+            name: practice_to_student
+          column_mapping:
+            practice_to_student_id: id
+  select_permissions:
+    - role: student
+      permission:
+        columns:
+          - practice_to_student_id
+          - grade
+          - grade_detail
+        filter:
+          _and:
+            - practice_to_student:
+                practice_to_course:
+                  can_student_see_grade:
+                    _eq: true
+            - practice_to_student:
+                student:
+                  user_id:
+                    _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: practice_to_student_grade_metric

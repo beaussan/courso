@@ -9,6 +9,7 @@ import { submitHandoff } from './submitHandoff';
 import { refreshGrades } from './refreshGrades';
 import { fillEmptyYields } from './fillEmptyYields';
 import { getGitFileData } from './getGitFileData';
+import { getGitLogData } from './getGitLogData';
 
 const app = express();
 app.use(express.json());
@@ -29,6 +30,7 @@ const actionMap: ActionMap = {
   refreshGrades,
   fillEmptyYields,
   getGitFileData,
+  getGitLogData,
 };
 
 app.post('/', async (req, res) => {

@@ -5,6 +5,7 @@ import React, {
   useContext,
 } from 'react';
 import { CloseButton } from '../CloseButton';
+import { Portal } from 'react-portal';
 
 interface FullScreenContextType {
   isOpen: boolean;
@@ -55,14 +56,16 @@ const Body: React.FC = ({ children }) => {
   }
 
   return (
-    <div className="fixed top-0 left-0 bottom-0 right-0 h-screen w-screen">
-      <div className="h-screen w-screen relative p-4 bg-gray-100">
-        <div className="z-10 absolute right-2 top-2 bg-white h-8 w-8 inline-flex items-center justify-center rounded-full">
-          <CloseButton onClick={() => toggle()} />
+    <Portal node={document && document.getElementById('fullscreen-container')}>
+      <div className="fixed top-0 left-0 bottom-0 right-0 h-screen w-screen">
+        <div className="h-screen w-screen relative p-4 bg-gray-100">
+          <div className="z-10 absolute right-2 top-2 bg-white h-8 w-8 inline-flex items-center justify-center rounded-full">
+            <CloseButton onClick={() => toggle()} />
+          </div>
+          {children}
         </div>
-        {children}
       </div>
-    </div>
+    </Portal>
   );
 };
 

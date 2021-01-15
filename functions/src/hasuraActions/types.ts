@@ -1,6 +1,7 @@
 type Maybe<T> = T | null;
 
 type uuid = string;
+type jsonb = string;
 
 type SendStudentClaimMailOutput = {
   nmbMailSent: number;
@@ -40,6 +41,26 @@ type GetGitFileDataOutput = {
   url: string;
 };
 
+export type CommitItem = {
+  author_profile_picture?: Maybe<string>;
+  commit_message?: Maybe<string>;
+  commit_author_date?: Maybe<string>;
+  commit_author_email?: Maybe<string>;
+  commit_author_name?: Maybe<string>;
+  commit_committer_date?: Maybe<string>;
+  commit_committer_email?: Maybe<string>;
+  commit_committer_name?: Maybe<string>;
+  commit_tree_created?: Maybe<string>;
+  commit_tree_sha?: Maybe<string>;
+  commit_tree_url?: Maybe<string>;
+  commit_url?: Maybe<string>;
+  created?: Maybe<string>;
+  html_url?: Maybe<string>;
+  sha?: Maybe<string>;
+  url?: Maybe<string>;
+  parents?: Maybe<jsonb>;
+};
+
 type YieldForHandoff = {
   yieldId: uuid;
   value: string;
@@ -53,6 +74,11 @@ type getGitFileDataArgs = {
 type fillEmptyYieldsArgs = {
   course_id: uuid;
   practice_id: uuid;
+};
+
+type getGitLogDataArgs = {
+  practice_yield_expected_output_id: uuid;
+  practice_to_student_yield_id: uuid;
 };
 
 type linkStudentToUserArgs = {
@@ -100,6 +126,11 @@ type Query = {
   getGitFileData?: {
     input: getGitFileDataArgs;
     output: Maybe<GetGitFileDataOutput>;
+  };
+
+  getGitLogData: {
+    input: getGitLogDataArgs;
+    output: Maybe<Array<CommitItem>>;
   };
 };
 

@@ -2,6 +2,7 @@ import {
   // GetPracticeToStudentForGradingQuery,
   Practice_Yield_Expected_Output_Types_Enum,
   useGetFileDataFromServerQuery,
+  useGetLogDataFromServerQuery,
 } from '../../../../generated/graphql';
 import React from 'react';
 import { DebugJson } from '../../../../components/DebugJson';
@@ -15,6 +16,12 @@ import { Chip } from '../../../../components/Chip';
 import { useGradeItemDataSetup } from './useGradeItemDataSetup';
 import { PracticeToStudentForGradingFrontEdit } from './Mapper';
 import { Loader } from '../../../../components/Loader';
+import Emoji from 'react-emoji-render';
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
+import remarkEmoji from 'remark-emoji';
+import { format } from 'date-fns';
+import { enGB } from 'date-fns/locale';
 
 gql`
   mutation insertPracticeToStudentGradeMetric(
@@ -50,6 +57,33 @@ gql`
       encoding
     }
   }
+  query getLogDataFromServer(
+    $practice_to_student_yield_id: uuid!
+    $practice_yield_expected_output_id: uuid!
+  ) {
+    getGitLogData(
+      practice_to_student_yield_id: $practice_to_student_yield_id
+      practice_yield_expected_output_id: $practice_yield_expected_output_id
+    ) {
+      author_profile_picture
+      commit_message
+      commit_author_date
+      commit_author_email
+      commit_author_name
+      commit_committer_date
+      commit_committer_email
+      commit_committer_name
+      commit_tree_created
+      commit_tree_sha
+      commit_tree_url
+      commit_url
+      created
+      html_url
+      sha
+      url
+      parents
+    }
+  }
 `;
 
 type ItemGrading = PracticeToStudentForGradingFrontEdit;
@@ -62,7 +96,9 @@ type DisplayGitItem = React.FC<{
   value: ItemToLook;
   gitFileData: string;
 }>;
-
+/*
+TODO : avoid duplication
+ */
 const withGitFileData = (Component: DisplayGitItem): DisplayItem => {
   function Comp(props: { expected: ItemGrading; value: ItemToLook }) {
     const [{ data, fetching, error }, retry] = useGetFileDataFromServerQuery({
@@ -72,7 +108,7 @@ const withGitFileData = (Component: DisplayGitItem): DisplayItem => {
       },
     });
     if (fetching) {
-      return <Loader />;
+      return <Loader visible />;
     }
     if (error) {
       return (
@@ -91,14 +127,68 @@ const withGitFileData = (Component: DisplayGitItem): DisplayItem => {
     const value = atob(data.getGitFileData.content);
     return <Component {...props} gitFileData={value} />;
   }
+
   return Comp;
 };
 
-const Dummy: DisplayItem = (props) => (
-  <div>
-    TODO COMPARE :<DebugJson json={props} />{' '}
-  </div>
-);
+const GitLogFiles: DisplayItem = (props) => {
+  const [{ data, fetching, error }, retry] = useGetLogDataFromServerQuery({
+    variables: {
+      practice_yield_expected_output_id: props.expected.expectedOutput.id,
+      practice_to_student_yield_id: props.value.practiceToStudentYieldId,
+    },
+  });
+  if (fetching) {
+    return <Loader visible />;
+  }
+  if (error) {
+    return (
+      <div>
+        <div>En error occured...</div>
+        <Button onClick={() => retry()}>Retry</Button>
+      </div>
+    );
+  }
+  if (!data || !data.getGitLogData) {
+    return <div>No data</div>;
+  }
+
+  return (
+    <>
+      <Button onClick={() => retry()}>Retry</Button>
+      <ol className="overflow-scroll h-full space-y-4">
+        {data.getGitLogData.map((item) => (
+          <li className="bg-white p-2 rounded-lg">
+            <div className="flex items-center mb-2">
+              <img
+                src={item.author_profile_picture ?? ''}
+                className="w-10 h-10 mr-2 rounded-lg"
+                alt="committer"
+              />
+              <div>
+                {item.commit_author_email} - {item.commit_author_name} at{' '}
+                {format(new Date(item.commit_author_date ?? 0), 'Pp', {
+                  locale: enGB,
+                })}
+                <a
+                  target="_blank"
+                  rel="nofollow noopener noreferrer"
+                  className="text-blue-400 underline ml-2"
+                  href={item.html_url ?? ''}
+                >
+                  Detail
+                </a>
+              </div>
+            </div>
+            <ReactMarkdown className="prose" plugins={[gfm, remarkEmoji]}>
+              {`## ${item.commit_message}` ?? ''}
+            </ReactMarkdown>
+          </li>
+        ))}
+      </ol>
+    </>
+  );
+};
 
 const DummyGit: DisplayGitItem = (props) => (
   <div>
@@ -163,7 +253,7 @@ const mapToShow: Record<
 > = {
   COMPARE_CODE_FILE: CompareCodeFile,
   COMPARE_GIT_FILE: withGitFileData(CompareGitCodeFile),
-  SHOW_GIT_LOG: Dummy,
+  SHOW_GIT_LOG: GitLogFiles,
   SHOW_GIT_FILE: withGitFileData(DummyGit),
   MANUAL_GIT_FILE_REVIEW: withGitFileData(DummyGit),
   MANUAL: ManualCompare,
