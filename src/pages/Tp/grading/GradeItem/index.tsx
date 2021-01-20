@@ -1,5 +1,4 @@
 import {
-  // GetPracticeToStudentForGradingQuery,
   Practice_Yield_Expected_Output_Types_Enum,
   useGetFileDataFromServerQuery,
   useGetLogDataFromServerQuery,
@@ -16,7 +15,6 @@ import { Chip } from '../../../../components/Chip';
 import { useGradeItemDataSetup } from './useGradeItemDataSetup';
 import { PracticeToStudentForGradingFrontEdit } from './Mapper';
 import { Loader } from '../../../../components/Loader';
-import Emoji from 'react-emoji-render';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import remarkEmoji from 'remark-emoji';
