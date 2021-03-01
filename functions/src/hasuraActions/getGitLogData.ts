@@ -4,10 +4,8 @@ import { https } from 'firebase-functions';
 import { fetchAllCommits } from '../giteaApi';
 import * as gravatar from 'gravatar-url';
 
-const getProfilePicFromEmail = async (
-  email: string,
-): Promise<string | undefined> => {
-  return gravatar(email, { default: 'retro' });
+const getProfilePicFromEmail = (email: string): string => {
+  return gravatar(email || 'unknown@yopmail.com', { default: 'retro' });
 };
 
 export const getGitLogData: ActionMap['getGitLogData'] = async ({
@@ -42,7 +40,7 @@ export const getGitLogData: ActionMap['getGitLogData'] = async ({
   }
 
   const commits = await fetchAllCommits(orgAndRepo);
-
+  /*
   await Promise.all(
     commits
       .map((item) => item.commit_author_email)
@@ -51,13 +49,12 @@ export const getGitLogData: ActionMap['getGitLogData'] = async ({
       .filter((value, index, array) => array.indexOf(value) !== index)
       .map(getProfilePicFromEmail),
   );
+ */
 
-  return Promise.all(
-    commits.map(async (item) => ({
-      ...item,
-      author_profile_picture: await getProfilePicFromEmail(
-        item.commit_author_email ?? 'none',
-      ),
-    })),
-  );
+  return commits.map((item) => ({
+    ...item,
+    author_profile_picture: getProfilePicFromEmail(
+      item.commit_author_email ?? 'none',
+    ),
+  }));
 };
