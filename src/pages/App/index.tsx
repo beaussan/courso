@@ -21,7 +21,7 @@ const links = [
     url: '/app/dash',
     roles: ['teacher', 'student'],
   },
-  { icon: Book, label: 'TPs', url: '/app/tp', roles: ['teacher'] },
+  { icon: Book, label: 'Practice', url: '/app/tp', roles: ['teacher'] },
   {
     icon: Library,
     label: 'Course',

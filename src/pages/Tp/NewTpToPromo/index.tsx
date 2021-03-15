@@ -36,8 +36,6 @@ gql`
   ) {
     insert_practice_to_course(
       objects: {
-        can_student_see_feedback: false
-        can_student_see_grade: false
         close_date: $close_date
         open_date: $open_date
         practice_id: $practice_id

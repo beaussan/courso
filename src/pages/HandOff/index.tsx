@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-const HandOffIndexPage = lazy(() => import('./HandOffIndex'));
+const HandOffIndexPage = lazy(() => import('./list/index'));
 const HandOffIdPage = lazy(() => import('./HandOffId'));
 
 export const HandOff = () => {

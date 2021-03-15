@@ -22,8 +22,6 @@ gql`
     title
     practice_to_courses {
       id
-      can_student_see_feedback
-      can_student_see_grade
       close_date
       open_date
       course {
@@ -69,13 +67,7 @@ const TpCard: React.FC<{ data: PracticeListItemFragment }> = ({ data }) => {
               items={['Course', 'Open date', 'Close date', 'State']}
             />
             <Table.TBody items={data.practice_to_courses}>
-              {({
-                open_date,
-                close_date,
-                course,
-                can_student_see_feedback,
-                can_student_see_grade,
-              }) => {
+              {({ open_date, close_date, course }) => {
                 const openDate = new Date(open_date);
                 const closeDate = new Date(close_date);
 

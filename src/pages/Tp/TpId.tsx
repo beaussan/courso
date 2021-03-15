@@ -42,8 +42,6 @@ const fragments = {
           }
         }
       }
-      can_student_see_feedback
-      can_student_see_grade
       close_date
       created_at
       gitea_org_name
@@ -138,7 +136,6 @@ const TpIdHandouts: React.FC<{ data: PracticeToPromoDetailsFragment }> = ({
           close={new Date(data.close_date)}
         />
       </div>
-      <pre>{data.can_student_see_feedback}</pre>
       <div>
         Got {data.course.student_to_courses.length - amountLeft}/
         {data.course.student_to_courses.length} handouts

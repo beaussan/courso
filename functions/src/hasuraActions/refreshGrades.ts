@@ -27,8 +27,6 @@ gql`
       }
     ) {
       practiceToCourseId: id
-      can_student_see_feedback
-      can_student_see_grade
       is_open
       open_date
     }

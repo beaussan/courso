@@ -49,7 +49,6 @@ export const userWithCorrectToken$ = user(auth).pipe(
 export const correctToken$ = userWithCorrectToken$.pipe(
   switchMap((user) => (user ? from(user.getIdToken()) : of(undefined))),
   distinctUntilChanged(),
-  log('correctToken$ :'),
   shareReplay({
     bufferSize: 1,
     refCount: true,

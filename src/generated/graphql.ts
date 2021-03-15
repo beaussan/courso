@@ -148,6 +148,8 @@ export type YieldForHandoff = {
 /** columns and relationships of "course" */
 export type Course = {
   __typename?: 'course';
+  can_student_see_feedback: Scalars['Boolean'];
+  can_student_see_grade: Scalars['Boolean'];
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   name: Scalars['String'];
@@ -238,6 +240,8 @@ export type Course_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Course_Bool_Exp>>>;
   _not?: Maybe<Course_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Course_Bool_Exp>>>;
+  can_student_see_feedback?: Maybe<Boolean_Comparison_Exp>;
+  can_student_see_grade?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
@@ -257,6 +261,8 @@ export enum Course_Constraint {
 
 /** input type for inserting data into table "course" */
 export type Course_Insert_Input = {
+  can_student_see_feedback?: Maybe<Scalars['Boolean']>;
+  can_student_see_grade?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
@@ -328,6 +334,8 @@ export type Course_On_Conflict = {
 
 /** ordering options when selecting data from "course" */
 export type Course_Order_By = {
+  can_student_see_feedback?: Maybe<Order_By>;
+  can_student_see_grade?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -345,6 +353,10 @@ export type Course_Pk_Columns_Input = {
 /** select columns of table "course" */
 export enum Course_Select_Column {
   /** column name */
+  CanStudentSeeFeedback = 'can_student_see_feedback',
+  /** column name */
+  CanStudentSeeGrade = 'can_student_see_grade',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
@@ -358,6 +370,8 @@ export enum Course_Select_Column {
 
 /** input type for updating data in table "course" */
 export type Course_Set_Input = {
+  can_student_see_feedback?: Maybe<Scalars['Boolean']>;
+  can_student_see_grade?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
@@ -367,6 +381,10 @@ export type Course_Set_Input = {
 
 /** update columns of table "course" */
 export enum Course_Update_Column {
+  /** column name */
+  CanStudentSeeFeedback = 'can_student_see_feedback',
+  /** column name */
+  CanStudentSeeGrade = 'can_student_see_grade',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1488,8 +1506,6 @@ export type Practice_Set_Input = {
 /** columns and relationships of "practice_to_course" */
 export type Practice_To_Course = {
   __typename?: 'practice_to_course';
-  can_student_see_feedback: Scalars['Boolean'];
-  can_student_see_grade: Scalars['Boolean'];
   close_date?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
   course: Course;
@@ -1567,8 +1583,6 @@ export type Practice_To_Course_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Practice_To_Course_Bool_Exp>>>;
   _not?: Maybe<Practice_To_Course_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Practice_To_Course_Bool_Exp>>>;
-  can_student_see_feedback?: Maybe<Boolean_Comparison_Exp>;
-  can_student_see_grade?: Maybe<Boolean_Comparison_Exp>;
   close_date?: Maybe<Timestamptz_Comparison_Exp>;
   course?: Maybe<Course_Bool_Exp>;
   course_id?: Maybe<Uuid_Comparison_Exp>;
@@ -1592,8 +1606,6 @@ export enum Practice_To_Course_Constraint {
 
 /** input type for inserting data into table "practice_to_course" */
 export type Practice_To_Course_Insert_Input = {
-  can_student_see_feedback?: Maybe<Scalars['Boolean']>;
-  can_student_see_grade?: Maybe<Scalars['Boolean']>;
   close_date?: Maybe<Scalars['timestamptz']>;
   course?: Maybe<Course_Obj_Rel_Insert_Input>;
   course_id?: Maybe<Scalars['uuid']>;
@@ -1681,8 +1693,6 @@ export type Practice_To_Course_On_Conflict = {
 
 /** ordering options when selecting data from "practice_to_course" */
 export type Practice_To_Course_Order_By = {
-  can_student_see_feedback?: Maybe<Order_By>;
-  can_student_see_grade?: Maybe<Order_By>;
   close_date?: Maybe<Order_By>;
   course?: Maybe<Course_Order_By>;
   course_id?: Maybe<Order_By>;
@@ -1704,10 +1714,6 @@ export type Practice_To_Course_Pk_Columns_Input = {
 /** select columns of table "practice_to_course" */
 export enum Practice_To_Course_Select_Column {
   /** column name */
-  CanStudentSeeFeedback = 'can_student_see_feedback',
-  /** column name */
-  CanStudentSeeGrade = 'can_student_see_grade',
-  /** column name */
   CloseDate = 'close_date',
   /** column name */
   CourseId = 'course_id',
@@ -1727,8 +1733,6 @@ export enum Practice_To_Course_Select_Column {
 
 /** input type for updating data in table "practice_to_course" */
 export type Practice_To_Course_Set_Input = {
-  can_student_see_feedback?: Maybe<Scalars['Boolean']>;
-  can_student_see_grade?: Maybe<Scalars['Boolean']>;
   close_date?: Maybe<Scalars['timestamptz']>;
   course_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -1741,10 +1745,6 @@ export type Practice_To_Course_Set_Input = {
 
 /** update columns of table "practice_to_course" */
 export enum Practice_To_Course_Update_Column {
-  /** column name */
-  CanStudentSeeFeedback = 'can_student_see_feedback',
-  /** column name */
-  CanStudentSeeGrade = 'can_student_see_grade',
   /** column name */
   CloseDate = 'close_date',
   /** column name */
@@ -6343,25 +6343,36 @@ export type SubmitHandoffMutation = { __typename?: 'mutation_root' } & {
 export type HandoffListQueryVariables = Exact<{ [key: string]: never }>;
 
 export type HandoffListQuery = { __typename?: 'query_root' } & {
-  practice_to_course: Array<
-    { __typename?: 'practice_to_course' } & Pick<
-      Practice_To_Course,
-      'is_open' | 'open_date' | 'created_at' | 'close_date' | 'id'
-    > & {
-        practice: { __typename?: 'practice' } & Pick<
-          Practice,
-          'title' | 'created_at' | 'id'
-        >;
-        course: { __typename?: 'course' } & Pick<Course, 'name' | 'years'>;
-        practice_to_students: Array<
-          { __typename?: 'practice_to_student' } & Pick<
-            Practice_To_Student,
-            'id' | 'student_id' | 'created_at'
-          >
-        >;
-      }
-  >;
+  course: Array<{ __typename?: 'course' } & HandoffCourseFragment>;
 };
+
+export type HandoffCourseFragment = { __typename?: 'course' } & Pick<
+  Course,
+  | 'can_student_see_feedback'
+  | 'can_student_see_grade'
+  | 'created_at'
+  | 'name'
+  | 'years'
+  | 'id'
+> & {
+    practice_to_courses: Array<
+      { __typename?: 'practice_to_course' } & Pick<
+        Practice_To_Course,
+        'is_open' | 'open_date' | 'created_at' | 'close_date' | 'id'
+      > & {
+          practice: { __typename?: 'practice' } & Pick<
+            Practice,
+            'title' | 'created_at' | 'id'
+          >;
+          practice_to_students: Array<
+            { __typename?: 'practice_to_student' } & Pick<
+              Practice_To_Student,
+              'id' | 'student_id' | 'created_at'
+            >
+          >;
+        }
+    >;
+  };
 
 export type LinkStudentToUserMutationVariables = Exact<{
   linkId: Scalars['uuid'];
@@ -6449,8 +6460,6 @@ export type PracticeToPromoDetailsFragment = {
   __typename?: 'practice_to_course';
 } & Pick<
   Practice_To_Course,
-  | 'can_student_see_feedback'
-  | 'can_student_see_grade'
   | 'close_date'
   | 'created_at'
   | 'gitea_org_name'
@@ -6584,11 +6593,7 @@ export type PracticeListItemFragment = { __typename?: 'practice' } & Pick<
     practice_to_courses: Array<
       { __typename?: 'practice_to_course' } & Pick<
         Practice_To_Course,
-        | 'id'
-        | 'can_student_see_feedback'
-        | 'can_student_see_grade'
-        | 'close_date'
-        | 'open_date'
+        'id' | 'close_date' | 'open_date'
       > & { course: { __typename?: 'course' } & Pick<Course, 'name' | 'years'> }
     >;
   };
@@ -6844,6 +6849,33 @@ export const YieldPracticeInputFragmentDoc = gql`
     description
   }
 `;
+export const HandoffCourseFragmentDoc = gql`
+  fragment HandoffCourse on course {
+    can_student_see_feedback
+    can_student_see_grade
+    created_at
+    name
+    years
+    id
+    practice_to_courses(order_by: { close_date: desc }) {
+      practice {
+        title
+        created_at
+        id
+      }
+      practice_to_students {
+        id
+        student_id
+        created_at
+      }
+      is_open
+      open_date
+      created_at
+      close_date
+      id
+    }
+  }
+`;
 export const GradeMetricInputYieldFragmentDoc = gql`
   fragment GradeMetricInputYield on practice_yield {
     id
@@ -6876,8 +6908,6 @@ export const PracticeToPromoDetailsFragmentDoc = gql`
         }
       }
     }
-    can_student_see_feedback
-    can_student_see_grade
     close_date
     created_at
     gitea_org_name
@@ -6893,8 +6923,6 @@ export const PracticeListItemFragmentDoc = gql`
     title
     practice_to_courses {
       id
-      can_student_see_feedback
-      can_student_see_grade
       close_date
       open_date
       course {
@@ -7144,28 +7172,11 @@ export function useSubmitHandoffMutation() {
 }
 export const HandoffListDocument = gql`
   query handoffList {
-    practice_to_course(order_by: { close_date: desc }) {
-      practice {
-        title
-        created_at
-        id
-      }
-      course {
-        name
-        years
-      }
-      practice_to_students {
-        id
-        student_id
-        created_at
-      }
-      is_open
-      open_date
-      created_at
-      close_date
-      id
+    course(order_by: { created_at: desc }) {
+      ...HandoffCourse
     }
   }
+  ${HandoffCourseFragmentDoc}
 `;
 
 export function useHandoffListQuery(
@@ -7262,8 +7273,6 @@ export const InsertNewPracticeToCourseDocument = gql`
   ) {
     insert_practice_to_course(
       objects: {
-        can_student_see_feedback: false
-        can_student_see_grade: false
         close_date: $close_date
         open_date: $open_date
         practice_id: $practice_id

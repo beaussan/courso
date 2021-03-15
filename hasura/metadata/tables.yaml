@@ -31,7 +31,12 @@
     - role: student
       permission:
         columns:
+          - can_student_see_feedback
+          - can_student_see_grade
+          - created_at
+          - id
           - name
+          - updated_at
           - years
         filter:
           student_to_courses:
@@ -41,11 +46,13 @@
     - role: teacher
       permission:
         columns:
-          - name
-          - years
+          - can_student_see_feedback
+          - can_student_see_grade
           - created_at
-          - updated_at
           - id
+          - name
+          - updated_at
+          - years
         filter: {}
         allow_aggregations: true
   update_permissions:
@@ -163,26 +170,22 @@
       permission:
         check: {}
         columns:
-          - can_student_see_feedback
-          - can_student_see_grade
           - close_date
+          - course_id
           - id
           - open_date
           - practice_id
-          - course_id
         backend_only: false
   select_permissions:
     - role: student
       permission:
         columns:
-          - can_student_see_feedback
-          - can_student_see_grade
           - close_date
+          - course_id
           - created_at
           - id
           - open_date
           - practice_id
-          - course_id
           - updated_at
         computed_fields:
           - is_open
@@ -192,20 +195,17 @@
               student:
                 user_id:
                   _eq: X-Hasura-User-Id
-        allow_aggregations: true
     - role: teacher
       permission:
         columns:
-          - can_student_see_feedback
-          - can_student_see_grade
+          - id
+          - course_id
+          - practice_id
+          - open_date
           - close_date
           - created_at
-          - gitea_org_name
-          - id
-          - open_date
-          - practice_id
-          - course_id
           - updated_at
+          - gitea_org_name
         computed_fields:
           - is_open
         filter: {}
@@ -214,15 +214,13 @@
     - role: teacher
       permission:
         columns:
-          - can_student_see_feedback
-          - can_student_see_grade
           - close_date
+          - course_id
           - id
           - open_date
           - practice_id
-          - course_id
         filter: {}
-        check: null
+        check: {}
   delete_permissions:
     - role: teacher
       permission:
@@ -333,18 +331,19 @@
     - role: student
       permission:
         columns:
-          - feedback
           - practice_to_student_id
+          - feedback
         filter:
           _and:
-            - practice_to_student:
-                practice_to_course:
-                  can_student_see_feedback:
-                    _eq: true
             - practice_to_student:
                 student:
                   user_id:
                     _eq: X-Hasura-User-Id
+            - practice_to_student:
+                practice_to_course:
+                  course:
+                    can_student_see_feedback:
+                      _eq: true
 - table:
     schema: public
     name: practice_to_student_grade
@@ -367,13 +366,14 @@
         filter:
           _and:
             - practice_to_student:
-                practice_to_course:
-                  can_student_see_grade:
-                    _eq: true
-            - practice_to_student:
                 student:
                   user_id:
                     _eq: X-Hasura-User-Id
+            - practice_to_student:
+                practice_to_course:
+                  course:
+                    can_student_see_grade:
+                      _eq: true
 - table:
     schema: public
     name: practice_to_student_grade_metric
