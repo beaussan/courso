@@ -1,8 +1,7 @@
 import React from 'react';
-import { PageHead } from '@components/PageHead';
+import { PageHead } from '@/components/PageHead';
 import gql from 'graphql-tag';
-import { useHandoffListQuery } from '@generated/graphql';
-import { DebugJson } from '@components/DebugJson';
+import { useHandoffListQuery } from '@/generated/graphql';
 import { HandoffCourse } from './HandoffCourse';
 
 gql`

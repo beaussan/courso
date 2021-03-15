@@ -1,12 +1,12 @@
-import { HandoffCourseFragment } from '@generated/graphql';
-import { DebugJson } from '@components/DebugJson';
+import { HandoffCourseFragment } from '@/generated/graphql';
+import React from 'react';
 import { isAfter, isBefore } from 'date-fns';
-import { CardBox } from '@components/CardBox';
-import { useNavigate } from 'react-router';
-import { Chip } from '@components/Chip';
+import { CardBox } from '@/components/CardBox';
+import { Chip } from '@/components/Chip';
 import { FormatTimeLeft } from './FormatTimeLeft';
 import { FormatDates } from './FormatDates';
-import { Button } from '@components/Button';
+import { Button } from '@/components/Button';
+import { useNavigate } from 'react-router';
 
 type PracticeHandoff = HandoffCourseFragment['practice_to_courses'][0];
 
@@ -49,7 +49,13 @@ const PracticeHandoff = ({ practice }: { practice: PracticeHandoff }) => {
       {!isSubmited && !isOver ? (
         <div className="flex justify-between items-center mt-4">
           <FormatTimeLeft close={close} open={open} />
-          <Button>Submit</Button>
+          <Button
+            onClick={() => {
+              navigate(`./${practice.id}`);
+            }}
+          >
+            Submit
+          </Button>
         </div>
       ) : null}
     </CardBox>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTimeInterval } from '@hooks/useTimeInterval';
+import { useTimeInterval } from '@/hooks/useTimeInterval';
 import {
   formatDuration,
   intervalToDuration,

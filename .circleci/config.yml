@@ -69,10 +69,10 @@ jobs:
       - setup_deps
       - run:
           name: Build front end
-          command: REACT_APP_SENTRY_KEY=${<< parameters.sentry-key >>} REACT_APP_FIREBASE_CONFIG=${<< parameters.firebase-config >>} REACT_APP_HASURA_ENDPOINT=${<< parameters.hasura-endpoint >>} yarn build
+          command: VITE_SENTRY_KEY=${<< parameters.sentry-key >>} VITE_FIREBASE_CONFIG=${<< parameters.firebase-config >>} VITE_HASURA_ENDPOINT=${<< parameters.hasura-endpoint >>} yarn build
       - run:
           name: Copy deployment artifacts to workspace
-          command: cp build/ /tmp/<< parameters.bulild-dest >> -r
+          command: cp dist/ /tmp/<< parameters.bulild-dest >> -r
       - store_artifacts:
           path: /tmp/<< parameters.bulild-dest >>
       - persist_to_workspace:

@@ -1,23 +1,29 @@
 {
-  "extends": "./tsconfig.extend.json",
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "typeRoots": ["src/customTypings", "node_modules/@types"],
-    "baseUrl": "src",
-    "noFallthroughCasesInSwitch": true
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "noImplicitReturns": true,
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "types": ["vite/client"],
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react",
+    "esModuleInterop": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "typeRoots": ["src/customTypings", "node_modules/@types"]
   },
+  "compileOnSave": true,
   "include": ["src"]
 }

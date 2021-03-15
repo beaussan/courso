@@ -15,11 +15,11 @@ import * as Sentry from '@sentry/react';
 import { authExchange } from '@urql/exchange-auth';
 import { correctToken$ } from './TokenService';
 
-if (!process.env.REACT_APP_HASURA_ENDPOINT) {
+if (!import.meta.env.VITE_HASURA_ENDPOINT) {
   throw new Error('Config not found');
 }
 
-const BASE_URL = process.env.REACT_APP_HASURA_ENDPOINT;
+const BASE_URL = import.meta.env.VITE_HASURA_ENDPOINT;
 
 // const WS_BASE_URL = `wss://${BASE_URL}`;
 const HTTP_BASE_URL = `https://${BASE_URL}`;

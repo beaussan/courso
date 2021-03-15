@@ -1,9 +1,9 @@
 import React from 'react';
-import { PageHead } from '@components/PageHead';
+import { PageHead } from '@/components/PageHead';
 import gql from 'graphql-tag';
-import { useHandoffListQuery } from '@generated/graphql';
-import { CardBox } from '@components/CardBox';
-import { Chip } from '@components/Chip';
+import { useHandoffListQuery } from '@/generated/graphql';
+import { CardBox } from '@/components/CardBox';
+import { Chip } from '@/components/Chip';
 import { format, formatDistanceToNowStrict, isAfter, isBefore } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';

@@ -3,11 +3,11 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
 
-if (!process.env.REACT_APP_FIREBASE_CONFIG) {
+if (!import.meta.env.VITE_FIREBASE_CONFIG) {
   throw new Error('Config not found');
 }
 
-const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG);
+const firebaseConfig = JSON.parse(`${import.meta.env.VITE_FIREBASE_CONFIG}`);
 
 export const app = firebase.initializeApp(firebaseConfig);
 export const fn = app.functions('europe-west1');
