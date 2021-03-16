@@ -6,6 +6,9 @@ import svgr from 'vite-plugin-svgr';
 // https://vitejs.dev/config/
 const config: UserConfigExport = defineConfig({
   plugins: [reactRefresh(), tsconfigPaths(), svgr()],
+  build: {
+    sourcemap: true,
+  },
 });
 
 export default config;

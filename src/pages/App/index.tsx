@@ -5,10 +5,10 @@ import { ReactComponent as HomeSvg } from '../../icons/solid/home.svg';
 import { ReactComponent as Book } from '../../icons/solid/book-open.svg';
 import { ReactComponent as Library } from '../../icons/solid/library.svg';
 import { Dash } from '../Dash';
-import { useCurrentUserRole } from '../../hooks/useCurrentUserRole';
-import { RouteWithRule } from '../../components/RouteWithRule';
+import { useCurrentUserRole } from '@/hooks/useCurrentUserRole';
+import { RouteWithRule } from '@/components/RouteWithRule';
 
-import { Loader } from '../../components/Loader';
+import { Loader } from '@/components/Loader';
 
 const Tp = lazy(() => import('../Tp'));
 const Course = lazy(() => import('../Courses'));

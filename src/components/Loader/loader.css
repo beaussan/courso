@@ -1,0 +1,24 @@
+.react-spinner-loader-svg svg {
+  -webkit-transform-origin: 50% 65%;
+  transform-origin: 50% 65%;
+}
+
+.react-spinner-loader-svg svg path {
+  animation: dash 2s cubic-bezier(0.35, 0.04, 0.63, 0.95) infinite;
+  stroke-width: 0.09rem;
+}
+
+@keyframes dash {
+  from {
+    stroke-dasharray: 85;
+    stroke-dashoffset: 70;
+  }
+  50% {
+    stroke-dasharray: 69;
+    stroke-dashoffset: 60;
+  }
+  to {
+    stroke-dasharray: 85;
+    stroke-dashoffset: 70;
+  }
+}
