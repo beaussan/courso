@@ -90,6 +90,7 @@ gql`
           name
           points
           feedbacks
+          created_at
           practice_to_student_grade_metrics_aggregate(
             where: {
               practice_to_student_yield: {

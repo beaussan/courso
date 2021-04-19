@@ -6758,7 +6758,7 @@ export type GetPracticeToStudentForGradingQuery = {
               practice_yield_grade_metrics: Array<
                 { __typename?: 'practice_yield_grade_metric' } & Pick<
                   Practice_Yield_Grade_Metric,
-                  'id' | 'name' | 'points' | 'feedbacks'
+                  'id' | 'name' | 'points' | 'feedbacks' | 'created_at'
                 > & {
                     practice_to_student_grade_metrics_aggregate: {
                       __typename?: 'practice_to_student_grade_metric_aggregate';
@@ -7591,6 +7591,7 @@ export const GetPracticeToStudentForGradingDocument = gql`
           name
           points
           feedbacks
+          created_at
           practice_to_student_grade_metrics_aggregate(
             where: {
               practice_to_student_yield: {

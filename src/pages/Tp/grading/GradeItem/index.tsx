@@ -328,11 +328,14 @@ export const GradeItem: React.FC<{
                 Student {position + 1} over {data.studentYields.length}
               </div>
               {data.gradeMetrics.map((metric) => (
-                <GradeAndFeedbackItem
-                  metric={metric}
-                  key={metric.id}
-                  graded={!!maybeGradeForStudents[metric.id]}
-                />
+                <>
+                  <GradeAndFeedbackItem
+                    metric={metric}
+                    key={metric.id}
+                    graded={!!maybeGradeForStudents[metric.id]}
+                  />
+                  <DebugJson json={metric}></DebugJson>
+                </>
               ))}
               <div className="flex justify-center space-x-4">
                 <Button
