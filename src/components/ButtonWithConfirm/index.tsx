@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, ButtonProps, ButtonVariant } from '../Button';
-import { Modal, ModalIcons } from '../Modal';
+import { Button, ButtonProps, ButtonVariant } from '@/components/Button';
+import { Modal, ModalIcons } from '@/components/Modal';
 
 type Variants = 'confirm' | 'delete';
 

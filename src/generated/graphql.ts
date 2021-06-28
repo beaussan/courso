@@ -6348,12 +6348,7 @@ export type HandoffListQuery = { __typename?: 'query_root' } & {
 
 export type HandoffCourseFragment = { __typename?: 'course' } & Pick<
   Course,
-  | 'can_student_see_feedback'
-  | 'can_student_see_grade'
-  | 'created_at'
-  | 'name'
-  | 'years'
-  | 'id'
+  'name' | 'years' | 'id'
 > & {
     practice_to_courses: Array<
       { __typename?: 'practice_to_course' } & Pick<
@@ -6851,9 +6846,6 @@ export const YieldPracticeInputFragmentDoc = gql`
 `;
 export const HandoffCourseFragmentDoc = gql`
   fragment HandoffCourse on course {
-    can_student_see_feedback
-    can_student_see_grade
-    created_at
     name
     years
     id

@@ -16,14 +16,16 @@
     "strict": true,
     "target": "ESNext",
     "module": "ESNext",
-    "jsx": "react",
-    "esModuleInterop": false,
+    "jsx": "preserve",
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
-    "typeRoots": ["src/customTypings", "node_modules/@types"]
+    "typeRoots": ["src/customTypings", "node_modules/@types"],
+    "allowJs": true
   },
   "compileOnSave": true,
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

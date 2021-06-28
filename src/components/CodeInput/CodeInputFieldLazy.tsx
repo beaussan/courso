@@ -1,20 +1,8 @@
-import React, { lazy, Suspense } from 'react';
-import { Loader } from '../Loader';
-import { SupportedLanguages } from './supportedLangs';
-const CodeInputField = lazy(() => import('./index'));
+import React from 'react';
+import { Loader } from '@/components/Loader';
+import dynamic from 'next/dynamic';
 
-export interface CodeInputFieldLazyProps {
-  lang: SupportedLanguages;
-  name: string;
-  label: string;
-  isReadonly?: boolean;
-}
-export const CodeInputFieldLazy: React.FC<CodeInputFieldLazyProps> = (
-  props,
-) => {
-  return (
-    <Suspense fallback={<Loader />}>
-      <CodeInputField {...props} />
-    </Suspense>
-  );
-};
+export const CodeInputFieldLazy = dynamic(() => import('./index'), {
+  loading: () => <Loader />,
+  ssr: false,
+});

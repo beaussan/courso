@@ -1,9 +1,8 @@
-import { useFormikFieldValue } from '../../hooks/useFormikFieldValue';
+import { useFormikFieldValue } from '@/hooks/useFormikFieldValue';
 import { FieldArray } from 'formik';
 import React from 'react';
-import { Button } from '../Button';
-import { ReactComponent as Add } from '../../icons/outline/plus.svg';
-import { ReactComponent as Remove } from '../../icons/outline/minus.svg';
+import { Button } from '@/components/Button';
+import { MinusIcon, PlusIcon } from '@heroicons/react/outline';
 
 interface TArrayInput<T> {
   children: (
@@ -50,7 +49,7 @@ export const ArrayInput = <T extends unknown>({
                 onClick={() => {
                   arrayHelpers.push(defaultNewItem());
                 }}
-                Icon={Add}
+                Icon={PlusIcon}
                 type="button"
                 variant="secondary"
               >
@@ -64,4 +63,4 @@ export const ArrayInput = <T extends unknown>({
   );
 };
 
-ArrayInput.RemoveIcon = Remove;
+ArrayInput.RemoveIcon = MinusIcon;

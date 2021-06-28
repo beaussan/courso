@@ -1,11 +1,14 @@
-import React from 'react';
-import { ReactComponent as Exclamation } from '../../icons/outline/exclamation.svg';
+import React, { ReactNode } from 'react';
+import { ExclamationIcon } from '@heroicons/react/outline';
 
-export const Alert: React.FC<{
+export type AlertProps = {
   title?: string;
   className?: string;
   noShadow?: boolean;
-}> = ({ children, className, title, noShadow }) => {
+  children?: ReactNode;
+};
+
+export const Alert = ({ children, className, title, noShadow }: AlertProps) => {
   return (
     <div
       className={`rounded-md bg-yellow-50 p-4 ${
@@ -14,7 +17,7 @@ export const Alert: React.FC<{
     >
       <div className="flex">
         <div className="flex-shrink-0">
-          <Exclamation className="h-5 w-5 text-yellow-400" />
+          <ExclamationIcon className="h-5 w-5 text-yellow-400" />
         </div>
         <div className="ml-3">
           {title && (

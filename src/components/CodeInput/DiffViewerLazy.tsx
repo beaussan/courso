@@ -1,18 +1,8 @@
-import React, { lazy, Suspense } from 'react';
-import { Loader } from '../Loader';
-import { SupportedLanguages } from './supportedLangs';
-const CodeInputField = lazy(() => import('./DiffViewer'));
+import React from 'react';
+import { Loader } from '@/components/Loader';
+import dynamic from 'next/dynamic';
 
-export interface CodeInputFieldLazyProps {
-  lang: SupportedLanguages;
-  expected?: string;
-  got?: string;
-  className?: string;
-}
-export const DiffViewerLazy: React.FC<CodeInputFieldLazyProps> = (props) => {
-  return (
-    <Suspense fallback={<Loader />}>
-      <CodeInputField {...props} />
-    </Suspense>
-  );
-};
+export const DiffViewerLazy = dynamic(() => import('./DiffViewer'), {
+  loading: () => <Loader />,
+  ssr: false,
+});

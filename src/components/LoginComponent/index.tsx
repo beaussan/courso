@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
-import { Loader } from '../Loader';
-import { useAuthState } from '../../hooks/useAuthState';
-import { LoadingFullScreen } from '../../pages/LoadingFullScreen';
-import { Logo } from '../Logo';
+import { Loader } from '@/components/Loader';
+import { LoadingFullScreen } from '@/layouts/LoadingFullScreen';
+import { Logo } from '@/components/Logo';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 const buttonClass =
   'w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:outline-none focus:border-blue-300 focus:ring-blue transition duration-150 ease-in-out';
@@ -33,22 +33,22 @@ type LoginCmpTypes = {
   hero: string;
 };
 export const LoginComponent: React.FC<LoginCmpTypes> = ({ hero }) => {
-  const authState = useAuthState();
+  const { authStatus } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [hasInitialLoading, setHasInitialLoading] = useState(false);
 
   useEffect(() => {
     if (!hasInitialLoading) {
-      if (authState === 'out' || authState === 'in') {
+      if (authStatus === 'out' || authStatus === 'in') {
         setHasInitialLoading(true);
       }
     }
-  }, [authState, hasInitialLoading]);
+  }, [authStatus, hasInitialLoading]);
 
   const showSmallLoader =
-    loading || (authState === 'loading' && hasInitialLoading);
+    loading || (authStatus === 'loading' && hasInitialLoading);
 
-  if ((authState === 'loading' || !authState) && !hasInitialLoading) {
+  if ((authStatus === 'loading' || !authStatus) && !hasInitialLoading) {
     return <LoadingFullScreen debugName="Login component" />;
   }
 

@@ -1,4 +1,4 @@
-import { useListTpYieldTypesQuery } from '../generated/graphql';
+import { useListTpYieldTypesQuery } from '@/generated/graphql';
 import gql from 'graphql-tag';
 
 gql`

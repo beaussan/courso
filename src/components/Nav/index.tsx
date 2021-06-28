@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
-import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { ReactComponent as Menu } from '../../icons/solid/menu.svg';
-import { auth } from '../../services/firebase';
-import { Logo } from '../Logo';
-import { ActiveNavLink } from '../ActivNavLink';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { auth } from '@/services/firebase';
+import { Logo } from '@/components/Logo';
+import { NavLink } from '@/components/ActivNavLink';
+import { MenuIcon } from '@heroicons/react/outline';
 
 export interface NavItem {
   icon: React.ElementType;
@@ -66,8 +66,8 @@ const NavBody: React.FC<NavBodyProps> = ({ links }) => {
   return (
     <nav className="mt-5 flex-1 px-2 bg-indigo-700 space-y-1">
       {links.map(({ label, icon: Icon, url }) => (
-        <ActiveNavLink
-          to={url}
+        <NavLink
+          href={url}
           key={url}
           className="group flex items-center px-2 py-2 text-base font-medium rounded-md text-white transition"
           activeClassName="bg-indigo-800"
@@ -76,7 +76,7 @@ const NavBody: React.FC<NavBodyProps> = ({ links }) => {
         >
           <Icon className="mr-3 h-6 w-6 text-indigo-400 group-focus:text-indigo-300 transition ease-in-out duration-150" />
           {label}
-        </ActiveNavLink>
+        </NavLink>
       ))}
     </nav>
   );
@@ -185,7 +185,7 @@ export const Nav: React.FC<NavProps> = ({ links, children }) => {
             aria-label="Open sidebar"
             onClick={() => setIsOpen(true)}
           >
-            <Menu className="h-6 w-6" />
+            <MenuIcon className="h-6 w-6" />
           </button>
         </div>
         <main

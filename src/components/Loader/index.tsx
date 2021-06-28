@@ -1,10 +1,12 @@
 import React from 'react';
-import './loader.css';
 
 // Inspired from react-loader-spinner triangle spinner
 interface LoaderPropsCustom {
   height?: number;
   radius?: number;
+  /**
+   * @deprecated deprecated
+   */
   visible?: boolean | string;
   width?: number;
   label?: string;

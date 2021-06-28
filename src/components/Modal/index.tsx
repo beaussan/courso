@@ -1,30 +1,32 @@
 import React, { ReactNode, useCallback, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
-import { ReactComponent as Exclamation } from '../../icons/outline/exclamation.svg';
-import { ReactComponent as EditIcon } from '../../icons/outline/pencil.svg';
-import { ReactComponent as InfoIcon } from '../../icons/outline/information-circle.svg';
-import { ReactComponent as AddIcon } from '../../icons/solid/plus.svg';
-import { CloseButton } from '../CloseButton';
+import { CloseButton } from '@/components/CloseButton';
 import { Portal } from 'react-portal';
+import {
+  ExclamationIcon,
+  InformationCircleIcon,
+  PencilIcon,
+  PlusIcon,
+} from '@heroicons/react/outline';
 
 const Warn = () => (
   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-    <Exclamation className="w-6 h-6 text-red-600" />
+    <ExclamationIcon className="w-6 h-6 text-red-600" />
   </div>
 );
 const Edit = () => (
   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-green-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-    <EditIcon className="w-6 h-6 text-green-600" />
+    <PencilIcon className="w-6 h-6 text-green-600" />
   </div>
 );
 const Info = () => (
   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-blue-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-    <InfoIcon className="w-6 h-6 text-blue-600" />
+    <InformationCircleIcon className="w-6 h-6 text-blue-600" />
   </div>
 );
 const Add = () => (
   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-blue-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-    <AddIcon className="w-6 h-6 text-blue-600" />
+    <PlusIcon className="w-6 h-6 text-blue-600" />
   </div>
 );
 

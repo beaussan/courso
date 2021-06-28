@@ -15,22 +15,22 @@ import * as Sentry from '@sentry/react';
 import { authExchange } from '@urql/exchange-auth';
 import { correctToken$ } from './TokenService';
 
-if (!import.meta.env.VITE_HASURA_ENDPOINT) {
+if (!process.env.NEXT_PUBLIC_HASURA_ENDPOINT) {
   throw new Error('Config not found');
 }
 
-const BASE_URL = import.meta.env.VITE_HASURA_ENDPOINT;
+const BASE_URL = process.env.NEXT_PUBLIC_HASURA_ENDPOINT;
 
 // const WS_BASE_URL = `wss://${BASE_URL}`;
 const HTTP_BASE_URL = `https://${BASE_URL}`;
 const ENDPOINT = '/v1/graphql';
 // const WS_URL = `${WS_BASE_URL}${ENDPOINT}`;
-const HTTP_URL = `${HTTP_BASE_URL}${ENDPOINT}`;
+export const HTTP_URL = `${HTTP_BASE_URL}${ENDPOINT}`;
 
 export const createAnonymousClient = () => {
   return createClient({
     url: HTTP_URL,
-    suspense: true,
+    suspense: false,
     exchanges: [devtoolsExchange, dedupExchange, cacheExchange, fetchExchange],
   });
 };
@@ -38,7 +38,7 @@ export const createAnonymousClient = () => {
 export const createAuthClient = () => {
   return createClient({
     url: HTTP_URL,
-    suspense: true,
+    suspense: false,
     exchanges: [
       devtoolsExchange,
       errorExchange({

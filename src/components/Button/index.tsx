@@ -3,18 +3,21 @@ import clsx from 'clsx';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'warn';
 
-export interface ButtonProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+export type ButtonProps = Omit<
+  React.ComponentPropsWithoutRef<'button'>,
+  'className'
+> & {
   children?: React.ReactNode;
   variant?: ButtonVariant;
   disabled?: boolean;
   Icon?: React.ElementType;
   isFull?: boolean;
+  /**
+   * This is deprecated
+   * @deprecated
+   */
   className?: string;
-}
+};
 
 export const Button: React.FC<ButtonProps> = ({
   children,

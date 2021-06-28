@@ -12,7 +12,7 @@ import {
 import { user, authState } from 'rxfire/auth';
 import { docData } from 'rxfire/firestore';
 import { httpsCallable } from 'rxfire/functions';
-import { log } from '../utils/rxLog';
+import { log } from '@/utils/rxLog';
 import firebase from 'firebase';
 
 type StateTypes = 'in' | 'out';

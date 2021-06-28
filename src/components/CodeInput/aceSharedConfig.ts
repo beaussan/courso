@@ -1,4 +1,3 @@
-import '../../fonts/monoid/monoid.css';
 import 'react-ace';
 import { IAceEditorProps, ISplitEditorProps } from 'react-ace';
 /*

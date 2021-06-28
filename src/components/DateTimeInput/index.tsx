@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { ReactComponent as CalendarIcon } from '../../icons/outline/calendar.svg';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { enGB } from 'date-fns/locale';
@@ -7,6 +6,7 @@ import { Field, useFormikContext } from 'formik';
 import { FieldProps } from 'formik/dist/Field';
 import { addMinutes, isBefore } from 'date-fns';
 import clsx from 'clsx';
+import { CalendarIcon } from '@heroicons/react/outline';
 
 // TODO readonly, if it's there to handle
 const ExampleCustomInput: React.FC<{
