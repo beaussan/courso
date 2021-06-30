@@ -7,6 +7,7 @@
     "@headlessui/react": "0.0.0-2472521",
     "@heroicons/react": "1.0.1",
     "@popperjs/core": "2.5.4",
+    "@radix-ui/react-polymorphic": "0.0.12",
     "@sentry/react": "5.29.2",
     "@tailwindcss/aspect-ratio": "0.2.1",
     "@tailwindcss/forms": "0.3.3",
@@ -61,8 +62,8 @@
     "gen:gql": "graphql-codegen --config codegen.js",
     "format:write": "prettier --write \".\" --ignore-path .gitignore",
     "format:check": "prettier --list-different \".\" --ignore-path .gitignore",
-    "storybook2": "start-storybook -p 6006",
-    "build-storybook2": "build-storybook -s public"
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -87,10 +88,13 @@
     "@graphql-codegen/typescript": "1.19.0",
     "@graphql-codegen/typescript-operations": "1.17.12",
     "@graphql-codegen/typescript-urql": "2.0.3",
-    "@storybook/addon-actions": "^6.3.0-rc.11",
-    "@storybook/addon-essentials": "^6.3.0-rc.11",
-    "@storybook/addon-links": "^6.3.0-rc.11",
-    "@storybook/react": "^6.3.0-rc.11",
+    "@storybook/addon-a11y": "6.3.1",
+    "@storybook/addon-actions": "^6.3.1",
+    "@storybook/addon-essentials": "^6.3.1",
+    "@storybook/addon-links": "^6.3.1",
+    "@storybook/addon-postcss": "2.0.0",
+    "@storybook/addon-storysource": "6.3.1",
+    "@storybook/react": "^6.3.1",
     "@types/papaparse": "5.2.4",
     "@types/react-datepicker": "3.1.2",
     "@types/react-loader-spinner": "3.1.2",
@@ -111,8 +115,10 @@
     "prettier": "2.2.1",
     "pretty-quick": "3.1.0",
     "rollup-plugin-polyfill-node": "0.6.2",
+    "storybook-addon-next-router": "2.0.4",
     "storybook-builder-vite": "^0.0.9",
     "tailwindcss": "2.2.2",
+    "tsconfig-paths-webpack-plugin": "3.5.1",
     "vite": "^2.3.8",
     "vite-plugin-svgr": "^0.3.0",
     "vite-tsconfig-paths": "^3.3.13"

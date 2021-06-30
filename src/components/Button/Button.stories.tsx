@@ -18,16 +18,24 @@ export const Showcase = () => {
           <div className="flex items-center w-full">
             <div className="mx-auto">{variant}</div>
           </div>
-          <Button variant={variant}>do the thing</Button>
-          <Button variant={variant} disabled>
-            do the thing
-          </Button>
-          <Button variant={variant} Icon={ArrowNarrowLeftIcon}>
-            do the thing
-          </Button>
-          <Button variant={variant} Icon={ArrowNarrowLeftIcon} disabled>
-            do the thing
-          </Button>
+          <div>
+            <Button variant={variant}>do the thing</Button>
+          </div>
+          <div>
+            <Button variant={variant} disabled>
+              do the thing
+            </Button>
+          </div>
+          <div>
+            <Button variant={variant} Icon={ArrowNarrowLeftIcon}>
+              do the thing
+            </Button>
+          </div>
+          <div>
+            <Button variant={variant} Icon={ArrowNarrowLeftIcon} disabled>
+              do the thing
+            </Button>
+          </div>
           <Button variant={variant} isFull>
             do the thing
           </Button>

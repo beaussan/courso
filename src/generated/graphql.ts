@@ -6159,6 +6159,154 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type GradeMetricInputYieldFragment = {
+  __typename?: 'practice_yield';
+} & Pick<Practice_Yield, 'id' | 'meta' | 'method' | 'name' | 'description'>;
+
+export type GetYieldsForNewGradeTpQueryVariables = Exact<{
+  tpId: Scalars['uuid'];
+}>;
+
+export type GetYieldsForNewGradeTpQuery = { __typename?: 'query_root' } & {
+  practice_by_pk?: Maybe<
+    { __typename?: 'practice' } & Pick<Practice, 'id' | 'title'> & {
+        practice_yields: Array<
+          { __typename?: 'practice_yield' } & GradeMetricInputYieldFragment
+        >;
+      }
+  >;
+};
+
+export type InsertYieldGradeMetricNewDataMutationVariables = Exact<{
+  data: Array<Practice_Yield_Expected_Output_Insert_Input>;
+}>;
+
+export type InsertYieldGradeMetricNewDataMutation = {
+  __typename?: 'mutation_root';
+} & {
+  insert_practice_yield_expected_output?: Maybe<
+    { __typename?: 'practice_yield_expected_output_mutation_response' } & Pick<
+      Practice_Yield_Expected_Output_Mutation_Response,
+      'affected_rows'
+    > & {
+        returning: Array<
+          { __typename?: 'practice_yield_expected_output' } & Pick<
+            Practice_Yield_Expected_Output,
+            'id'
+          >
+        >;
+      }
+  >;
+};
+
+export type InsertNewPracticeToCourseMutationVariables = Exact<{
+  close_date: Scalars['timestamptz'];
+  open_date: Scalars['timestamptz'];
+  practice_id: Scalars['uuid'];
+  courseId: Scalars['uuid'];
+}>;
+
+export type InsertNewPracticeToCourseMutation = {
+  __typename?: 'mutation_root';
+} & {
+  insert_practice_to_course?: Maybe<
+    { __typename?: 'practice_to_course_mutation_response' } & {
+      returning: Array<
+        { __typename?: 'practice_to_course' } & Pick<Practice_To_Course, 'id'>
+      >;
+    }
+  >;
+};
+
+export type InsertFeedbackForGradeMetricMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  feedback: Scalars['jsonb'];
+}>;
+
+export type InsertFeedbackForGradeMetricMutation = {
+  __typename?: 'mutation_root';
+} & {
+  update_practice_yield_grade_metric_by_pk?: Maybe<
+    { __typename?: 'practice_yield_grade_metric' } & Pick<
+      Practice_Yield_Grade_Metric,
+      'feedbacks' | 'id' | 'name' | 'points'
+    >
+  >;
+};
+
+export type InsertPracticeToStudentGradeMetricMutationVariables = Exact<{
+  objects: Array<Practice_To_Student_Grade_Metric_Insert_Input>;
+}>;
+
+export type InsertPracticeToStudentGradeMetricMutation = {
+  __typename?: 'mutation_root';
+} & {
+  insert_practice_to_student_grade_metric?: Maybe<
+    {
+      __typename?: 'practice_to_student_grade_metric_mutation_response';
+    } & Pick<
+      Practice_To_Student_Grade_Metric_Mutation_Response,
+      'affected_rows'
+    > & {
+        returning: Array<
+          { __typename?: 'practice_to_student_grade_metric' } & Pick<
+            Practice_To_Student_Grade_Metric,
+            | 'created_at'
+            | 'feedback'
+            | 'percent_grade'
+            | 'id'
+            | 'practice_to_student_yield_id'
+            | 'practice_yield_grade_metric_id'
+          >
+        >;
+      }
+  >;
+};
+
+export type GetFileDataFromServerQueryVariables = Exact<{
+  practice_to_student_yield_id: Scalars['uuid'];
+  practice_yield_expected_output_id: Scalars['uuid'];
+}>;
+
+export type GetFileDataFromServerQuery = { __typename?: 'query_root' } & {
+  getGitFileData?: Maybe<
+    { __typename?: 'GetGitFileDataOutput' } & Pick<
+      GetGitFileDataOutput,
+      'content' | 'encoding'
+    >
+  >;
+};
+
+export type GetLogDataFromServerQueryVariables = Exact<{
+  practice_to_student_yield_id: Scalars['uuid'];
+  practice_yield_expected_output_id: Scalars['uuid'];
+}>;
+
+export type GetLogDataFromServerQuery = { __typename?: 'query_root' } & {
+  getGitLogData: Array<
+    { __typename?: 'CommitItem' } & Pick<
+      CommitItem,
+      | 'author_profile_picture'
+      | 'commit_message'
+      | 'commit_author_date'
+      | 'commit_author_email'
+      | 'commit_author_name'
+      | 'commit_committer_date'
+      | 'commit_committer_email'
+      | 'commit_committer_name'
+      | 'commit_tree_created'
+      | 'commit_tree_sha'
+      | 'commit_tree_url'
+      | 'commit_url'
+      | 'created'
+      | 'html_url'
+      | 'sha'
+      | 'url'
+      | 'parents'
+    >
+  >;
+};
+
 export type CurrentUserQueryVariables = Exact<{
   firebaseId: Scalars['String'];
 }>;
@@ -6353,101 +6501,139 @@ export type HandoffCourseFragment = { __typename?: 'course' } & Pick<
     practice_to_courses: Array<
       { __typename?: 'practice_to_course' } & Pick<
         Practice_To_Course,
-        'is_open' | 'open_date' | 'created_at' | 'close_date' | 'id'
+        'is_open' | 'open_date' | 'close_date' | 'id'
       > & {
           practice: { __typename?: 'practice' } & Pick<
             Practice,
-            'title' | 'created_at' | 'id'
+            'title' | 'id'
           >;
           practice_to_students: Array<
             { __typename?: 'practice_to_student' } & Pick<
               Practice_To_Student,
-              'id' | 'student_id' | 'created_at'
+              'id' | 'student_id'
             >
           >;
         }
     >;
   };
 
-export type LinkStudentToUserMutationVariables = Exact<{
-  linkId: Scalars['uuid'];
+export type GetPracticeToStudentForGradingQueryVariables = Exact<{
+  courseId: Scalars['uuid'];
+  practiceId: Scalars['uuid'];
 }>;
 
-export type LinkStudentToUserMutation = { __typename?: 'mutation_root' } & {
-  linkStudentToUser?: Maybe<
-    { __typename?: 'linkStudentToUserOutput' } & Pick<
-      LinkStudentToUserOutput,
-      'ok'
-    >
-  >;
-};
-
-export type GradeMetricInputYieldFragment = {
-  __typename?: 'practice_yield';
-} & Pick<Practice_Yield, 'id' | 'meta' | 'method' | 'name' | 'description'>;
-
-export type GetYieldsForNewGradeTpQueryVariables = Exact<{
-  tpId: Scalars['uuid'];
-}>;
-
-export type GetYieldsForNewGradeTpQuery = { __typename?: 'query_root' } & {
-  practice_by_pk?: Maybe<
-    { __typename?: 'practice' } & Pick<Practice, 'id' | 'title'> & {
-        practice_yields: Array<
-          { __typename?: 'practice_yield' } & GradeMetricInputYieldFragment
-        >;
-      }
-  >;
-};
-
-export type InsertYieldGradeMetricNewDataMutationVariables = Exact<{
-  data: Array<Practice_Yield_Expected_Output_Insert_Input>;
-}>;
-
-export type InsertYieldGradeMetricNewDataMutation = {
-  __typename?: 'mutation_root';
+export type GetPracticeToStudentForGradingQuery = {
+  __typename?: 'query_root';
 } & {
-  insert_practice_yield_expected_output?: Maybe<
-    { __typename?: 'practice_yield_expected_output_mutation_response' } & Pick<
-      Practice_Yield_Expected_Output_Mutation_Response,
-      'affected_rows'
-    > & {
-        returning: Array<
+  practice_to_course: Array<
+    { __typename?: 'practice_to_course' } & {
+      practice_to_students: Array<
+        { __typename?: 'practice_to_student' } & Pick<
+          Practice_To_Student,
+          'grade'
+        > & { student: { __typename?: 'student' } & Pick<Student, 'full_name'> }
+      >;
+      course: { __typename?: 'course' } & {
+        student_to_courses_aggregate: {
+          __typename?: 'student_to_course_aggregate';
+        } & {
+          aggregate?: Maybe<
+            { __typename?: 'student_to_course_aggregate_fields' } & Pick<
+              Student_To_Course_Aggregate_Fields,
+              'count'
+            >
+          >;
+        };
+      };
+    }
+  >;
+  practice_yield: Array<
+    { __typename?: 'practice_yield' } & Pick<Practice_Yield, 'id' | 'name'> & {
+        practice_to_student_yields: Array<
+          {
+            __typename?: 'practice_to_student_yield';
+          } & PracticeToStudentYieldForGradingFragment
+        >;
+        practice_yield_expected_outputs: Array<
           { __typename?: 'practice_yield_expected_output' } & Pick<
             Practice_Yield_Expected_Output,
-            'id'
-          >
+            | 'id'
+            | 'code_lang'
+            | 'expected'
+            | 'git_path'
+            | 'method'
+            | 'practice_yield_id'
+          > & {
+              practice_yield_grade_metrics: Array<
+                { __typename?: 'practice_yield_grade_metric' } & Pick<
+                  Practice_Yield_Grade_Metric,
+                  'id' | 'name' | 'points' | 'feedbacks' | 'created_at'
+                > & {
+                    practice_to_student_grade_metrics_aggregate: {
+                      __typename?: 'practice_to_student_grade_metric_aggregate';
+                    } & {
+                      aggregate?: Maybe<
+                        {
+                          __typename?: 'practice_to_student_grade_metric_aggregate_fields';
+                        } & Pick<
+                          Practice_To_Student_Grade_Metric_Aggregate_Fields,
+                          'count'
+                        >
+                      >;
+                      nodes: Array<
+                        {
+                          __typename?: 'practice_to_student_grade_metric';
+                        } & Pick<
+                          Practice_To_Student_Grade_Metric,
+                          | 'practice_to_student_yield_id'
+                          | 'practice_yield_grade_metric_id'
+                        >
+                      >;
+                    };
+                  }
+              >;
+            }
         >;
       }
   >;
 };
 
-export type GetPracticeForGradeMetricQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
+export type PracticeToStudentYieldForGradingFragment = {
+  __typename?: 'practice_to_student_yield';
+} & Pick<
+  Practice_To_Student_Yield,
+  'gitea_org_and_repo' | 'value' | 'practice_yield_id'
+> & { practiceToStudentYieldId: Practice_To_Student_Yield['id'] } & {
+    practice_to_student_grade_metrics: Array<
+      {
+        __typename?: 'practice_to_student_grade_metric';
+      } & PracticeToStudentGradeMetricForGradingFragment
+    >;
+  };
 
-export type GetPracticeForGradeMetricQuery = { __typename?: 'query_root' } & {
-  practice_by_pk?: Maybe<
-    { __typename?: 'practice' } & Pick<Practice, 'id' | 'title'>
-  >;
-};
+export type PracticeToStudentGradeMetricForGradingFragment = {
+  __typename?: 'practice_to_student_grade_metric';
+} & Pick<
+  Practice_To_Student_Grade_Metric,
+  | 'id'
+  | 'feedback'
+  | 'created_at'
+  | 'percent_grade'
+  | 'practice_yield_grade_metric_id'
+  | 'updated_at'
+>;
 
-export type InsertNewPracticeToCourseMutationVariables = Exact<{
-  close_date: Scalars['timestamptz'];
-  open_date: Scalars['timestamptz'];
+export type TriggerRefreshGradesMutationVariables = Exact<{
   practice_id: Scalars['uuid'];
-  courseId: Scalars['uuid'];
+  course_id: Scalars['uuid'];
 }>;
 
-export type InsertNewPracticeToCourseMutation = {
-  __typename?: 'mutation_root';
-} & {
-  insert_practice_to_course?: Maybe<
-    { __typename?: 'practice_to_course_mutation_response' } & {
-      returning: Array<
-        { __typename?: 'practice_to_course' } & Pick<Practice_To_Course, 'id'>
-      >;
-    }
+export type TriggerRefreshGradesMutation = { __typename?: 'mutation_root' } & {
+  refreshGrades?: Maybe<
+    { __typename?: 'RefreshGradesOutput' } & Pick<
+      RefreshGradesOutput,
+      'affected_rows'
+    >
   >;
 };
 
@@ -6581,6 +6767,16 @@ export type GetPromotionForTpAddQuery = { __typename?: 'query_root' } & {
   >;
 };
 
+export type GetPracticeForGradeMetricQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+export type GetPracticeForGradeMetricQuery = { __typename?: 'query_root' } & {
+  practice_by_pk?: Maybe<
+    { __typename?: 'practice' } & Pick<Practice, 'id' | 'title'>
+  >;
+};
+
 export type PracticeListItemFragment = { __typename?: 'practice' } & Pick<
   Practice,
   'id' | 'title'
@@ -6614,215 +6810,28 @@ export type CreateNewPracticeMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type InsertFeedbackForGradeMetricMutationVariables = Exact<{
-  id: Scalars['uuid'];
-  feedback: Scalars['jsonb'];
+export type LinkStudentToUserMutationVariables = Exact<{
+  linkId: Scalars['uuid'];
 }>;
 
-export type InsertFeedbackForGradeMetricMutation = {
-  __typename?: 'mutation_root';
-} & {
-  update_practice_yield_grade_metric_by_pk?: Maybe<
-    { __typename?: 'practice_yield_grade_metric' } & Pick<
-      Practice_Yield_Grade_Metric,
-      'feedbacks' | 'id' | 'name' | 'points'
+export type LinkStudentToUserMutation = { __typename?: 'mutation_root' } & {
+  linkStudentToUser?: Maybe<
+    { __typename?: 'linkStudentToUserOutput' } & Pick<
+      LinkStudentToUserOutput,
+      'ok'
     >
   >;
 };
 
-export type InsertPracticeToStudentGradeMetricMutationVariables = Exact<{
-  objects: Array<Practice_To_Student_Grade_Metric_Insert_Input>;
-}>;
-
-export type InsertPracticeToStudentGradeMetricMutation = {
-  __typename?: 'mutation_root';
-} & {
-  insert_practice_to_student_grade_metric?: Maybe<
-    {
-      __typename?: 'practice_to_student_grade_metric_mutation_response';
-    } & Pick<
-      Practice_To_Student_Grade_Metric_Mutation_Response,
-      'affected_rows'
-    > & {
-        returning: Array<
-          { __typename?: 'practice_to_student_grade_metric' } & Pick<
-            Practice_To_Student_Grade_Metric,
-            | 'created_at'
-            | 'feedback'
-            | 'percent_grade'
-            | 'id'
-            | 'practice_to_student_yield_id'
-            | 'practice_yield_grade_metric_id'
-          >
-        >;
-      }
-  >;
-};
-
-export type GetFileDataFromServerQueryVariables = Exact<{
-  practice_to_student_yield_id: Scalars['uuid'];
-  practice_yield_expected_output_id: Scalars['uuid'];
-}>;
-
-export type GetFileDataFromServerQuery = { __typename?: 'query_root' } & {
-  getGitFileData?: Maybe<
-    { __typename?: 'GetGitFileDataOutput' } & Pick<
-      GetGitFileDataOutput,
-      'content' | 'encoding'
-    >
-  >;
-};
-
-export type GetLogDataFromServerQueryVariables = Exact<{
-  practice_to_student_yield_id: Scalars['uuid'];
-  practice_yield_expected_output_id: Scalars['uuid'];
-}>;
-
-export type GetLogDataFromServerQuery = { __typename?: 'query_root' } & {
-  getGitLogData: Array<
-    { __typename?: 'CommitItem' } & Pick<
-      CommitItem,
-      | 'author_profile_picture'
-      | 'commit_message'
-      | 'commit_author_date'
-      | 'commit_author_email'
-      | 'commit_author_name'
-      | 'commit_committer_date'
-      | 'commit_committer_email'
-      | 'commit_committer_name'
-      | 'commit_tree_created'
-      | 'commit_tree_sha'
-      | 'commit_tree_url'
-      | 'commit_url'
-      | 'created'
-      | 'html_url'
-      | 'sha'
-      | 'url'
-      | 'parents'
-    >
-  >;
-};
-
-export type GetPracticeToStudentForGradingQueryVariables = Exact<{
-  courseId: Scalars['uuid'];
-  practiceId: Scalars['uuid'];
-}>;
-
-export type GetPracticeToStudentForGradingQuery = {
-  __typename?: 'query_root';
-} & {
-  practice_to_course: Array<
-    { __typename?: 'practice_to_course' } & {
-      practice_to_students: Array<
-        { __typename?: 'practice_to_student' } & Pick<
-          Practice_To_Student,
-          'grade'
-        > & { student: { __typename?: 'student' } & Pick<Student, 'full_name'> }
-      >;
-      course: { __typename?: 'course' } & {
-        student_to_courses_aggregate: {
-          __typename?: 'student_to_course_aggregate';
-        } & {
-          aggregate?: Maybe<
-            { __typename?: 'student_to_course_aggregate_fields' } & Pick<
-              Student_To_Course_Aggregate_Fields,
-              'count'
-            >
-          >;
-        };
-      };
-    }
-  >;
-  practice_yield: Array<
-    { __typename?: 'practice_yield' } & Pick<Practice_Yield, 'id' | 'name'> & {
-        practice_to_student_yields: Array<
-          {
-            __typename?: 'practice_to_student_yield';
-          } & PracticeToStudentYieldForGradingFragment
-        >;
-        practice_yield_expected_outputs: Array<
-          { __typename?: 'practice_yield_expected_output' } & Pick<
-            Practice_Yield_Expected_Output,
-            | 'id'
-            | 'code_lang'
-            | 'expected'
-            | 'git_path'
-            | 'method'
-            | 'practice_yield_id'
-          > & {
-              practice_yield_grade_metrics: Array<
-                { __typename?: 'practice_yield_grade_metric' } & Pick<
-                  Practice_Yield_Grade_Metric,
-                  'id' | 'name' | 'points' | 'feedbacks' | 'created_at'
-                > & {
-                    practice_to_student_grade_metrics_aggregate: {
-                      __typename?: 'practice_to_student_grade_metric_aggregate';
-                    } & {
-                      aggregate?: Maybe<
-                        {
-                          __typename?: 'practice_to_student_grade_metric_aggregate_fields';
-                        } & Pick<
-                          Practice_To_Student_Grade_Metric_Aggregate_Fields,
-                          'count'
-                        >
-                      >;
-                      nodes: Array<
-                        {
-                          __typename?: 'practice_to_student_grade_metric';
-                        } & Pick<
-                          Practice_To_Student_Grade_Metric,
-                          | 'practice_to_student_yield_id'
-                          | 'practice_yield_grade_metric_id'
-                        >
-                      >;
-                    };
-                  }
-              >;
-            }
-        >;
-      }
-  >;
-};
-
-export type PracticeToStudentYieldForGradingFragment = {
-  __typename?: 'practice_to_student_yield';
-} & Pick<
-  Practice_To_Student_Yield,
-  'gitea_org_and_repo' | 'value' | 'practice_yield_id'
-> & { practiceToStudentYieldId: Practice_To_Student_Yield['id'] } & {
-    practice_to_student_grade_metrics: Array<
-      {
-        __typename?: 'practice_to_student_grade_metric';
-      } & PracticeToStudentGradeMetricForGradingFragment
-    >;
-  };
-
-export type PracticeToStudentGradeMetricForGradingFragment = {
-  __typename?: 'practice_to_student_grade_metric';
-} & Pick<
-  Practice_To_Student_Grade_Metric,
-  | 'id'
-  | 'feedback'
-  | 'created_at'
-  | 'percent_grade'
-  | 'practice_yield_grade_metric_id'
-  | 'updated_at'
->;
-
-export type TriggerRefreshGradesMutationVariables = Exact<{
-  practice_id: Scalars['uuid'];
-  course_id: Scalars['uuid'];
-}>;
-
-export type TriggerRefreshGradesMutation = { __typename?: 'mutation_root' } & {
-  refreshGrades?: Maybe<
-    { __typename?: 'RefreshGradesOutput' } & Pick<
-      RefreshGradesOutput,
-      'affected_rows'
-    >
-  >;
-};
-
+export const GradeMetricInputYieldFragmentDoc = gql`
+  fragment GradeMetricInputYield on practice_yield {
+    id
+    meta
+    method
+    name
+    description
+  }
+`;
 export const CourseCardFragmentDoc = gql`
   fragment CourseCard on course {
     id
@@ -6852,30 +6861,40 @@ export const HandoffCourseFragmentDoc = gql`
     practice_to_courses(order_by: { close_date: desc }) {
       practice {
         title
-        created_at
         id
       }
       practice_to_students {
         id
         student_id
-        created_at
       }
       is_open
       open_date
-      created_at
       close_date
       id
     }
   }
 `;
-export const GradeMetricInputYieldFragmentDoc = gql`
-  fragment GradeMetricInputYield on practice_yield {
+export const PracticeToStudentGradeMetricForGradingFragmentDoc = gql`
+  fragment PracticeToStudentGradeMetricForGrading on practice_to_student_grade_metric {
     id
-    meta
-    method
-    name
-    description
+    feedback
+    created_at
+    percent_grade
+    practice_yield_grade_metric_id
+    updated_at
   }
+`;
+export const PracticeToStudentYieldForGradingFragmentDoc = gql`
+  fragment PracticeToStudentYieldForGrading on practice_to_student_yield {
+    practiceToStudentYieldId: id
+    gitea_org_and_repo
+    value
+    practice_yield_id
+    practice_to_student_grade_metrics {
+      ...PracticeToStudentGradeMetricForGrading
+    }
+  }
+  ${PracticeToStudentGradeMetricForGradingFragmentDoc}
 `;
 export const PracticeToPromoDetailsFragmentDoc = gql`
   fragment PracticeToPromoDetails on practice_to_course {
@@ -6924,28 +6943,194 @@ export const PracticeListItemFragmentDoc = gql`
     }
   }
 `;
-export const PracticeToStudentGradeMetricForGradingFragmentDoc = gql`
-  fragment PracticeToStudentGradeMetricForGrading on practice_to_student_grade_metric {
-    id
-    feedback
-    created_at
-    percent_grade
-    practice_yield_grade_metric_id
-    updated_at
-  }
-`;
-export const PracticeToStudentYieldForGradingFragmentDoc = gql`
-  fragment PracticeToStudentYieldForGrading on practice_to_student_yield {
-    practiceToStudentYieldId: id
-    gitea_org_and_repo
-    value
-    practice_yield_id
-    practice_to_student_grade_metrics {
-      ...PracticeToStudentGradeMetricForGrading
+export const GetYieldsForNewGradeTpDocument = gql`
+  query getYieldsForNewGradeTp($tpId: uuid!) {
+    practice_by_pk(id: $tpId) {
+      id
+      title
+      practice_yields(order_by: { method: asc }) {
+        ...GradeMetricInputYield
+      }
     }
   }
-  ${PracticeToStudentGradeMetricForGradingFragmentDoc}
+  ${GradeMetricInputYieldFragmentDoc}
 `;
+
+export function useGetYieldsForNewGradeTpQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetYieldsForNewGradeTpQueryVariables>,
+    'query'
+  > = {},
+) {
+  return Urql.useQuery<GetYieldsForNewGradeTpQuery>({
+    query: GetYieldsForNewGradeTpDocument,
+    ...options,
+  });
+}
+export const InsertYieldGradeMetricNewDataDocument = gql`
+  mutation insertYieldGradeMetricNewData(
+    $data: [practice_yield_expected_output_insert_input!]!
+  ) {
+    insert_practice_yield_expected_output(objects: $data) {
+      affected_rows
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+export function useInsertYieldGradeMetricNewDataMutation() {
+  return Urql.useMutation<
+    InsertYieldGradeMetricNewDataMutation,
+    InsertYieldGradeMetricNewDataMutationVariables
+  >(InsertYieldGradeMetricNewDataDocument);
+}
+export const InsertNewPracticeToCourseDocument = gql`
+  mutation insertNewPracticeToCourse(
+    $close_date: timestamptz!
+    $open_date: timestamptz!
+    $practice_id: uuid!
+    $courseId: uuid!
+  ) {
+    insert_practice_to_course(
+      objects: {
+        close_date: $close_date
+        open_date: $open_date
+        practice_id: $practice_id
+        course_id: $courseId
+      }
+    ) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+export function useInsertNewPracticeToCourseMutation() {
+  return Urql.useMutation<
+    InsertNewPracticeToCourseMutation,
+    InsertNewPracticeToCourseMutationVariables
+  >(InsertNewPracticeToCourseDocument);
+}
+export const InsertFeedbackForGradeMetricDocument = gql`
+  mutation insertFeedbackForGradeMetric($id: uuid!, $feedback: jsonb!) {
+    update_practice_yield_grade_metric_by_pk(
+      pk_columns: { id: $id }
+      _append: { feedbacks: $feedback }
+    ) {
+      feedbacks
+      id
+      name
+      points
+    }
+  }
+`;
+
+export function useInsertFeedbackForGradeMetricMutation() {
+  return Urql.useMutation<
+    InsertFeedbackForGradeMetricMutation,
+    InsertFeedbackForGradeMetricMutationVariables
+  >(InsertFeedbackForGradeMetricDocument);
+}
+export const InsertPracticeToStudentGradeMetricDocument = gql`
+  mutation insertPracticeToStudentGradeMetric(
+    $objects: [practice_to_student_grade_metric_insert_input!]!
+  ) {
+    insert_practice_to_student_grade_metric(
+      objects: $objects
+      on_conflict: {
+        constraint: practice_to_student_grade_metric_practice_yield_grade_metric_id
+        update_columns: [percent_grade, feedback]
+      }
+    ) {
+      affected_rows
+      returning {
+        created_at
+        feedback
+        percent_grade
+        id
+        practice_to_student_yield_id
+        practice_yield_grade_metric_id
+      }
+    }
+  }
+`;
+
+export function useInsertPracticeToStudentGradeMetricMutation() {
+  return Urql.useMutation<
+    InsertPracticeToStudentGradeMetricMutation,
+    InsertPracticeToStudentGradeMetricMutationVariables
+  >(InsertPracticeToStudentGradeMetricDocument);
+}
+export const GetFileDataFromServerDocument = gql`
+  query getFileDataFromServer(
+    $practice_to_student_yield_id: uuid!
+    $practice_yield_expected_output_id: uuid!
+  ) {
+    getGitFileData(
+      practice_to_student_yield_id: $practice_to_student_yield_id
+      practice_yield_expected_output_id: $practice_yield_expected_output_id
+    ) {
+      content
+      encoding
+    }
+  }
+`;
+
+export function useGetFileDataFromServerQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetFileDataFromServerQueryVariables>,
+    'query'
+  > = {},
+) {
+  return Urql.useQuery<GetFileDataFromServerQuery>({
+    query: GetFileDataFromServerDocument,
+    ...options,
+  });
+}
+export const GetLogDataFromServerDocument = gql`
+  query getLogDataFromServer(
+    $practice_to_student_yield_id: uuid!
+    $practice_yield_expected_output_id: uuid!
+  ) {
+    getGitLogData(
+      practice_to_student_yield_id: $practice_to_student_yield_id
+      practice_yield_expected_output_id: $practice_yield_expected_output_id
+    ) {
+      author_profile_picture
+      commit_message
+      commit_author_date
+      commit_author_email
+      commit_author_name
+      commit_committer_date
+      commit_committer_email
+      commit_committer_name
+      commit_tree_created
+      commit_tree_sha
+      commit_tree_url
+      commit_url
+      created
+      html_url
+      sha
+      url
+      parents
+    }
+  }
+`;
+
+export function useGetLogDataFromServerQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetLogDataFromServerQueryVariables>,
+    'query'
+  > = {},
+) {
+  return Urql.useQuery<GetLogDataFromServerQuery>({
+    query: GetLogDataFromServerDocument,
+    ...options,
+  });
+}
 export const CurrentUserDocument = gql`
   query currentUser($firebaseId: String!) {
     user(where: { firebaseId: { _eq: $firebaseId } }) {
@@ -7179,349 +7364,6 @@ export function useHandoffListQuery(
     ...options,
   });
 }
-export const LinkStudentToUserDocument = gql`
-  mutation linkStudentToUser($linkId: uuid!) {
-    linkStudentToUser(linkId: $linkId) {
-      ok
-    }
-  }
-`;
-
-export function useLinkStudentToUserMutation() {
-  return Urql.useMutation<
-    LinkStudentToUserMutation,
-    LinkStudentToUserMutationVariables
-  >(LinkStudentToUserDocument);
-}
-export const GetYieldsForNewGradeTpDocument = gql`
-  query getYieldsForNewGradeTp($tpId: uuid!) {
-    practice_by_pk(id: $tpId) {
-      id
-      title
-      practice_yields(order_by: { method: asc }) {
-        ...GradeMetricInputYield
-      }
-    }
-  }
-  ${GradeMetricInputYieldFragmentDoc}
-`;
-
-export function useGetYieldsForNewGradeTpQuery(
-  options: Omit<
-    Urql.UseQueryArgs<GetYieldsForNewGradeTpQueryVariables>,
-    'query'
-  > = {},
-) {
-  return Urql.useQuery<GetYieldsForNewGradeTpQuery>({
-    query: GetYieldsForNewGradeTpDocument,
-    ...options,
-  });
-}
-export const InsertYieldGradeMetricNewDataDocument = gql`
-  mutation insertYieldGradeMetricNewData(
-    $data: [practice_yield_expected_output_insert_input!]!
-  ) {
-    insert_practice_yield_expected_output(objects: $data) {
-      affected_rows
-      returning {
-        id
-      }
-    }
-  }
-`;
-
-export function useInsertYieldGradeMetricNewDataMutation() {
-  return Urql.useMutation<
-    InsertYieldGradeMetricNewDataMutation,
-    InsertYieldGradeMetricNewDataMutationVariables
-  >(InsertYieldGradeMetricNewDataDocument);
-}
-export const GetPracticeForGradeMetricDocument = gql`
-  query getPracticeForGradeMetric($id: uuid!) {
-    practice_by_pk(id: $id) {
-      id
-      title
-    }
-  }
-`;
-
-export function useGetPracticeForGradeMetricQuery(
-  options: Omit<
-    Urql.UseQueryArgs<GetPracticeForGradeMetricQueryVariables>,
-    'query'
-  > = {},
-) {
-  return Urql.useQuery<GetPracticeForGradeMetricQuery>({
-    query: GetPracticeForGradeMetricDocument,
-    ...options,
-  });
-}
-export const InsertNewPracticeToCourseDocument = gql`
-  mutation insertNewPracticeToCourse(
-    $close_date: timestamptz!
-    $open_date: timestamptz!
-    $practice_id: uuid!
-    $courseId: uuid!
-  ) {
-    insert_practice_to_course(
-      objects: {
-        close_date: $close_date
-        open_date: $open_date
-        practice_id: $practice_id
-        course_id: $courseId
-      }
-    ) {
-      returning {
-        id
-      }
-    }
-  }
-`;
-
-export function useInsertNewPracticeToCourseMutation() {
-  return Urql.useMutation<
-    InsertNewPracticeToCourseMutation,
-    InsertNewPracticeToCourseMutationVariables
-  >(InsertNewPracticeToCourseDocument);
-}
-export const GetPracticeDetailDocument = gql`
-  query getPracticeDetail($id: uuid!) {
-    practice_by_pk(id: $id) {
-      id
-      title
-      practice_yields_aggregate(order_by: { created_at: asc }) {
-        aggregate {
-          count
-        }
-        nodes {
-          id
-          name
-          method
-          meta
-          practice_yield_expected_outputs_aggregate {
-            aggregate {
-              count
-            }
-            nodes {
-              id
-              practice_yield_grade_metrics_aggregate {
-                aggregate {
-                  count
-                  sum {
-                    points
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      practice_to_courses_aggregate {
-        aggregate {
-          count
-        }
-        nodes {
-          ...PracticeToPromoDetails
-        }
-      }
-    }
-  }
-  ${PracticeToPromoDetailsFragmentDoc}
-`;
-
-export function useGetPracticeDetailQuery(
-  options: Omit<
-    Urql.UseQueryArgs<GetPracticeDetailQueryVariables>,
-    'query'
-  > = {},
-) {
-  return Urql.useQuery<GetPracticeDetailQuery>({
-    query: GetPracticeDetailDocument,
-    ...options,
-  });
-}
-export const GetPromotionForTpAddDocument = gql`
-  query getPromotionForTpAdd {
-    course(order_by: { updated_at: asc }) {
-      id
-      name
-      years
-    }
-  }
-`;
-
-export function useGetPromotionForTpAddQuery(
-  options: Omit<
-    Urql.UseQueryArgs<GetPromotionForTpAddQueryVariables>,
-    'query'
-  > = {},
-) {
-  return Urql.useQuery<GetPromotionForTpAddQuery>({
-    query: GetPromotionForTpAddDocument,
-    ...options,
-  });
-}
-export const ListPracticeDocument = gql`
-  query ListPractice {
-    practice(order_by: { created_at: desc }) {
-      ...PracticeListItem
-    }
-  }
-  ${PracticeListItemFragmentDoc}
-`;
-
-export function useListPracticeQuery(
-  options: Omit<Urql.UseQueryArgs<ListPracticeQueryVariables>, 'query'> = {},
-) {
-  return Urql.useQuery<ListPracticeQuery>({
-    query: ListPracticeDocument,
-    ...options,
-  });
-}
-export const CreateNewPracticeDocument = gql`
-  mutation createNewPractice(
-    $title: String!
-    $description: String!
-    $data: [practice_yield_insert_input!]!
-  ) {
-    insert_practice_one(
-      object: {
-        title: $title
-        description: $description
-        practice_yields: { data: $data }
-      }
-    ) {
-      created_at
-      id
-      title
-      updated_at
-    }
-  }
-`;
-
-export function useCreateNewPracticeMutation() {
-  return Urql.useMutation<
-    CreateNewPracticeMutation,
-    CreateNewPracticeMutationVariables
-  >(CreateNewPracticeDocument);
-}
-export const InsertFeedbackForGradeMetricDocument = gql`
-  mutation insertFeedbackForGradeMetric($id: uuid!, $feedback: jsonb!) {
-    update_practice_yield_grade_metric_by_pk(
-      pk_columns: { id: $id }
-      _append: { feedbacks: $feedback }
-    ) {
-      feedbacks
-      id
-      name
-      points
-    }
-  }
-`;
-
-export function useInsertFeedbackForGradeMetricMutation() {
-  return Urql.useMutation<
-    InsertFeedbackForGradeMetricMutation,
-    InsertFeedbackForGradeMetricMutationVariables
-  >(InsertFeedbackForGradeMetricDocument);
-}
-export const InsertPracticeToStudentGradeMetricDocument = gql`
-  mutation insertPracticeToStudentGradeMetric(
-    $objects: [practice_to_student_grade_metric_insert_input!]!
-  ) {
-    insert_practice_to_student_grade_metric(
-      objects: $objects
-      on_conflict: {
-        constraint: practice_to_student_grade_metric_practice_yield_grade_metric_id
-        update_columns: [percent_grade, feedback]
-      }
-    ) {
-      affected_rows
-      returning {
-        created_at
-        feedback
-        percent_grade
-        id
-        practice_to_student_yield_id
-        practice_yield_grade_metric_id
-      }
-    }
-  }
-`;
-
-export function useInsertPracticeToStudentGradeMetricMutation() {
-  return Urql.useMutation<
-    InsertPracticeToStudentGradeMetricMutation,
-    InsertPracticeToStudentGradeMetricMutationVariables
-  >(InsertPracticeToStudentGradeMetricDocument);
-}
-export const GetFileDataFromServerDocument = gql`
-  query getFileDataFromServer(
-    $practice_to_student_yield_id: uuid!
-    $practice_yield_expected_output_id: uuid!
-  ) {
-    getGitFileData(
-      practice_to_student_yield_id: $practice_to_student_yield_id
-      practice_yield_expected_output_id: $practice_yield_expected_output_id
-    ) {
-      content
-      encoding
-    }
-  }
-`;
-
-export function useGetFileDataFromServerQuery(
-  options: Omit<
-    Urql.UseQueryArgs<GetFileDataFromServerQueryVariables>,
-    'query'
-  > = {},
-) {
-  return Urql.useQuery<GetFileDataFromServerQuery>({
-    query: GetFileDataFromServerDocument,
-    ...options,
-  });
-}
-export const GetLogDataFromServerDocument = gql`
-  query getLogDataFromServer(
-    $practice_to_student_yield_id: uuid!
-    $practice_yield_expected_output_id: uuid!
-  ) {
-    getGitLogData(
-      practice_to_student_yield_id: $practice_to_student_yield_id
-      practice_yield_expected_output_id: $practice_yield_expected_output_id
-    ) {
-      author_profile_picture
-      commit_message
-      commit_author_date
-      commit_author_email
-      commit_author_name
-      commit_committer_date
-      commit_committer_email
-      commit_committer_name
-      commit_tree_created
-      commit_tree_sha
-      commit_tree_url
-      commit_url
-      created
-      html_url
-      sha
-      url
-      parents
-    }
-  }
-`;
-
-export function useGetLogDataFromServerQuery(
-  options: Omit<
-    Urql.UseQueryArgs<GetLogDataFromServerQueryVariables>,
-    'query'
-  > = {},
-) {
-  return Urql.useQuery<GetLogDataFromServerQuery>({
-    query: GetLogDataFromServerDocument,
-    ...options,
-  });
-}
 export const GetPracticeToStudentForGradingDocument = gql`
   query getPracticeToStudentForGrading($courseId: uuid!, $practiceId: uuid!) {
     practice_to_course(
@@ -7635,4 +7477,159 @@ export function useTriggerRefreshGradesMutation() {
     TriggerRefreshGradesMutation,
     TriggerRefreshGradesMutationVariables
   >(TriggerRefreshGradesDocument);
+}
+export const GetPracticeDetailDocument = gql`
+  query getPracticeDetail($id: uuid!) {
+    practice_by_pk(id: $id) {
+      id
+      title
+      practice_yields_aggregate(order_by: { created_at: asc }) {
+        aggregate {
+          count
+        }
+        nodes {
+          id
+          name
+          method
+          meta
+          practice_yield_expected_outputs_aggregate {
+            aggregate {
+              count
+            }
+            nodes {
+              id
+              practice_yield_grade_metrics_aggregate {
+                aggregate {
+                  count
+                  sum {
+                    points
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      practice_to_courses_aggregate {
+        aggregate {
+          count
+        }
+        nodes {
+          ...PracticeToPromoDetails
+        }
+      }
+    }
+  }
+  ${PracticeToPromoDetailsFragmentDoc}
+`;
+
+export function useGetPracticeDetailQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetPracticeDetailQueryVariables>,
+    'query'
+  > = {},
+) {
+  return Urql.useQuery<GetPracticeDetailQuery>({
+    query: GetPracticeDetailDocument,
+    ...options,
+  });
+}
+export const GetPromotionForTpAddDocument = gql`
+  query getPromotionForTpAdd {
+    course(order_by: { updated_at: asc }) {
+      id
+      name
+      years
+    }
+  }
+`;
+
+export function useGetPromotionForTpAddQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetPromotionForTpAddQueryVariables>,
+    'query'
+  > = {},
+) {
+  return Urql.useQuery<GetPromotionForTpAddQuery>({
+    query: GetPromotionForTpAddDocument,
+    ...options,
+  });
+}
+export const GetPracticeForGradeMetricDocument = gql`
+  query getPracticeForGradeMetric($id: uuid!) {
+    practice_by_pk(id: $id) {
+      id
+      title
+    }
+  }
+`;
+
+export function useGetPracticeForGradeMetricQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetPracticeForGradeMetricQueryVariables>,
+    'query'
+  > = {},
+) {
+  return Urql.useQuery<GetPracticeForGradeMetricQuery>({
+    query: GetPracticeForGradeMetricDocument,
+    ...options,
+  });
+}
+export const ListPracticeDocument = gql`
+  query ListPractice {
+    practice(order_by: { created_at: desc }) {
+      ...PracticeListItem
+    }
+  }
+  ${PracticeListItemFragmentDoc}
+`;
+
+export function useListPracticeQuery(
+  options: Omit<Urql.UseQueryArgs<ListPracticeQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<ListPracticeQuery>({
+    query: ListPracticeDocument,
+    ...options,
+  });
+}
+export const CreateNewPracticeDocument = gql`
+  mutation createNewPractice(
+    $title: String!
+    $description: String!
+    $data: [practice_yield_insert_input!]!
+  ) {
+    insert_practice_one(
+      object: {
+        title: $title
+        description: $description
+        practice_yields: { data: $data }
+      }
+    ) {
+      created_at
+      id
+      title
+      updated_at
+    }
+  }
+`;
+
+export function useCreateNewPracticeMutation() {
+  return Urql.useMutation<
+    CreateNewPracticeMutation,
+    CreateNewPracticeMutationVariables
+  >(CreateNewPracticeDocument);
+}
+export const LinkStudentToUserDocument = gql`
+  mutation linkStudentToUser($linkId: uuid!) {
+    linkStudentToUser(linkId: $linkId) {
+      ok
+    }
+  }
+`;
+
+export function useLinkStudentToUserMutation() {
+  return Urql.useMutation<
+    LinkStudentToUserMutation,
+    LinkStudentToUserMutationVariables
+  >(LinkStudentToUserDocument);
 }

@@ -22,12 +22,19 @@ export const FormatTimeLeft: React.FC<{ open: Date; close: Date }> = ({
       start: max([new Date(), open]),
       end: close,
     });
-    const format =
+    const hasWeeks =
       (intervalLeft?.weeks ?? 0) > 0 ||
       (intervalLeft?.months ?? 0) > 0 ||
-      (intervalLeft?.years ?? 0) > 0
-        ? ['years', 'months', 'weeks', 'days', 'hours']
-        : ['days', 'hours', 'minutes', 'seconds'];
+      (intervalLeft?.years ?? 0) > 0;
+    const hasDays = hasWeeks || (intervalLeft?.days ?? 0) > 0;
+    const hasHours = hasDays || (intervalLeft?.hours ?? 0) > 0;
+    const format = hasWeeks
+      ? ['years', 'months', 'weeks', 'days', 'hours']
+      : hasDays
+      ? ['days', 'hours', 'minutes']
+      : hasHours
+      ? ['hours', 'minutes']
+      : ['minutes', 'seconds'];
     const timeLeft = formatDuration(intervalLeft, {
       locale: enGB,
       format: format,

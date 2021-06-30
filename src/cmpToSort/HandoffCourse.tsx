@@ -3,62 +3,93 @@ import React from 'react';
 import { isAfter, isBefore } from 'date-fns';
 import { CardBox } from '@/components/CardBox';
 import { Chip } from '@/components/Chip';
-import { FormatTimeLeft } from './FormatTimeLeft';
-import { FormatDates } from './FormatDates';
 import { Button } from '@/components/Button';
-import { useRouter } from 'next/router';
 import { routes } from '@/routGetters';
+import { format } from 'date-fns';
+import { enGB } from 'date-fns/locale';
+import { FormatTimeLeft } from '@/cmpToSort/FormatTimeLeft';
+import Link from 'next/link';
 
 type PracticeHandoff = HandoffCourseFragment['practice_to_courses'][0];
 
-const PracticeHandoff = ({ practice }: { practice: PracticeHandoff }) => {
-  const router = useRouter();
+const usePracticeInfo = (practice: PracticeHandoff) => {
   const currDate = new Date();
   const close = new Date(practice.close_date);
   const open = new Date(practice.open_date);
+  const isBeforeStart = isBefore(currDate, open);
   const isStarted = isAfter(currDate, open) && isBefore(currDate, close);
-  const isSubmited = practice.practice_to_students.length > 0;
+  const isSubmitted = practice.practice_to_students.length > 0;
   const isOver = isAfter(currDate, close);
-  /*
+  return {
+    currDate,
+    close,
+    open,
+    isBeforeStart,
+    isSubmitted,
+    isStarted,
+    isOver,
+  };
+};
 
-      onClick={
-        isStarted && !isSubmited
-          ? () => {
-              navigate(`./${practice.id}`);
-            }
-          : undefined
-      }
- */
+const PracticeHandoffRightSide = ({
+  practice,
+}: {
+  practice: PracticeHandoff;
+}) => {
+  const { isSubmitted, isOver, isStarted, close, open } = usePracticeInfo(
+    practice,
+  );
+  if (isSubmitted) {
+    return (
+      <div className="flex justify-center items-center ">
+        <Chip variant="success">Submitted</Chip>
+      </div>
+    );
+  }
+  if (isOver) {
+    return (
+      <div className="flex justify-center items-center">
+        <Chip variant="error">Not submitted</Chip>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex justify-center items-center flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4 items-stretch	md:items-center">
+      <FormatTimeLeft close={close} open={open} />
+      <Link href={routes.handoffId({ handoffId: practice.id })} passHref>
+        <Button disabled={!isStarted} as="a">
+          Submit
+        </Button>
+      </Link>
+    </div>
+  );
+};
+
+const PracticeHandoff = ({ practice }: { practice: PracticeHandoff }) => {
+  const { isBeforeStart, isStarted, close, open } = usePracticeInfo(practice);
   return (
     <CardBox>
-      <div className="flex justify-between">
-        <div className="text-xl mb-4">
-          <span className="font-bold mr-2">{practice.practice.title}</span>
-          <Chip variant={isStarted ? 'success' : 'error'}>
-            {isStarted ? 'Open' : 'Closed'}
-          </Chip>
+      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 justify-between">
+        <div className="flex justify-between flex-col ">
+          <div className="text-xl mb-4 space-x-2 flex items-center">
+            <Chip
+              variant={isStarted ? 'success' : isBeforeStart ? 'info' : 'error'}
+            >
+              {isStarted ? 'Open' : isBeforeStart ? 'Coming soon' : 'Closed'}
+            </Chip>
+            <span className="font-bold">{practice.practice.title}</span>
+          </div>
+          <div className="text-gray-500">
+            {isBeforeStart
+              ? `Open at ${format(open, 'Pp', { locale: enGB })}`
+              : isStarted
+              ? `Closes at ${format(close, 'Pp', { locale: enGB })}`
+              : `Closed at ${format(close, 'Pp', { locale: enGB })}`}
+          </div>
         </div>
-        <div>
-          <Chip variant={isSubmited ? 'success' : 'error'}>
-            {isSubmited ? 'Submited' : 'Not submited'}
-          </Chip>
-        </div>
+        <PracticeHandoffRightSide practice={practice} />
       </div>
-      <div>
-        <FormatDates close={close} open={open} />
-      </div>
-      {!isSubmited && !isOver ? (
-        <div className="flex justify-between items-center mt-4">
-          <FormatTimeLeft close={close} open={open} />
-          <Button
-            onClick={() => {
-              router.push(routes.practiceId({ practiceId: practice.id }));
-            }}
-          >
-            Submit
-          </Button>
-        </div>
-      ) : null}
     </CardBox>
   );
 };
@@ -71,11 +102,11 @@ export const HandoffCourse = ({
   return (
     <div>
       <div className="pb-2 border-b border-gray-300">
-        <h3 className="text-lg leading-6 font-semibold text-gray-900">
+        <h3 className="text-lg leading-6 text-gray-900">
           {course.name} - {course.years}
         </h3>
       </div>
-      <div className="mt-2 grid grid-cols-2  gap-4">
+      <div className="mt-2 grid grid-cols-1  gap-4">
         {course.practice_to_courses.map((practice) => (
           <PracticeHandoff practice={practice} key={practice.id} />
         ))}

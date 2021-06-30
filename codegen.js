@@ -8,7 +8,7 @@ module.exports = {
       },
     },
   ],
-  documents: ['./src/**/*.tsx', './src/**/*.ts'],
+  documents: ['./src/**/*.tsx', './src/**/*.ts', './src/**/*.graphql'],
   overwrite: true,
   generates: {
     './graphql.schema.json': {

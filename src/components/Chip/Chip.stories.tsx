@@ -9,9 +9,10 @@ export default {
 
 export const Showcase = () => {
   return (
-    <div className="grid gap-4">
+    <div className="flex flex-row space-x-4">
       <Chip variant="success">Success chip</Chip>
       <Chip variant="error">Error chip</Chip>
+      <Chip variant="info">Info chip</Chip>
     </div>
   );
 };
