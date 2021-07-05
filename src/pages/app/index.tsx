@@ -3,11 +3,17 @@ import { getNavLayout } from '@/layouts/NavBar';
 import { LoadingFullScreen } from '@/layouts/LoadingFullScreen';
 import { useRouter } from 'next/router';
 import { routes } from '@/routGetters';
+import { useAuthContext } from '@/hooks/useAuthContext';
 
 export const App = () => {
+  const { userRole } = useAuthContext();
   const router = useRouter();
   useEffect(() => {
-    router.push(routes.dash());
+    if (userRole === 'teacher') {
+      router.push(routes.practice());
+    } else {
+      router.push(routes.handoff());
+    }
   }, [router]);
   return <LoadingFullScreen debugName="App waiting for redirect" />;
 };

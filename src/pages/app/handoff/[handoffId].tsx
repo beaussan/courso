@@ -1,7 +1,6 @@
 import React from 'react';
 import { PageHead } from '@/components/PageHead';
 import { BackButton } from '@/components/BackButton';
-import gql from 'graphql-tag';
 import {
   HandOffByIdQuery,
   Practice_Yield_Type_Enum,
@@ -10,15 +9,8 @@ import {
   YieldPracticeInputFragment,
 } from '@/generated/graphql';
 import { Loader } from '@/components/Loader';
-import {
-  formatDuration,
-  intervalToDuration,
-  isAfter,
-  isBefore,
-  max,
-} from 'date-fns';
+import { isAfter, isBefore } from 'date-fns';
 import { useTimeInterval } from '@/hooks/useTimeInterval';
-import { enGB } from 'date-fns/locale';
 import { Input, TextArea } from '@/components/Input';
 import { CardBox } from '@/components/CardBox';
 import { Form, Formik } from 'formik';
@@ -32,51 +24,7 @@ import { CodeInputFieldLazy } from '@/components/CodeInput/CodeInputFieldLazy';
 import { useRouter } from 'next/router';
 import { getLayoutRoleStudent } from '@/layouts/WithRole';
 import { routes } from '@/routGetters';
-
-gql`
-  fragment YieldPracticeInput on practice_yield {
-    id
-    meta
-    method
-    name
-    description
-  }
-  query HandOffById($id: uuid!) {
-    practice_to_course_by_pk(id: $id) {
-      practice {
-        title
-        description
-        created_at
-        id
-        practice_yields {
-          ...YieldPracticeInput
-        }
-      }
-      practice_to_students {
-        id
-        student_id
-        created_at
-      }
-      is_open
-      open_date
-      created_at
-      close_date
-      id
-    }
-  }
-
-  mutation submitHandoff(
-    $practiceToPromotionId: uuid!
-    $yields: [YieldForHandoff!]!
-  ) {
-    submitHandoff(
-      practiceToPromotionId: $practiceToPromotionId
-      yields: $yields
-    ) {
-      status
-    }
-  }
-`;
+import { FormatTimeLeft } from '@/cmpToSort/FormatTimeLeft';
 
 const InputBlock: React.FC<{ label: string; description?: string | null }> = ({
   label,
@@ -191,14 +139,6 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
     }),
   });
 
-  const timeLeft = formatDuration(
-    intervalToDuration({
-      start: max([currDate, open]),
-      end: close,
-    }),
-    { locale: enGB },
-  );
-
   if (!isOpen) {
     return (
       <div className="mt-4 font-semibold text-xl">This handoff is over.</div>
@@ -238,25 +178,22 @@ const HandOffBody: React.FC<{ data: HandOffByIdQuery }> = ({ data }) => {
                 return <ToRender data={value} key={index} />;
               })}
             </div>
-            <Loader visible={fetching}>
-              <div className="mt-5">
-                <Button
-                  isFull
-                  disabled={!isValid || isValidating}
-                  type="submit"
-                >
+            <div className="mt-4">
+              <FormatTimeLeft close={close} open={open} />
+            </div>
+            {fetching ? (
+              <Loader />
+            ) : (
+              <div className="mt-5 flex flex-col">
+                <Button disabled={!isValid || isValidating} type="submit">
                   Submit
                 </Button>
               </div>
-            </Loader>
+            )}
             <DebugJson json={values} />
           </Form>
         )}
       </Formik>
-
-      <div className="mt-4">
-        You have <span className="font-semibold">{timeLeft}</span> left
-      </div>
     </CardBox>
   );
 };
@@ -268,7 +205,7 @@ export const HandOffId = () => {
   const [{ data, error, fetching }] = useHandOffByIdQuery({
     variables: { id: handoffId },
   });
-  if (fetching) {
+  if (fetching && !data) {
     return <Loader />;
   }
   if (!data?.practice_to_course_by_pk || error) {

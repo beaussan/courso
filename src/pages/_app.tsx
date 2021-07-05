@@ -5,7 +5,6 @@ import { Provider as UrqlProvider } from 'urql';
 import { CurrentUserProvider } from '@/hooks/useCurrentUser';
 import '@/tailwind.css';
 import Head from 'next/head';
-import '@/components/Loader/loader.css';
 import '@/fonts/monoid/monoid.css';
 
 // import splitbee from '@splitbee/web';

@@ -61,28 +61,32 @@ const LinkPage = () => {
           <div className="flex justify-center items-center font-bold text-xl mb-8 ">
             Almost there ! Link your account
           </div>
-          <Loader visible={fetching}>
-            <Button
-              onClick={() =>
-                linkStudentToUser({
-                  linkId,
-                })
-              }
-            >
-              Link your account
-            </Button>
-            {error && <div>En error occured, please try again</div>}
-            <div className="flex flex-col justify-center items-center mt-8 ">
-              <div className="mt-4">You are linking using the account</div>
-              <div>{user?.email}</div>
-              <div className="mt-4">
-                Not you ?{' '}
-                <Button variant="ghost" onClick={logout}>
-                  Logout
-                </Button>
+          {fetching ? (
+            <Loader />
+          ) : (
+            <>
+              <Button
+                onClick={() =>
+                  linkStudentToUser({
+                    linkId,
+                  })
+                }
+              >
+                Link your account
+              </Button>
+              {error && <div>En error occured, please try again</div>}
+              <div className="flex flex-col justify-center items-center mt-8 ">
+                <div className="mt-4">You are linking using the account</div>
+                <div>{user?.email}</div>
+                <div className="mt-4 flex items-baseline">
+                  Not you ?{' '}
+                  <Button variant="ghost" onClick={logout}>
+                    Logout
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Loader>
+            </>
+          )}
         </div>
       </div>
     </div>

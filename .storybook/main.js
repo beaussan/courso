@@ -1,5 +1,4 @@
 const path = require('path');
-const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -10,6 +9,12 @@ module.exports = {
         postcssLoaderOptions: {
           implementation: require('postcss'),
         },
+        cssLoaderOptions: {
+          modules: {
+            auto: true,
+          },
+          importLoaders: 3,
+        },
       },
     },
     '@storybook/addon-links',
@@ -17,14 +22,5 @@ module.exports = {
     '@storybook/addon-storysource',
     '@storybook/addon-a11y',
   ],
-
-  webpackFinal: async (config) => {
-    [].push.apply(config.resolve.plugins, [
-      new TsconfigPathsPlugin({ extensions: config.resolve.extensions }),
-    ]);
-
-    return config;
-  },
+  presets: [path.resolve(__dirname, './next-preset.js')],
 };
-
-console.log(process.env);

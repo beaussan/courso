@@ -1,9 +1,9 @@
 import React from 'react';
+import styles from './loader.module.css';
 
 // Inspired from react-loader-spinner triangle spinner
 interface LoaderPropsCustom {
   height?: number;
-  radius?: number;
   /**
    * @deprecated deprecated
    */
@@ -13,33 +13,26 @@ interface LoaderPropsCustom {
 }
 
 const Triangle = (props: LoaderPropsCustom) => (
-  <div className="react-spinner-loader-svg  text-indigo-500">
+  <div className={` text-indigo-500`}>
     <svg
       width={props.width}
       height={props.height}
       viewBox="-3 -4 39 39"
       aria-label={props.label}
+      className={styles.triangle}
     >
-      <path
-        className="text-teal-500"
+      <linearGradient id="svg-triangle-loader-gradient">
+        <stop offset="0%" stopColor="rgb(20, 184, 166)" />
+        <stop offset="10%" stopColor="rgb(20, 184, 166)" />
+        <stop offset="50%" stopColor="rgb(99, 102, 241)" />
+        <stop offset="90%" stopColor="rgb(236, 72, 153)" />
+        <stop offset="100%" stopColor="rgb(236, 72, 153)" />
+      </linearGradient>
+      <polygon
         fill="transparent"
+        stroke="url(#svg-triangle-loader-gradient)"
         strokeWidth="1"
-        stroke="currentColor"
-        d="M 16,0 32,32 0,32z"
-      />
-      <path
-        className="text-pink-500"
-        fill="transparent"
-        strokeWidth="1"
-        stroke="currentColor"
-        d="M 32,32 0,32 16,0z"
-      />
-      <path
-        className="text-indigo-500"
-        fill="transparent"
-        strokeWidth="1"
-        stroke="currentColor"
-        d="M 0,32 16,0 32,32z"
+        points="16,0 32,32 0,32"
       />
     </svg>
   </div>
@@ -50,7 +43,10 @@ export const Loader: React.FC<LoaderPropsCustom> = ({
   children,
   ...props
 }) => {
-  if (!visible) {
+  if (!visible && children) {
+    console.warn(
+      'DEPRECATION NOTICE : Loader visible flag will be removed soon as for children support.',
+    );
     return <>{children}</>;
   }
   return (

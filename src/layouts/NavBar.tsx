@@ -2,16 +2,18 @@ import React, { PropsWithChildren, ReactNode } from 'react';
 import { Nav } from '@/components/Nav';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { getLoggedLayout } from '@/layouts/WithUserLogged';
-import { BookOpenIcon, HomeIcon, LibraryIcon } from '@heroicons/react/outline';
+import { BookOpenIcon, LibraryIcon } from '@heroicons/react/outline';
 import { routes } from '@/routGetters';
 
 const links = [
+  /*
   {
     icon: HomeIcon,
     label: 'Dashboard',
     url: routes.dash(),
     roles: ['teacher', 'student'],
   },
+   */
   {
     icon: BookOpenIcon,
     label: 'Practice',

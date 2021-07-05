@@ -149,6 +149,12 @@ AllFinished.parameters = {
                 ],
               },
               {
+                id: 'e6c0000c-8cd6-4c66-9d34-bc3e517ad625',
+                name: 'Empty course',
+                years: '2025-2026',
+                practice_to_courses: [],
+              },
+              {
                 id: '9f27bfa4-a4c5-4f78-80ee-f25ee3267934',
                 name: 'Course with soon open things',
                 years: '2020-2021',

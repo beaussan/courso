@@ -36,10 +36,8 @@ export const Showcase = () => {
               do the thing
             </Button>
           </div>
-          <Button variant={variant} isFull>
-            do the thing
-          </Button>
-          <Button variant={variant} isFull disabled>
+          <Button variant={variant}>do the thing</Button>
+          <Button variant={variant} disabled>
             do the thing
           </Button>
         </div>

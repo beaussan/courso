@@ -6307,6 +6307,78 @@ export type GetLogDataFromServerQuery = { __typename?: 'query_root' } & {
   >;
 };
 
+export type YieldPracticeInputFragment = {
+  __typename?: 'practice_yield';
+} & Pick<Practice_Yield, 'id' | 'meta' | 'method' | 'name' | 'description'>;
+
+export type HandOffByIdQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+export type HandOffByIdQuery = { __typename?: 'query_root' } & {
+  practice_to_course_by_pk?: Maybe<
+    { __typename?: 'practice_to_course' } & Pick<
+      Practice_To_Course,
+      'is_open' | 'open_date' | 'close_date' | 'id'
+    > & {
+        practice: { __typename?: 'practice' } & Pick<
+          Practice,
+          'title' | 'description' | 'id'
+        > & {
+            practice_yields: Array<
+              { __typename?: 'practice_yield' } & YieldPracticeInputFragment
+            >;
+          };
+        practice_to_students: Array<
+          { __typename?: 'practice_to_student' } & Pick<
+            Practice_To_Student,
+            'id' | 'student_id'
+          >
+        >;
+      }
+  >;
+};
+
+export type SubmitHandoffMutationVariables = Exact<{
+  practiceToPromotionId: Scalars['uuid'];
+  yields: Array<YieldForHandoff>;
+}>;
+
+export type SubmitHandoffMutation = { __typename?: 'mutation_root' } & {
+  submitHandoff?: Maybe<
+    { __typename?: 'SubmitHandoffOutput' } & Pick<SubmitHandoffOutput, 'status'>
+  >;
+};
+
+export type HandoffListQueryVariables = Exact<{ [key: string]: never }>;
+
+export type HandoffListQuery = { __typename?: 'query_root' } & {
+  course: Array<{ __typename?: 'course' } & HandoffCourseFragment>;
+};
+
+export type HandoffCourseFragment = { __typename?: 'course' } & Pick<
+  Course,
+  'name' | 'years' | 'id'
+> & {
+    practice_to_courses: Array<
+      { __typename?: 'practice_to_course' } & Pick<
+        Practice_To_Course,
+        'is_open' | 'open_date' | 'close_date' | 'id'
+      > & {
+          practice: { __typename?: 'practice' } & Pick<
+            Practice,
+            'title' | 'id'
+          >;
+          practice_to_students: Array<
+            { __typename?: 'practice_to_student' } & Pick<
+              Practice_To_Student,
+              'id' | 'student_id'
+            >
+          >;
+        }
+    >;
+  };
+
 export type CurrentUserQueryVariables = Exact<{
   firebaseId: Scalars['String'];
 }>;
@@ -6444,78 +6516,6 @@ export type FetchDataForStudentDashboardQuery = {
       }
   >;
 };
-
-export type YieldPracticeInputFragment = {
-  __typename?: 'practice_yield';
-} & Pick<Practice_Yield, 'id' | 'meta' | 'method' | 'name' | 'description'>;
-
-export type HandOffByIdQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
-
-export type HandOffByIdQuery = { __typename?: 'query_root' } & {
-  practice_to_course_by_pk?: Maybe<
-    { __typename?: 'practice_to_course' } & Pick<
-      Practice_To_Course,
-      'is_open' | 'open_date' | 'created_at' | 'close_date' | 'id'
-    > & {
-        practice: { __typename?: 'practice' } & Pick<
-          Practice,
-          'title' | 'description' | 'created_at' | 'id'
-        > & {
-            practice_yields: Array<
-              { __typename?: 'practice_yield' } & YieldPracticeInputFragment
-            >;
-          };
-        practice_to_students: Array<
-          { __typename?: 'practice_to_student' } & Pick<
-            Practice_To_Student,
-            'id' | 'student_id' | 'created_at'
-          >
-        >;
-      }
-  >;
-};
-
-export type SubmitHandoffMutationVariables = Exact<{
-  practiceToPromotionId: Scalars['uuid'];
-  yields: Array<YieldForHandoff>;
-}>;
-
-export type SubmitHandoffMutation = { __typename?: 'mutation_root' } & {
-  submitHandoff?: Maybe<
-    { __typename?: 'SubmitHandoffOutput' } & Pick<SubmitHandoffOutput, 'status'>
-  >;
-};
-
-export type HandoffListQueryVariables = Exact<{ [key: string]: never }>;
-
-export type HandoffListQuery = { __typename?: 'query_root' } & {
-  course: Array<{ __typename?: 'course' } & HandoffCourseFragment>;
-};
-
-export type HandoffCourseFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'name' | 'years' | 'id'
-> & {
-    practice_to_courses: Array<
-      { __typename?: 'practice_to_course' } & Pick<
-        Practice_To_Course,
-        'is_open' | 'open_date' | 'close_date' | 'id'
-      > & {
-          practice: { __typename?: 'practice' } & Pick<
-            Practice,
-            'title' | 'id'
-          >;
-          practice_to_students: Array<
-            { __typename?: 'practice_to_student' } & Pick<
-              Practice_To_Student,
-              'id' | 'student_id'
-            >
-          >;
-        }
-    >;
-  };
 
 export type GetPracticeToStudentForGradingQueryVariables = Exact<{
   courseId: Scalars['uuid'];
@@ -6832,18 +6832,6 @@ export const GradeMetricInputYieldFragmentDoc = gql`
     description
   }
 `;
-export const CourseCardFragmentDoc = gql`
-  fragment CourseCard on course {
-    id
-    name
-    years
-    student_to_courses_aggregate {
-      aggregate {
-        count
-      }
-    }
-  }
-`;
 export const YieldPracticeInputFragmentDoc = gql`
   fragment YieldPracticeInput on practice_yield {
     id
@@ -6871,6 +6859,18 @@ export const HandoffCourseFragmentDoc = gql`
       open_date
       close_date
       id
+    }
+  }
+`;
+export const CourseCardFragmentDoc = gql`
+  fragment CourseCard on course {
+    id
+    name
+    years
+    student_to_courses_aggregate {
+      aggregate {
+        count
+      }
     }
   }
 `;
@@ -7131,6 +7131,75 @@ export function useGetLogDataFromServerQuery(
     ...options,
   });
 }
+export const HandOffByIdDocument = gql`
+  query HandOffById($id: uuid!) {
+    practice_to_course_by_pk(id: $id) {
+      practice {
+        title
+        description
+        id
+        practice_yields {
+          ...YieldPracticeInput
+        }
+      }
+      practice_to_students {
+        id
+        student_id
+      }
+      is_open
+      open_date
+      close_date
+      id
+    }
+  }
+  ${YieldPracticeInputFragmentDoc}
+`;
+
+export function useHandOffByIdQuery(
+  options: Omit<Urql.UseQueryArgs<HandOffByIdQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<HandOffByIdQuery>({
+    query: HandOffByIdDocument,
+    ...options,
+  });
+}
+export const SubmitHandoffDocument = gql`
+  mutation submitHandoff(
+    $practiceToPromotionId: uuid!
+    $yields: [YieldForHandoff!]!
+  ) {
+    submitHandoff(
+      practiceToPromotionId: $practiceToPromotionId
+      yields: $yields
+    ) {
+      status
+    }
+  }
+`;
+
+export function useSubmitHandoffMutation() {
+  return Urql.useMutation<
+    SubmitHandoffMutation,
+    SubmitHandoffMutationVariables
+  >(SubmitHandoffDocument);
+}
+export const HandoffListDocument = gql`
+  query handoffList {
+    course(order_by: { created_at: desc }) {
+      ...HandoffCourse
+    }
+  }
+  ${HandoffCourseFragmentDoc}
+`;
+
+export function useHandoffListQuery(
+  options: Omit<Urql.UseQueryArgs<HandoffListQueryVariables>, 'query'> = {},
+) {
+  return Urql.useQuery<HandoffListQuery>({
+    query: HandoffListDocument,
+    ...options,
+  });
+}
 export const CurrentUserDocument = gql`
   query currentUser($firebaseId: String!) {
     user(where: { firebaseId: { _eq: $firebaseId } }) {
@@ -7289,78 +7358,6 @@ export function useFetchDataForStudentDashboardQuery(
 ) {
   return Urql.useQuery<FetchDataForStudentDashboardQuery>({
     query: FetchDataForStudentDashboardDocument,
-    ...options,
-  });
-}
-export const HandOffByIdDocument = gql`
-  query HandOffById($id: uuid!) {
-    practice_to_course_by_pk(id: $id) {
-      practice {
-        title
-        description
-        created_at
-        id
-        practice_yields {
-          ...YieldPracticeInput
-        }
-      }
-      practice_to_students {
-        id
-        student_id
-        created_at
-      }
-      is_open
-      open_date
-      created_at
-      close_date
-      id
-    }
-  }
-  ${YieldPracticeInputFragmentDoc}
-`;
-
-export function useHandOffByIdQuery(
-  options: Omit<Urql.UseQueryArgs<HandOffByIdQueryVariables>, 'query'> = {},
-) {
-  return Urql.useQuery<HandOffByIdQuery>({
-    query: HandOffByIdDocument,
-    ...options,
-  });
-}
-export const SubmitHandoffDocument = gql`
-  mutation submitHandoff(
-    $practiceToPromotionId: uuid!
-    $yields: [YieldForHandoff!]!
-  ) {
-    submitHandoff(
-      practiceToPromotionId: $practiceToPromotionId
-      yields: $yields
-    ) {
-      status
-    }
-  }
-`;
-
-export function useSubmitHandoffMutation() {
-  return Urql.useMutation<
-    SubmitHandoffMutation,
-    SubmitHandoffMutationVariables
-  >(SubmitHandoffDocument);
-}
-export const HandoffListDocument = gql`
-  query handoffList {
-    course(order_by: { created_at: desc }) {
-      ...HandoffCourse
-    }
-  }
-  ${HandoffCourseFragmentDoc}
-`;
-
-export function useHandoffListQuery(
-  options: Omit<Urql.UseQueryArgs<HandoffListQueryVariables>, 'query'> = {},
-) {
-  return Urql.useQuery<HandoffListQuery>({
-    query: HandoffListDocument,
     ...options,
   });
 }
