@@ -2,14 +2,15 @@ import { AppProps } from 'next/app';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { createAnonymousClient, createAuthClient } from '@/services/urqlClient';
 import { Provider as UrqlProvider } from 'urql';
+import { Provider as NextAuthProvider } from 'next-auth/client';
 import { CurrentUserProvider } from '@/hooks/useCurrentUser';
 import '@/tailwind.css';
 import Head from 'next/head';
 import '@/fonts/monoid/monoid.css';
+import { AuthContextProvider, useAuthContext } from '@/hooks/useAuthContext';
+import { ToastProvider } from 'react-toast-notifications';
 
 // import splitbee from '@splitbee/web';
-import { ToastProvider } from 'react-toast-notifications';
-import { AuthContextProvider, useAuthContext } from '@/hooks/useAuthContext';
 
 type getLayoutFn = (input: ReactNode) => ReactNode;
 
@@ -19,13 +20,17 @@ function ClientProvider(props: React.PropsWithChildren<{}>) {
   const [urqlClient, setUrqlClient] = useState(createAnonymousClient());
   const [isAnonymousClient, setIsAnonymousClient] = useState(true);
 
+  console.log('ClientProvider', { token });
+
   useEffect(() => {
     const hasNoToken = token === undefined || token === null;
     if (!hasNoToken && isAnonymousClient) {
+      console.log('Creating auth token');
       setUrqlClient(createAuthClient());
       setIsAnonymousClient(false);
     }
     if (hasNoToken && !isAnonymousClient) {
+      console.log('Creating anonymous token');
       setUrqlClient(createAnonymousClient());
       setIsAnonymousClient(true);
     }
@@ -42,17 +47,19 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <AuthContextProvider>
-        <ClientProvider>
-          <CurrentUserProvider>
-            <>
-              <ToastProvider autoDismiss>
-                {getLayout(<Component {...pageProps} />)}
-              </ToastProvider>
-            </>
-          </CurrentUserProvider>
-        </ClientProvider>
-      </AuthContextProvider>
+      <NextAuthProvider session={pageProps.session}>
+        <AuthContextProvider>
+          <ClientProvider>
+            <CurrentUserProvider>
+              <>
+                <ToastProvider autoDismiss>
+                  {getLayout(<Component {...pageProps} />)}
+                </ToastProvider>
+              </>
+            </CurrentUserProvider>
+          </ClientProvider>
+        </AuthContextProvider>
+      </NextAuthProvider>
     </>
   );
 }

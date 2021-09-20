@@ -44,3 +44,6 @@ scripts/oldAnswers.js
 
 .eslintcache
 .next
+
+*.pem
+.env

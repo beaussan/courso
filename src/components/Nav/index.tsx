@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { auth } from '@/services/firebase';
 import { Logo } from '@/components/Logo';
 import { NavLink } from '@/components/ActivNavLink';
 import { MenuIcon } from '@heroicons/react/outline';
+import { signOut } from 'next-auth/client';
 
 export interface NavItem {
   icon: React.ElementType;
@@ -24,7 +24,7 @@ const Profile = () => {
   const { user } = useCurrentUser();
 
   const logout = async () => {
-    await auth.signOut();
+    await signOut();
   };
   return (
     <div className="flex-shrink-0 flex border-t border-indigo-800 p-4 truncate">
@@ -33,9 +33,9 @@ const Profile = () => {
           <div>
             <img
               className="inline-block h-9 w-9 rounded-full"
-              src={user?.photoUrl}
+              src={`https://avatars.dicebear.com/api/bottts/${user?.id}.svg`}
               onError={(event) => {
-                const fallbackUrl = `https://avatars.dicebear.com/api/bottts/${user?.firebaseId}.svg`;
+                const fallbackUrl = `https://avatars.dicebear.com/api/bottts/${user?.id}.svg`;
                 if (event.currentTarget.src === fallbackUrl) {
                   return;
                 }
@@ -47,7 +47,7 @@ const Profile = () => {
           </div>
           <div className="ml-3 truncate">
             <p className="text-base font-medium text-white truncate">
-              {user?.displayName}
+              {user?.email}
             </p>
             <button
               onClick={logout}

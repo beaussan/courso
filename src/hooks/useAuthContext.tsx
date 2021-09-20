@@ -1,26 +1,20 @@
-import { useObservable } from './useObservable';
-import {
-  authState$,
-  correctToken$,
-  userRole$,
-  userWithCorrectToken$,
-} from '@/services/TokenService';
+import { AuthState } from '@/services/TokenService';
 import React, { createContext, useContext } from 'react';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { useSession } from 'next-auth/client';
 
 function useAuthContextValue() {
-  const firebaseUser = useObservable(userWithCorrectToken$);
-  const authStatus = useObservable(authState$);
-  const userRole = useObservable(userRole$);
-  const token = useObservable(
-    correctToken$.pipe(distinctUntilChanged((prev, curr) => prev === curr)),
-  );
+  const [session, loading] = useSession();
+
+  const authStatus: AuthState = loading ? 'loading' : session ? 'in' : 'out';
+  console.log(session);
 
   return {
-    firebaseUser,
     authStatus,
-    token,
-    userRole,
+    user: session?.user,
+    userId: session?.id,
+    token: session?.token ?? null,
+    userRole: session?.role ?? null,
+    allowedRoles: session?.allowedRoles ?? [],
   };
 }
 
@@ -43,17 +37,12 @@ export function useAuthContext() {
   if (context === undefined) {
     throw new Error(`useAuthContext must be used within a AuthContextProvider`);
   }
-  const isUserSignIn = context.authStatus === 'in' && context.firebaseUser;
-  const isAuthReady =
-    context.authStatus === 'loading' || context.authStatus === undefined;
   return {
     ...context,
-    isUserSignIn,
-    isAuthReady,
   };
 }
 
 export const useCurrentUserRole = (): string => {
   const { userRole } = useAuthContext();
-  return userRole;
+  return userRole ?? '';
 };

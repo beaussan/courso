@@ -24,6 +24,8 @@ export const WithUserLogged = ({ children }: PropsWithChildren<{}>) => {
   if (authStatus === 'out') {
     return <LoadingFullScreen debugName="RouteWithAuth out" />;
   }
+
+  console.log({ user, authStatus, userLoading });
   if (!user) {
     return <LoadingFullScreen debugName="RouteWithAuth no user" />;
   }

@@ -1,42 +1,39 @@
 import gql from 'graphql-tag';
 import { useCurrentUserQuery } from '@/generated/graphql';
-import { useAuthContext } from '@/hooks/useAuthContext';
+// import { useAuthContext } from '@/hooks/useAuthContext';
 import React, { createContext } from 'react';
 
 gql`
-  query currentUser($firebaseId: String!) {
-    user(where: { firebaseId: { _eq: $firebaseId } }) {
+  query currentUser {
+    user {
       createdAt
-      displayName
       email
-      firebaseId
-      photoUrl
       updatedAt
       id
     }
   }
 `;
 
+const knownFalseErrors = [
+  '[GraphQL] field "user" not found in type: \'query_root\'',
+];
+
 const useCurrentUserValue = () => {
-  const { firebaseUser } = useAuthContext();
+  // const { user } = useAuthContext();
   // console.log('Firebase user :', firebaseUser);
 
   const [{ data, error, fetching }] = useCurrentUserQuery({
-    variables: {
-      firebaseId: firebaseUser?.uid ?? '',
-    },
     requestPolicy: 'network-only',
   });
 
   if (error) {
-    if (
-      error.message !==
-      '[GraphQL] field "user" not found in type: \'query_root\''
-    ) {
+    if (!knownFalseErrors.includes(error.message)) {
       console.error('ERROR IN useCurrentUser');
       console.error(error.message);
     }
   }
+
+  console.log('useCurrentUser', { data, fetching });
 
   const user = data?.user?.[0];
   return { error, user, fetching, loading: fetching };

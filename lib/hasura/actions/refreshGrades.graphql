@@ -1,0 +1,86 @@
+mutation fillEmptyForGrade($courseId: uuid!, $practiceId: uuid!) {
+  fillEmptyYields(course_id: $courseId, practice_id: $practiceId) {
+    affected_rows
+  }
+}
+
+query getPracticeToGradeByCourseIdAndPracticeId(
+  $course_id: uuid!
+  $practice_id: uuid!
+) {
+  practice_to_course(
+    where: {
+      course_id: { _eq: $course_id }
+      practice_id: { _eq: $practice_id }
+    }
+  ) {
+    practiceToCourseId: id
+    is_open
+    open_date
+  }
+}
+
+mutation insertPracticeToStudentWithGrades(
+  $objects: [practice_to_student_insert_input!]!
+) {
+  insert_practice_to_student(
+    objects: $objects
+    on_conflict: {
+      constraint: practice_to_student_pkey
+      update_columns: [grade, grade_detail, graded, feedback]
+    }
+  ) {
+    affected_rows
+  }
+}
+
+fragment PracticeForGrading on practice {
+  practice_yields {
+    id
+    name
+    practice_yield_expected_outputs {
+      id
+      practice_yield_grade_metrics {
+        id
+        name
+        points
+      }
+    }
+  }
+}
+fragment PracticeToStudentYieldForGrading on practice_to_student_yield {
+  id
+  submited
+  practice_yield_id
+  practice_to_student_grade_metrics {
+    id
+    feedback
+    percent_grade
+    practice_yield_grade_metric_id
+    practice_yield_grade_metric {
+      name
+      points
+    }
+  }
+}
+fragment PracticeToStudentForGrading on practice_to_student {
+  id
+  course_practice_id
+  graded
+  grade
+  student_id
+  practice_to_student_yields {
+    ...PracticeToStudentYieldForGrading
+  }
+}
+query dataForPracticeToGradeByPracticeToCoursePk($practice_to_grade_id: uuid!) {
+  practice_to_course_by_pk(id: $practice_to_grade_id) {
+    id
+    practice {
+      ...PracticeForGrading
+    }
+    practice_to_students {
+      ...PracticeToStudentForGrading
+    }
+  }
+}

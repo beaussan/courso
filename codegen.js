@@ -1,14 +1,15 @@
+require('dotenv').config({ path: '.env.local' });
+
 module.exports = {
   schema: [
     {
-      'https://devgrades.nbe.io/v1/graphql': {
+      [`${process.env.HASURA_URL}/v1/graphql`]: {
         headers: {
-          'x-hasura-admin-secret': process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+          'x-hasura-admin-secret': process.env.HASURA_ADMIN,
         },
       },
     },
   ],
-  documents: ['./src/**/*.tsx', './src/**/*.ts', './src/**/*.graphql'],
   overwrite: true,
   generates: {
     './graphql.schema.json': {
@@ -18,7 +19,20 @@ module.exports = {
       plugins: ['schema-ast'],
     },
     './src/generated/graphql.ts': {
+      documents: ['./src/**/*.tsx', './src/**/*.ts', './src/**/*.graphql'],
       plugins: ['typescript', 'typescript-operations', 'typescript-urql'],
+      config: {
+        skipTypename: false,
+        withHooks: true,
+      },
+    },
+    './lib/generated/graphql.ts': {
+      documents: ['./lib/**/*.graphql'],
+      plugins: [
+        'typescript',
+        'typescript-operations',
+        'typescript-graphql-request',
+      ],
       config: {
         skipTypename: false,
         withHooks: true,
