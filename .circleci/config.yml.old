@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  firebase-deploy: azdevs/firebase-deploy@1.0.0
 commands:
   setup_deps:
     description: 'Setup cache and do a yarn install'
@@ -42,17 +40,6 @@ jobs:
     steps:
       - setup_deps
       - run: yarn format:check
-
-  deploy-firebase:
-    <<: *shared-config
-    parameters:
-      firebase-project:
-        type: string
-    steps:
-      - setup_deps
-      - firebase-deploy/deploy:
-          token: $FIREBASE_DEPLOY_TOKEN
-          alias: << parameters.firebase-project >>
 
   build-frontend:
     <<: *shared-config
