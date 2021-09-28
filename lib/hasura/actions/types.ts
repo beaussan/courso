@@ -26,19 +26,19 @@ type RefreshGradesOutput = {
 type GetGitFileDataOutput = {
   practice_yield_expected_output_id: uuid;
   practice_to_student_yield_id: uuid;
-  content: string;
-  download_url: string;
-  encoding: string;
-  git_url: string;
-  html_url: string;
-  name: string;
-  path: string;
-  sha: string;
-  size: number;
+  content?: string;
+  download_url?: string;
+  encoding?: string;
+  git_url?: string;
+  html_url?: string;
+  name?: string;
+  path?: string;
+  sha?: string;
+  size?: number;
   submodule_git_url?: Maybe<string>;
   target?: Maybe<string>;
-  type: string;
-  url: string;
+  type?: string;
+  url?: string;
 };
 
 export type CommitItem = {

@@ -346,11 +346,7 @@ export const GradeItem: React.FC<{
                 >
                   Prev
                 </Button>
-                <Button
-                  disabled={isSubmitting}
-                  isFull
-                  className="flex-1 w-full"
-                >
+                <Button disabled={isSubmitting} className="flex-1 w-full">
                   Grade
                 </Button>
                 <Button

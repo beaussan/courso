@@ -8,4 +8,6 @@ export default {
   decorators: [signOutState],
 } as Meta;
 
-export const Showcase = () => <Login />;
+export const Showcase = () => (
+  <Login csrfToken={'TOKEN'} session={null} providers={{}} />
+);

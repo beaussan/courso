@@ -49,8 +49,20 @@ export const getGitFileData: ActionMap['getGitFileData'] = async ({
   }
 
   return {
-    ...fileData,
     practice_to_student_yield_id,
     practice_yield_expected_output_id,
+    content: fileData.content,
+    name: fileData.name,
+    download_url: fileData.download_url,
+    encoding: fileData.encoding,
+    git_url: fileData.git_url,
+    html_url: fileData.html_url,
+    path: fileData.path,
+    sha: fileData.sha,
+    size: fileData.size,
+    submodule_git_url: fileData.submodule_git_url,
+    target: fileData.target,
+    type: fileData.type,
+    url: fileData.url,
   };
 };

@@ -150,7 +150,6 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
                     <Button
                       variant="ghost"
                       type="button"
-                      isFull={true}
                       onClick={onCloseModal}
                     >
                       Cancel
@@ -161,7 +160,6 @@ export const NewTpToPromo: React.FC<NewTpToPromoProps> = ({
                     <Button
                       type="submit"
                       variant="primary"
-                      isFull={true}
                       disabled={(!isValid || isValidating) && !isSubmitting}
                     >
                       Create
