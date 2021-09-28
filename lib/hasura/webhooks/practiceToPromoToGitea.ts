@@ -2,7 +2,7 @@ import { handlerFn, HandlerMap } from './types';
 import slug from 'slug';
 import { gqlSdk } from '@lib/gql';
 import { HttpsError } from '@lib/common/HttpsError';
-import { giteaClient } from '@lib/gitea/giteaApi';
+import { giteaApi } from '@lib/gitea/giteaApi';
 
 const generateSlugOrgName = async (id: string): Promise<string> => {
   const data = await gqlSdk.getPracticeToPromotionMeta({
@@ -38,13 +38,11 @@ const onPracticeToPromoCreated: handlerFn<PracticeToPromo> = async (data) => {
     throw new HttpsError('internal', 'No after found');
   }
   const orgName = await generateSlugOrgName(after.id);
-  const { ok, originalError } = await giteaClient.post('/orgs', {
+
+  await giteaApi.orgs.orgCreate({
     username: orgName,
     description: `Practice generated for promotion ${after.promotion_id}`,
   });
-  if (!ok) {
-    throw originalError;
-  }
 
   await gqlSdk.updateGiteaOrgName({
     id: after.id,
@@ -61,12 +59,9 @@ const onPracticeToPromoDeleted: handlerFn<PracticeToPromo> = async (data) => {
   if (!before.gitea_org_name) {
     return 'No org found';
   }
-  const { ok, originalError } = await giteaClient.delete(
-    `/orgs/${before.gitea_org_name}`,
-  );
-  if (!ok) {
-    throw originalError;
-  }
+
+  await giteaApi.orgs.orgDelete(before.gitea_org_name);
+
   return 'ok';
 };
 

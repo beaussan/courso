@@ -1,9 +1,9 @@
 import { handlerFn, HandlerMap } from './types';
 import slug from 'slug';
 import { gqlSdk } from '@lib/gql';
-import { createLogger } from '@lib/common/log';
+// import { createLogger } from '@lib/common/log';
 import { HttpsError } from '@lib/common/HttpsError';
-import { giteaClient } from '@lib/gitea/giteaApi';
+import { getOrgAndRepoFromMerged, giteaApi } from '@lib/gitea/giteaApi';
 
 interface StudentPracticeYieldInput {
   id: string;
@@ -11,7 +11,7 @@ interface StudentPracticeYieldInput {
   gitea_org_and_repo?: string;
 }
 
-const logger = createLogger({ component: 'yieldToGitea' });
+// const logger = createLogger({ component: 'yieldToGitea' });
 
 const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
   input,
@@ -54,21 +54,13 @@ const onStudentYieldCreated: handlerFn<StudentPracticeYieldInput> = async (
     practice_to_student_yield_by_pk.practice_to_student.practice_to_course
       .gitea_org_name;
 
-  const { ok, originalError, data: giteaData } = await giteaClient.post(
-    '/repos/migrate',
-    {
-      repo_owner: repoOwner,
-      repo_name: slugedName,
-      mirror: false,
-      clone_addr: after.value,
-      description: `Yield generated for ${after.id}`,
-    },
-  );
-  if (!ok) {
-    logger.error('Error migrating repo', originalError);
-    logger.error('Error migrating repo', giteaData);
-    throw originalError;
-  }
+  await giteaApi.repos.repoMigrate({
+    repo_owner: repoOwner,
+    repo_name: slugedName,
+    mirror: false,
+    clone_addr: after.value,
+    description: `Yield generated for ${after.id}`,
+  });
 
   await gqlSdk.onStudentYieldMutation({
     id: after.id,
@@ -88,13 +80,10 @@ const onStudentYieldDeleted: handlerFn<StudentPracticeYieldInput> = async (
     return 'No git found';
   }
 
-  const { ok, originalError } = await giteaClient.delete(
-    `/repos/${before.gitea_org_and_repo}`,
-  );
+  const { repo, org } = getOrgAndRepoFromMerged(before.gitea_org_and_repo);
 
-  if (!ok) {
-    throw originalError;
-  }
+  await giteaApi.repos.repoDelete(org, repo);
+
   return 'ok';
 };
 

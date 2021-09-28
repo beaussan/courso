@@ -8,6 +8,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { HttpsError } from '@lib/common/HttpsError';
 import { actionMap } from '@lib/hasura/actions';
 import { PayloadRequest } from '@lib/hasura/actions/types';
+import { getEnvVariable } from '@lib/common/getEnv';
 
 const logger = createLogger({ component: 'hasura/action-handler' });
 
@@ -17,7 +18,7 @@ export default nc<NextApiRequest, NextApiResponse>({
   .use(
     getTokenVerificationMiddleware(
       logger,
-      process.env.HASURA_ACTION_MASTER_TOKEN as string,
+      getEnvVariable('HASURA_ACTION_MASTER_TOKEN'),
     ),
   )
   .post(async (req, res) => {

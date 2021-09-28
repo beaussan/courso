@@ -44,9 +44,11 @@ export const Loader: React.FC<LoaderPropsCustom> = ({
   ...props
 }) => {
   if (!visible && children) {
-    console.warn(
-      'DEPRECATION NOTICE : Loader visible flag will be removed soon as for children support.',
-    );
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(
+        'DEPRECATION NOTICE : Loader visible flag will be removed soon as for children support.',
+      );
+    }
     return <>{children}</>;
   }
   return (

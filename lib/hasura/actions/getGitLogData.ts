@@ -1,11 +1,11 @@
 import { ActionMap } from './types';
 import { gqlSdk } from '@lib/gql';
 import { HttpsError } from '@lib/common/HttpsError';
-import gravatar from 'gravatar-url';
+// import gravatar from 'gravatar-url';
 import { fetchAllCommits } from '@lib/gitea/giteaApi';
 
 const getProfilePicFromEmail = (email: string): string => {
-  return gravatar(email || 'unknown@yopmail.com', { default: 'retro' });
+  return email;
 };
 
 export const getGitLogData: ActionMap['getGitLogData'] = async ({

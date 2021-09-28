@@ -1,4 +1,5 @@
 import {
+  Roles_Enum,
   Student_Constraint,
   Student_Insert_Input,
   Student_To_Course_Insert_Input,
@@ -8,7 +9,7 @@ import { parse } from 'papaparse';
 import * as yup from 'yup';
 
 type PartialStudent = Required<
-  Pick<Student_Insert_Input, 'first_name' | 'last_name' | 'email'>
+  Pick<Student_Insert_Input, 'first_name' | 'last_name' | 'email' | 'user'>
 >;
 
 export const parseCsv = (data: string): PartialStudent[] => {
@@ -19,6 +20,19 @@ export const parseCsv = (data: string): PartialStudent[] => {
         first_name,
         last_name,
         email,
+        user: {
+          data: {
+            email,
+            allowed_roles: {
+              data: [
+                {
+                  role: Roles_Enum.Student,
+                },
+              ],
+            },
+            default_role: Roles_Enum.Student,
+          },
+        },
       }),
     );
 };

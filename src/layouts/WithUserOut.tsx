@@ -21,6 +21,12 @@ export const WithUserOut = ({ children }: PropsWithChildren<{}>) => {
     return <LoadingFullScreen debugName="RouteWithAuth loading" />;
   }
 
+  if (authStatus === 'in') {
+    return (
+      <LoadingFullScreen debugName="RouteWithAuth loading until redirect kicks in" />
+    );
+  }
+
   return <>{children}</>;
 };
 export const getOutLayout = (page: ReactNode) => (

@@ -42,6 +42,7 @@ export const Button: PolymorphicButton = React.forwardRef(
       Icon,
       className,
       as: Comp = 'button',
+      isFull,
       ...rest
     },
     forwardedRef,
@@ -67,6 +68,14 @@ export const Button: PolymorphicButton = React.forwardRef(
       },
       className,
     );
+
+    if (isFull) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(
+          'DEPRECIATION NOTICE : isFull is no longer supported on button',
+        );
+      }
+    }
 
     return (
       <Comp

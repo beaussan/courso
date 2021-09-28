@@ -11,7 +11,7 @@ export const getTokenVerificationMiddleware = (
   return (req, res, next) => {
     const tokenFromRequest = req.headers.token;
     if (!tokenFromRequest || tokenFromRequest !== token) {
-      logger.info(`Invalid token for webhook: ${tokenFromRequest}`);
+      logger.info(`Invalid token : ${tokenFromRequest}, expected ${token}`);
       throw new HttpsError('invalid-argument', 'token not found');
     } else {
       next();
@@ -44,6 +44,7 @@ export const getOnError = (
       'Error while executing function, returning 400 with hasura codes',
       err,
     );
+    console.error(err);
     res.status(400).json({
       message: err.message,
       code: '500',

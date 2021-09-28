@@ -1,76 +1,40 @@
-import { create } from 'apisauce';
 import { CommitItem } from '../hasura/actions/types';
+import {
+  Api,
+  GiteaCommit,
+  GiteaContentsResponse,
+  HttpClient,
+} from '@lib/generated/GiteaApi';
+import { getEnvVariable } from '@lib/common/getEnv';
 export type Maybe<T> = T | null;
 
-export const giteaClient = create({
-  baseURL: `${process.env.GITEA_URL}/api/v1`,
-  headers: {
-    Authorization: `token ${process.env.GITEA_TOKEN}`,
-  },
-});
-
-interface CommitItemFromApi {
-  author?: {
-    avatar_url: string;
-    created: string;
-    email: string;
-    full_name: string;
-    id: number;
-    is_admin: boolean;
-    language: string;
-    last_login: string;
-    login: string;
-  };
-  commit: {
-    author: {
-      date: string;
-      email: string;
-      name: string;
-    };
-    committer: {
-      date: string;
-      email: string;
-      name: string;
-    };
-    message: string;
-    tree: {
-      created: string;
-      sha: string;
-      url: string;
-    };
-    url: string;
-  };
-  committer: {
-    avatar_url: string;
-    created: string;
-    email: string;
-    full_name: string;
-    id: number;
-    is_admin: boolean;
-    language: string;
-    last_login: string;
-    login: string;
-  };
-  created: string;
-  html_url: string;
-  parents: [
-    {
-      created: string;
-      sha: string;
-      url: string;
+export const giteaApi = new Api(
+  new HttpClient({
+    baseURL: `${getEnvVariable('GITEA_URL')}/api/v1`,
+    headers: {
+      Authorization: `token ${getEnvVariable('GITEA_TOKEN')}`,
     },
-  ];
-  sha: string;
-  url: string;
-}
+  }),
+);
+
+export const getOrgAndRepoFromMerged = (
+  orgAndRepo: string,
+): { org: string; repo: string } => {
+  const [org, repo] = orgAndRepo.split('/');
+  return {
+    org,
+    repo,
+  };
+};
 
 export const fetchAllCommits = async (
   orgAndRepo: string,
 ): Promise<CommitItem[]> => {
-  return fetchAllCommitsWithPages(orgAndRepo);
+  const { org, repo } = getOrgAndRepoFromMerged(orgAndRepo);
+  return fetchAllCommitsWithPages(org, repo);
 };
 
-const mapCommitItem = (item: CommitItemFromApi): CommitItem => {
+const mapCommitItem = (item: GiteaCommit): CommitItem => {
   const commit = item?.commit;
   return {
     commit_author_date: commit?.author?.date,
@@ -79,11 +43,11 @@ const mapCommitItem = (item: CommitItemFromApi): CommitItem => {
     commit_committer_date: commit?.committer?.date,
     commit_committer_email: commit?.committer?.email,
     commit_committer_name: commit?.committer?.name,
-    commit_message: commit.message,
-    commit_url: commit.url,
-    commit_tree_created: commit.tree.created,
-    commit_tree_sha: commit.tree.sha,
-    commit_tree_url: commit.tree.url,
+    commit_message: commit?.message,
+    commit_url: commit?.url,
+    commit_tree_created: commit?.tree?.created,
+    commit_tree_sha: commit?.tree?.sha,
+    commit_tree_url: commit?.tree?.url,
     created: item.created,
     html_url: item.html_url,
     parents: JSON.stringify(item.parents),
@@ -93,20 +57,13 @@ const mapCommitItem = (item: CommitItemFromApi): CommitItem => {
 };
 
 const fetchAllCommitsWithPages = async (
-  orgAndRepo: string,
+  org: string,
+  repo: string,
   page = 1,
 ): Promise<CommitItem[]> => {
-  const currentPage = await giteaClient.get<CommitItemFromApi[]>(
-    `/repos/${orgAndRepo}/commits`,
-    {
-      page,
-    },
-  );
-
-  if (!currentPage.ok) {
-    throw currentPage.originalError;
-  }
-  const { headers, data } = currentPage;
+  const { data, headers } = await giteaApi.repos.repoGetAllCommits(org, repo, {
+    page,
+  });
 
   if (!data) {
     throw new Error('No data found, weird...');
@@ -120,38 +77,24 @@ const fetchAllCommitsWithPages = async (
   const mappedData = data.map(mapCommitItem);
 
   if (hasMore) {
-    const more = await fetchAllCommitsWithPages(orgAndRepo, page + 1);
+    const more = await fetchAllCommitsWithPages(org, repo, page + 1);
     return [...mappedData, ...more];
   }
   return mappedData;
 };
 
-interface FileGetData {
-  content: string;
-  download_url: string;
-  encoding: string;
-  git_url: string;
-  html_url: string;
-  name: string;
-  path: string;
-  sha: string;
-  size: number;
-  submodule_git_url?: Maybe<string>;
-  target?: Maybe<string>;
-  type: string;
-  url: string;
-}
-
 export const getFileFromGitea = async (
   orgAndRepo: string,
   filePath: string,
-): Promise<FileGetData | null> => {
-  const { ok, data } = await giteaClient.get<any>(
-    `/repos/${orgAndRepo}/contents/${filePath}`,
-  );
-  if (!data || !ok) {
+): Promise<GiteaContentsResponse | null> => {
+  const { org, repo } = getOrgAndRepoFromMerged(orgAndRepo);
+
+  const { data } = await giteaApi.repos.repoGetContents(org, repo, filePath);
+
+  if (!data) {
     return null;
   }
+
   return {
     content: data.content,
     download_url: data.download_url,

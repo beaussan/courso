@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:12
     container_name: courso_postgresql
-    restart: always
+    restart: unless-stopped
     volumes:
       - db_courso:/var/lib/postgresql/data
     environment:
@@ -15,7 +15,7 @@ services:
       - '8080:8080'
     depends_on:
       - 'postgres'
-    restart: always
+    restart: unless-stopped
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
       ## enable the console served by server
@@ -26,10 +26,24 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: '${HASURA_GRAPHQL_ADMIN_SECRET}'
-      WEBHOOK_MASTER_URL: '${HASURA_WEBHOOK_MASTER_TOKEN}'
-      WEBHOOK_MASTER_TOKEN: '${HASURA_ACTION_MASTER_TOKEN}'
-      ACTION_MASTER_URL: '${HASURA_WEBHOOK_MASTER_URL}'
+      WEBHOOK_MASTER_URL: '${HASURA_WEBHOOK_MASTER_URL}'
+      WEBHOOK_MASTER_TOKEN: '${HASURA_WEBHOOK_MASTER_TOKEN}'
+      ACTION_MASTER_URL: '${HASURA_ACTION_MASTER_URL}'
       ACTION_MASTER_TOKEN: '${HASURA_ACTION_MASTER_TOKEN}'
-
+  gitea:
+    image: gitea/gitea:latest
+    container_name: courso_gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - DISABLE_REGISTRATION=true
+      - SHOW_REGISTRATION_BUTTON=false
+    restart: unless-stopped
+    volumes:
+      - ./gitea-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '3030:3000'
 volumes:
   db_courso:

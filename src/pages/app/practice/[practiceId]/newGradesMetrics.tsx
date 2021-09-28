@@ -8,6 +8,7 @@ import { Loader } from '@/components/Loader';
 import { NewGradeMetricInput } from '@/cmpToSort/NewGradeMetricInput';
 import { useRouter } from 'next/router';
 import { routes } from '@/routGetters';
+import { getLayoutRoleTeacher } from '@/layouts/WithRole';
 
 gql`
   query getPracticeForGradeMetric($id: uuid!) {
@@ -48,3 +49,7 @@ export const NewTpGradeMetrics = () => {
     </>
   );
 };
+
+NewTpGradeMetrics.getLayout = getLayoutRoleTeacher;
+
+export default NewTpGradeMetrics;

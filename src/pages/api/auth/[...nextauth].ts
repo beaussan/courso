@@ -5,21 +5,21 @@ import jwt from 'jsonwebtoken';
 import { JWT } from 'next-auth/jwt';
 import { User } from '@lib/generated/graphql';
 import { gqlSdk } from '@lib/gql';
+import { sendLoginEmail } from '@lib/mail';
 
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     Providers.Email({
-      sendVerificationRequest: (params) => {
-        console.log(`Email send to ${params.identifier}`);
-
+      sendVerificationRequest: async (params) => {
         if (process.env.NODE_ENV === 'development') {
-          console.log('MOCK ----------------------------------------------');
+          console.log('----------------------------------------------');
           console.log(`Email send to ${params.identifier}`);
           console.log(`Url: ${params.url}`);
-          console.log('MOCK ----------------------------------------------');
-          return;
+          console.log('----------------------------------------------');
         }
+
+        await sendLoginEmail(params.identifier, params.url);
       },
     }),
 
@@ -130,6 +130,9 @@ export default NextAuth({
     },
 
     async signIn({ user, account, profile, email, credentials }) {
+      if (process.env.NEXT_AUTH_IS_SELF_LOGIN_ALLOWED === 'yes') {
+        return true;
+      }
       console.log('SIGN IN', { user, account, profile, email, credentials });
       if (email) {
         console.log('Email found, find user by email');
