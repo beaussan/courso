@@ -4,7 +4,7 @@ import React, {
   ReactNode,
   useContext,
 } from 'react';
-import { CloseButton } from '../CloseButton';
+import { CloseButton } from '@/components/CloseButton';
 import { Portal } from 'react-portal';
 
 interface FullScreenContextType {

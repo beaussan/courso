@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from '../Alert';
+import { Alert } from '@/components/Alert';
 
 export const Wip: React.FC<{ todo: string[] }> = ({ todo }) => (
   <div className="bg-yellow-50 p-4 shadow-lg rounded-lg my-4">

@@ -1,0 +1,54 @@
+query dataForPracticeToGradeEmpty($course_id: uuid!, $practice_id: uuid!) {
+  practice_to_course(
+    where: {
+      course_id: { _eq: $course_id }
+      practice_id: { _eq: $practice_id }
+    }
+  ) {
+    id
+    is_open
+    open_date
+    course {
+      id
+      student_to_courses {
+        student {
+          id
+          practice_to_students(
+            where: {
+              practice_to_course: {
+                course_id: { _eq: $course_id }
+                practice_id: { _eq: $practice_id }
+              }
+            }
+          ) {
+            id
+            student_id
+            created_at
+            practice_to_student_yields {
+              id
+              value
+              practice_yield_id
+            }
+          }
+        }
+      }
+    }
+    practice {
+      practice_yields {
+        id
+      }
+    }
+  }
+}
+
+mutation updateFillEmptyHandouts($data: [practice_to_student_insert_input!]!) {
+  insert_practice_to_student(
+    on_conflict: {
+      constraint: practice_to_student_student_id_promotion_practice_id_key
+      update_columns: course_practice_id
+    }
+    objects: $data
+  ) {
+    affected_rows
+  }
+}

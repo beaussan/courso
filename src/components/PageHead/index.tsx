@@ -4,7 +4,7 @@ export const PageHead: React.FC<{ className?: string }> = ({
   children,
   className,
 }) => (
-  <h1 className={`text-2xl font-semibold text-gray-900 ${className}`}>
+  <h1 className={`text-2xl font-semibold text-gray-900 ${className ?? ''}`}>
     {children}
   </h1>
 );

@@ -1,0 +1,13 @@
+query getStudentForMailSend($studentIds: [uuid!]) {
+  student(
+    where: {
+      _and: { id: { _in: $studentIds } }
+      claim_token: { _is_null: false }
+    }
+  ) {
+    email
+    claim_token
+    full_name
+    id
+  }
+}

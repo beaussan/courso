@@ -1,6 +1,6 @@
 import React from 'react';
-import { DropList } from '../DropList';
-import { supportedAceLang } from '../CodeInput/supportedLangs';
+import { DropList } from '@/components/DropList';
+import { supportedAceLang } from '@/components/CodeInput/supportedLangs';
 
 export const CodeLangField: React.FC<{ name: string; label?: string }> = ({
   name,

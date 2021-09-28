@@ -10,9 +10,8 @@ type LogoProps = {
   variant?: LogoVariant;
   textVariant?: LogoFontVariant;
   color?: LogoColorVariant;
+  className?: string;
 };
-
-type FinalProps = LogoProps & React.SVGProps<SVGSVGElement>;
 
 interface WithVariantProps {
   textVariant?: LogoFontVariant;
@@ -134,11 +133,11 @@ const LogoText: React.FC<WithVariantProps> = ({
   );
 };
 
-export const Logo: React.FC<FinalProps> = ({
+export const Logo: React.FC<LogoProps> = ({
   variant = 'standalone',
   color = 'standard',
   textVariant,
-  ...props
+  className,
 }) => {
   const viewBox = {
     vertical: '0 0 328 247',
@@ -147,7 +146,7 @@ export const Logo: React.FC<FinalProps> = ({
   }[variant];
 
   return (
-    <svg viewBox={viewBox} {...props}>
+    <svg viewBox={viewBox} className={className}>
       <g fill="none" fillRule="evenodd">
         <LogoBodyWithArrow variant={variant} color={color} />
         {variant !== 'standalone' && (

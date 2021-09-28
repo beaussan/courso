@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, ButtonProps, ButtonVariant } from '../Button';
-import { Modal, ModalIcons } from '../Modal';
+import { Button, ButtonProps, ButtonVariant } from '@/components/Button';
+import { Modal, ModalIcons } from '@/components/Modal';
 
 type Variants = 'confirm' | 'delete';
 
@@ -68,12 +68,7 @@ export const ButtonWithConfirm: React.FC<ButtonWithConfirmProps> = ({
         </Modal.Body>
         <Modal.Footer>
           <Modal.ButtonWrapper>
-            <Button
-              variant="ghost"
-              type="button"
-              isFull={true}
-              onClick={onCloseModal}
-            >
+            <Button variant="ghost" type="button" onClick={onCloseModal}>
               Cancel
             </Button>
           </Modal.ButtonWrapper>
@@ -84,7 +79,6 @@ export const ButtonWithConfirm: React.FC<ButtonWithConfirmProps> = ({
                 onCloseModal();
                 await onClick();
               }}
-              isFull={true}
             >
               {action}
             </Button>

@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { FormikHelpers } from 'formik';
 import { OperationContext, OperationResult } from '@urql/core';
+import { useRouter } from 'next/router';
 
 interface UseFormikMutationSubmitType<TFormData, TData, TVariables> {
   mutation: (
@@ -66,10 +66,10 @@ export function useFormikMutationSubmitWithNavigate<
   navigateDestination = '../',
   ...rest
 }: UseFormikMutationSubmitWithNavigateType<TFormData, TData, TVariables>) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const onSuccess = () => {
     if (!!navigateDestination) {
-      navigate(navigateDestination);
+      router.push(navigateDestination);
     }
   };
 

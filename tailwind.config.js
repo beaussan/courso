@@ -6,6 +6,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
+  mode: 'jit',
   purge: ['./src/**/*.ts', './src/**/*.tsx', './public/index.html'],
   theme: {
     extend: {

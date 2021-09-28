@@ -8,29 +8,30 @@ import {
 } from 'urql';
 import { devtoolsExchange } from '@urql/devtools';
 import { makeOperation } from '@urql/core';
-import { take } from 'rxjs/operators';
 import * as Sentry from '@sentry/react';
 
 // import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { authExchange } from '@urql/exchange-auth';
-import { correctToken$ } from './TokenService';
+import { getSession } from 'next-auth/client';
 
-if (!import.meta.env.VITE_HASURA_ENDPOINT) {
+if (!process.env.NEXT_PUBLIC_HASURA_URL) {
   throw new Error('Config not found');
 }
 
-const BASE_URL = import.meta.env.VITE_HASURA_ENDPOINT;
+const BASE_URL = process.env.NEXT_PUBLIC_HASURA_URL;
+const BASE_HTTP_METHOD =
+  process.env.NEXT_PUBLIC_HASURA_IS_HTTPS === 'yes' ? 'https' : 'http';
 
 // const WS_BASE_URL = `wss://${BASE_URL}`;
-const HTTP_BASE_URL = `https://${BASE_URL}`;
+const HTTP_BASE_URL = `${BASE_HTTP_METHOD}://${BASE_URL}`;
 const ENDPOINT = '/v1/graphql';
 // const WS_URL = `${WS_BASE_URL}${ENDPOINT}`;
-const HTTP_URL = `${HTTP_BASE_URL}${ENDPOINT}`;
+export const HTTP_URL = `${HTTP_BASE_URL}${ENDPOINT}`;
 
 export const createAnonymousClient = () => {
   return createClient({
     url: HTTP_URL,
-    suspense: true,
+    suspense: false,
     exchanges: [devtoolsExchange, dedupExchange, cacheExchange, fetchExchange],
   });
 };
@@ -38,7 +39,7 @@ export const createAnonymousClient = () => {
 export const createAuthClient = () => {
   return createClient({
     url: HTTP_URL,
-    suspense: true,
+    suspense: false,
     exchanges: [
       devtoolsExchange,
       errorExchange({
@@ -51,7 +52,9 @@ export const createAuthClient = () => {
       cacheExchange,
       authExchange<{ token: string }>({
         getAuth: async (params) => {
-          const maybeToken = await correctToken$.pipe(take(1)).toPromise();
+          const session = await getSession();
+          const maybeToken = session?.token;
+          console.log('[getAuth] new token : ', { session, maybeToken });
           if (!maybeToken) {
             return null;
           }

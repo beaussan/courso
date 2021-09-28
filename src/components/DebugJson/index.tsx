@@ -4,7 +4,7 @@ export const DebugJson: React.FC<{ json: any; title?: string }> = ({
   json,
   title,
 }) => {
-  if (import.meta.env.PROD) {
+  if (process.env.PROD) {
     return null;
   }
   return (

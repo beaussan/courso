@@ -1,0 +1,39 @@
+query dataForSubmitHandoff($practiceToPromoId: uuid!, $userId: uuid!) {
+  practice_to_course_by_pk(id: $practiceToPromoId) {
+    is_open
+    practice {
+      practice_yields {
+        id
+        name
+      }
+      id
+    }
+
+    practice_to_students(where: { student: { user_id: { _eq: $userId } } }) {
+      submited
+      id
+    }
+    course {
+      student_to_courses(where: { student: { user_id: { _eq: $userId } } }) {
+        student_id
+      }
+    }
+  }
+}
+
+mutation mutationSubmitHandoff(
+  $studentYields: [practice_to_student_yield_insert_input!]!
+  $student_id: uuid!
+  $promotion_practice_id: uuid!
+) {
+  insert_practice_to_student(
+    objects: {
+      submited: true
+      practice_to_student_yields: { data: $studentYields }
+      student_id: $student_id
+      course_practice_id: $promotion_practice_id
+    }
+  ) {
+    affected_rows
+  }
+}
