@@ -27,26 +27,11 @@ const Profile = () => {
     await signOut();
   };
   return (
-    <div className="flex-shrink-0 flex border-t border-indigo-800 p-4 truncate">
-      <div className="flex-shrink-0 block focus:outline-none truncate">
-        <div className="flex items-center truncate">
-          <div>
-            <img
-              className="inline-block h-9 w-9 rounded-full"
-              src={`https://avatars.dicebear.com/api/bottts/${user?.id}.svg`}
-              onError={(event) => {
-                const fallbackUrl = `https://avatars.dicebear.com/api/bottts/${user?.id}.svg`;
-                if (event.currentTarget.src === fallbackUrl) {
-                  return;
-                }
-
-                event.currentTarget.src = fallbackUrl;
-              }}
-              alt="profile"
-            />
-          </div>
-          <div className="ml-3 truncate">
-            <p className="text-base font-medium text-white truncate">
+    <div className="flex-shrink-0 block border-t border-indigo-800 p-4 break-all">
+      <div className="flex-shrink-0 block focus:outline-none break-words">
+        <div className="flex items-center">
+          <div className="break-words">
+            <p className="text-base font-medium text-white break-words">
               {user?.email}
             </p>
             <button
@@ -126,7 +111,7 @@ export const Nav: React.FC<NavProps> = ({ links, children }) => {
                 {(ref: React.MutableRefObject<HTMLDivElement>) => (
                   <div
                     ref={ref}
-                    className="relative flex-1 flex flex-col max-w-xs w-full bg-indigo-700"
+                    className="relative flex-1 flex flex-col max-w-xs h-full w-full bg-indigo-700"
                   >
                     <div className="absolute top-0 right-0 -mr-14 p-1">
                       <button
