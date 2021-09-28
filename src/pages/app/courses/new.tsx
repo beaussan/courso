@@ -6,11 +6,11 @@ import { Form, Formik } from 'formik';
 import { Input, TextArea } from '@/components/Input';
 import { Button } from '@/components/Button';
 import React from 'react';
-import { mapToSave, parseCsv, studentValidator } from './validation';
 import { CardBox } from '@/components/CardBox';
 import { useFormikMutationSubmitWithNavigate } from '@/hooks/useFormikMutationSubmit';
 import { getLayoutRoleTeacher } from '@/layouts/WithRole';
 import { ValidationError } from 'yup';
+import { mapToSave, parseCsv, studentValidator } from '@/cmpToSort/validation';
 
 gql`
   mutation CreateCourse(
