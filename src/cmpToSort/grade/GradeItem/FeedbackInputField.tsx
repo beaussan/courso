@@ -132,7 +132,6 @@ export const FeedbackInputField: React.FC<{
                     <Button
                       variant="ghost"
                       type="button"
-                      isFull={true}
                       onClick={onCloseModal}
                     >
                       Cancel
@@ -142,7 +141,6 @@ export const FeedbackInputField: React.FC<{
                     <Button
                       type="submit"
                       variant="primary"
-                      isFull={true}
                       disabled={(!isValid || isValidating) && !isSubmitting}
                     >
                       Create

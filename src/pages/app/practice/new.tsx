@@ -168,7 +168,6 @@ export const TpNew = () => {
                   )}
                 </FieldArray>
                 <Button
-                  isFull
                   disabled={!isValid || isValidating}
                   type="submit"
                   className="mt-5"

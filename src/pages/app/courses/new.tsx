@@ -10,6 +10,7 @@ import { mapToSave, parseCsv, studentValidator } from './validation';
 import { CardBox } from '@/components/CardBox';
 import { useFormikMutationSubmitWithNavigate } from '@/hooks/useFormikMutationSubmit';
 import { getLayoutRoleTeacher } from '@/layouts/WithRole';
+import { ValidationError } from 'yup';
 
 gql`
   mutation CreateCourse(
@@ -52,7 +53,9 @@ const validateData = async (values: Partial<NewPromo>) => {
       await studentValidator.validate(parsedData);
     } catch (e) {
       console.error(e);
-      errors.csv = e.message;
+      if (e instanceof ValidationError) {
+        errors.csv = e.message;
+      }
     }
   }
 

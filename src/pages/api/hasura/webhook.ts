@@ -24,7 +24,11 @@ export default nc<NextApiRequest, NextApiResponse>({
     try {
       webHookModel.validateSync(req.body, { abortEarly: false });
     } catch (e) {
-      throw new HttpsError('invalid-argument', 'body not valid', e.errors);
+      throw new HttpsError(
+        'invalid-argument',
+        'body not valid',
+        (e as any).errors,
+      );
     }
     next();
   })

@@ -16,19 +16,18 @@ export const WithRole = ({
 }: PropsWithChildren<WithRoleProps>) => {
   const { userRole } = useAuthContext();
   const router = useRouter();
-  const hasRoleAccess = roles.includes(userRole);
 
   useEffect(() => {
-    if (!hasRoleAccess && userRole) {
+    if (userRole && !roles.includes(userRole)) {
       console.log('[WithRole] redirect', { userRole });
       router.push(redirectTo ?? '..');
     }
-  }, [hasRoleAccess]);
+  }, [userRole]);
 
   if (!userRole) {
     return <LoadingFullScreen debugName="RouteWithRule no user role" />;
   }
-  if (!hasRoleAccess) {
+  if (!roles.includes(userRole)) {
     return <LoadingFullScreen debugName="RouteWithRule user with no role" />;
   }
 

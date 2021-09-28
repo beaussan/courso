@@ -38,7 +38,11 @@ const links = [
 export const NavBar = ({ children }: PropsWithChildren<{}>) => {
   const { userRole } = useAuthContext();
 
-  const finalRoles = links.filter((item) => item.roles.includes(userRole));
+  const finalRoles =
+    typeof userRole === 'string'
+      ? links.filter((item) => item.roles.includes(userRole))
+      : [];
+
   return <Nav links={finalRoles}>{children}</Nav>;
 };
 export const getNavLayout = (page: ReactNode) =>

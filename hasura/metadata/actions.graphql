@@ -73,9 +73,9 @@ type RefreshGradesOutput {
 type GetGitFileDataOutput {
   practice_yield_expected_output_id: uuid!
   practice_to_student_yield_id: uuid!
-  content: String!
+  content: String
   download_url: String
-  encoding: String!
+  encoding: String
   git_url: String
   html_url: String
   name: String
