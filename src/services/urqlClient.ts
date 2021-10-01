@@ -13,11 +13,10 @@ import * as Sentry from '@sentry/react';
 // import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { authExchange } from '@urql/exchange-auth';
 import { getSession } from 'next-auth/client';
-import { getEnvVariable } from '@lib/common/getEnv';
 
-const BASE_URL = getEnvVariable('NEXT_PUBLIC_HASURA_URL');
+const BASE_URL = process.env.NEXT_PUBLIC_HASURA_URL;
 const BASE_HTTP_METHOD =
-  getEnvVariable('NEXT_PUBLIC_HASURA_IS_HTTPS') === 'yes' ? 'https' : 'http';
+  process.env.NEXT_PUBLIC_HASURA_IS_HTTPS === 'yes' ? 'https' : 'http';
 
 // const WS_BASE_URL = `wss://${BASE_URL}`;
 const HTTP_BASE_URL = `${BASE_HTTP_METHOD}://${BASE_URL}`;
