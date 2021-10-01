@@ -1,6 +1,7 @@
 import pino from 'pino';
 
 const mainLogger = pino({
+  /*
   hooks: {
     logMethod(args, method) {
       if (args.length === 2) {
@@ -9,6 +10,7 @@ const mainLogger = pino({
       method.apply(this, args as any);
     },
   },
+   */
 });
 
 mainLogger.level = 'trace';
