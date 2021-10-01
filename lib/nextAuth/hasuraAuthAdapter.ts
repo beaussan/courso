@@ -3,8 +3,11 @@ import { Profile, Session } from 'next-auth';
 import { gqlSdk } from '@lib/gql';
 import { createHash } from 'crypto';
 import { UserForAuthFragment } from '@lib/generated/graphql';
+import { createLogger } from '@lib/common/log';
 
 interface HasuraAuthOptions {}
+
+const mainLogger = createLogger({ component: 'nextAuthHasuraAdapter' });
 
 export const HasuraAdaptor: Adapter<
   HasuraAuthOptions,
@@ -24,6 +27,7 @@ export const HasuraAdaptor: Adapter<
 
       return {
         async createUser(profile) {
+          mainLogger.debug('Start create user', { profile });
           const { insertUserOne } = await gqlSdk.createUserByEmail({
             email: profile.email as string,
             verified: profile?.emailVerified,
@@ -40,6 +44,7 @@ export const HasuraAdaptor: Adapter<
           return userByPk ?? null;
         },
         async getUserByEmail(email) {
+          mainLogger.debug('getUserByEmail', { email });
           if (!email) {
             return null;
           }
@@ -47,6 +52,10 @@ export const HasuraAdaptor: Adapter<
           return user[0] ?? null;
         },
         async getUserByProviderAccountId(providerId, providerAccountId) {
+          mainLogger.debug('getUserByProviderAccountId', {
+            providerId,
+            providerAccountId,
+          });
           const { accounts } = await gqlSdk.getUserByProviderAccountId({
             providerAccountId: `${providerAccountId}`,
             providerId,
@@ -57,7 +66,7 @@ export const HasuraAdaptor: Adapter<
           return maybeUser;
         },
         async updateUser(user) {
-          console.log('updateUser', user);
+          mainLogger.debug('updateUser', { user });
           const maybeEmailNewTime = (user as any).emailVerified;
           if (maybeEmailNewTime) {
             const { updateUserByPk } = await gqlSdk.setTimeEmailVerified({

@@ -6,6 +6,9 @@ import { JWT } from 'next-auth/jwt';
 import { User } from '@lib/generated/graphql';
 import { gqlSdk } from '@lib/gql';
 import { sendLoginEmail } from '@lib/mail';
+import { createLogger } from '@lib/common/log';
+
+const logger = createLogger({ component: 'nextAuth' });
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -13,10 +16,10 @@ export default NextAuth({
     Providers.Email({
       sendVerificationRequest: async (params) => {
         if (process.env.NODE_ENV === 'development') {
-          console.log('----------------------------------------------');
-          console.log(`Email send to ${params.identifier}`);
-          console.log(`Url: ${params.url}`);
-          console.log('----------------------------------------------');
+          logger.log('----------------------------------------------');
+          logger.log(`Email send to ${params.identifier}`);
+          logger.log(`Url: ${params.url}`);
+          logger.log('----------------------------------------------');
         }
 
         await sendLoginEmail(params.identifier, params.url);
@@ -38,6 +41,18 @@ export default NextAuth({
 
   debug: process.env.NEXT_AUTH_DEBUG_LOG === 'yes',
 
+  logger: {
+    debug(code: string, ...message) {
+      logger.debug(code, message);
+    },
+    error(code: string, ...message) {
+      logger.error(code, message);
+    },
+    warn(code: string, ...message) {
+      logger.warn(code, message);
+    },
+  },
+
   session: {
     jwt: true,
   },
@@ -56,7 +71,7 @@ export default NextAuth({
       if (!params || !params.token || !params.token.sub) {
         return 'undefined';
       }
-      // console.log('ENCODE : ', params);
+      // logger.log('ENCODE : ', params);
       const { token, secret } = params;
       const jwtClaims: JWT = {
         ...token,
@@ -82,7 +97,7 @@ export default NextAuth({
 
   callbacks: {
     async session(session: Session, userOrToken: JWT) {
-      // console.log('SESSION : ', { session, userOrToken });
+      // logger.log('SESSION : ', { session, userOrToken });
       const encodedToken = jwt.sign(
         userOrToken,
         process.env.NEXT_AUTH_JWT_SECRET_PRIVATE as string,
@@ -109,7 +124,7 @@ export default NextAuth({
       profile?: Profile,
       isNewUser?: boolean,
     ) {
-      console.log('JWT : ', { token, user, account, profile, isNewUser });
+      logger.log('JWT : ', { token, user, account, profile, isNewUser });
 
       if (!user) {
         return token;
@@ -124,7 +139,7 @@ export default NextAuth({
           'x-hasura-user-id': user?.id,
         },
       };
-      console.log('JWT AFTER : ', token);
+      logger.log('JWT AFTER : ', token);
 
       return token;
     },
@@ -133,11 +148,11 @@ export default NextAuth({
       if (process.env.NEXT_AUTH_IS_SELF_LOGIN_ALLOWED === 'yes') {
         return true;
       }
-      console.log('SIGN IN', { user, account, profile, email, credentials });
+      logger.log('SIGN IN', { user, account, profile, email, credentials });
       if (email) {
-        console.log('Email found, find user by email');
+        logger.log('Email found, find user by email');
         const { maybeUser } = await gqlSdk.findUserByEmail({ email });
-        console.log('SIGN IN', {
+        logger.log('SIGN IN', {
           user,
           account,
           profile,
@@ -147,17 +162,17 @@ export default NextAuth({
         });
 
         if (maybeUser.length > 0) {
-          console.log('user found');
+          logger.log('user found');
           return true;
         } else {
-          console.log('user not found');
+          logger.log('user not found');
           // Return false to display a default error message
           return false;
           // Or you can return a URL to redirect to:
           // return '/unauthorized'
         }
       }
-      console.log('Nothing found');
+      logger.log('Nothing found');
       return false;
     },
   },
