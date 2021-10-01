@@ -16,10 +16,10 @@ export default NextAuth({
     Providers.Email({
       sendVerificationRequest: async (params) => {
         if (process.env.NODE_ENV === 'development') {
-          logger.log('----------------------------------------------');
-          logger.log(`Email send to ${params.identifier}`);
-          logger.log(`Url: ${params.url}`);
-          logger.log('----------------------------------------------');
+          logger.info('----------------------------------------------');
+          logger.info(`Email send to ${params.identifier}`);
+          logger.info(`Url: ${params.url}`);
+          logger.info('----------------------------------------------');
         }
 
         await sendLoginEmail(params.identifier, params.url);
@@ -71,7 +71,7 @@ export default NextAuth({
       if (!params || !params.token || !params.token.sub) {
         return 'undefined';
       }
-      // logger.log('ENCODE : ', params);
+      // logger.info('ENCODE : ', params);
       const { token, secret } = params;
       const jwtClaims: JWT = {
         ...token,
@@ -97,7 +97,7 @@ export default NextAuth({
 
   callbacks: {
     async session(session: Session, userOrToken: JWT) {
-      // logger.log('SESSION : ', { session, userOrToken });
+      // logger.info('SESSION : ', { session, userOrToken });
       const encodedToken = jwt.sign(
         userOrToken,
         process.env.NEXT_AUTH_JWT_SECRET_PRIVATE as string,
@@ -124,7 +124,7 @@ export default NextAuth({
       profile?: Profile,
       isNewUser?: boolean,
     ) {
-      logger.log('JWT : ', { token, user, account, profile, isNewUser });
+      logger.info('JWT : ', { token, user, account, profile, isNewUser });
 
       if (!user) {
         return token;
@@ -139,7 +139,7 @@ export default NextAuth({
           'x-hasura-user-id': user?.id,
         },
       };
-      logger.log('JWT AFTER : ', token);
+      logger.info('JWT AFTER : ', token);
 
       return token;
     },
@@ -148,11 +148,11 @@ export default NextAuth({
       if (process.env.NEXT_AUTH_IS_SELF_LOGIN_ALLOWED === 'yes') {
         return true;
       }
-      logger.log('SIGN IN', { user, account, profile, email, credentials });
+      logger.info('SIGN IN', { user, account, profile, email, credentials });
       if (email) {
-        logger.log('Email found, find user by email');
+        logger.info('Email found, find user by email');
         const { maybeUser } = await gqlSdk.findUserByEmail({ email });
-        logger.log('SIGN IN', {
+        logger.info('SIGN IN', {
           user,
           account,
           profile,
@@ -162,17 +162,17 @@ export default NextAuth({
         });
 
         if (maybeUser.length > 0) {
-          logger.log('user found');
+          logger.info('user found');
           return true;
         } else {
-          logger.log('user not found');
+          logger.info('user not found');
           // Return false to display a default error message
           return false;
           // Or you can return a URL to redirect to:
           // return '/unauthorized'
         }
       }
-      logger.log('Nothing found');
+      logger.info('Nothing found');
       return false;
     },
   },
