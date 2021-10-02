@@ -7,6 +7,7 @@ import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { Form, Formik } from 'formik';
 import * as yup from 'yup';
+import { Loader } from '@/components/Loader';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
@@ -67,12 +68,12 @@ export const Login = (
               validationSchema={yup.object({
                 email: yup.string().email().required(),
               })}
-              onSubmit={({ email }) => {
+              onSubmit={async ({ email }) => {
                 console.log(email);
-                signIn('email', { email });
+                await signIn('email', { email });
               }}
             >
-              {({ isValid, isValidating }) => (
+              {({ isValid, isValidating, isSubmitting }) => (
                 <Form>
                   <Input
                     type="email"
@@ -81,9 +82,13 @@ export const Login = (
                     label="Email address"
                   />
                   <div className="mt-4 w-full grid">
-                    <Button disabled={!isValid || isValidating} type="submit">
-                      Sign in with Email
-                    </Button>
+                    {isSubmitting ? (
+                      <Loader />
+                    ) : (
+                      <Button disabled={!isValid || isValidating} type="submit">
+                        Sign in with Email
+                      </Button>
+                    )}
                   </div>
                 </Form>
               )}
